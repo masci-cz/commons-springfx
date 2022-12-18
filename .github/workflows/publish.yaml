@@ -1,0 +1,64 @@
+name: Publish package to the Maven Central Repository
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+
+env:
+  MAVEN_OPTS: --add-opens=java.base/java.util=ALL-UNNAMED
+
+jobs:
+  publish:
+    name: Publish package
+    # run only when pull request was merged
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get token
+        id: get_token
+        uses: machine-learning-apps/actions-app-token@master
+        with:
+          APP_PEM: ${{ secrets.APP_PEM }}
+          APP_ID: ${{ secrets.APP_ID }}
+
+      - name: Get App Installation Token
+        run: |
+          echo "This token is masked: ${TOKEN}"
+        env:
+          TOKEN: ${{ steps.get_token.outputs.app_token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ steps.get_token.outputs.app_token }}
+
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+          server-id: ossrh  # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: MAVEN_USERNAME # env variable for username in deploy
+          server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
+          gpg-private-key: ${{ secrets.GPG_SECRET_KEY }} # Value of the GPG private key to import - without any modification
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE  # env variable for GPG private key passphrase
+
+      - name: List Secrets
+        run: gpg --list-secret-keys --keyid-format LONG
+        
+      - name: Publish package
+        id: publish-to-central
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SECRET_KEY_PASSWORD }}
+          GITHUB_TOKEN: ${{ steps.get_token.outputs.app_token }}
+        run: |
+          git config user.name app-bot
+          git config user.email app-bot@github.com
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            release:prepare release:perform
