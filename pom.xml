@@ -149,9 +149,9 @@
 
     <!-- SCM (Source Code Management) information -->
     <scm>
-        <connection>scm:git:git://github.com:masci-cz/commons-springfx.git</connection>
-        <developerConnection>scm:git:https://github.com:masci-cz/commons-springfx.git</developerConnection>
-        <url>https://github.com:masci-cz/commons-springfx.git/tree/master</url>
+        <connection>scm:git:git://github.com/masci-cz/commons-springfx.git</connection>
+        <developerConnection>scm:git:https://github.com/masci-cz/commons-springfx.git</developerConnection>
+        <url>https://github.com/masci-cz/commons-springfx.git/tree/master</url>
         <tag>HEAD</tag>
     </scm>
 
