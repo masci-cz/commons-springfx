@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="commons-springfx-data" />
         <module name="commons-springfx-autoconfigure" />
       </profile>
     </annotationProcessing>
@@ -14,6 +15,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="commons-springfx" options="-parameters" />
       <module name="commons-springfx-autoconfigure" options="-parameters" />
+      <module name="commons-springfx-data" options="-parameters" />
     </option>
   </component>
 </project>
