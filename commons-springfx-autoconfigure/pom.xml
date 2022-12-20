@@ -23,7 +23,8 @@
             <groupId>net.rgielen</groupId>
             <artifactId>javafx-weaver-spring-boot-starter</artifactId>
         </dependency>
-        <!-- java fx -->
+
+        <!-- open jfx -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>

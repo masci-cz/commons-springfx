@@ -3,36 +3,52 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>cz.masci.commons</groupId>
         <artifactId>commons-springfx</artifactId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>commons-springfx-data</artifactId>
+    <artifactId>commons-springfx-mve</artifactId>
 
-    <name>Commons: SpringFX - Data</name>
-    <description>Commons Spring for JavaFX data functions</description>
+    <name>Commons: SpringFX - MVE</name>
+    <description>Commons Spring for JavaFX - Master-View-Editor</description>
 
     <properties>
     </properties>
 
     <dependencies>
-        <!-- spring framework -->
+        <!-- commons spring fx -->
+        <dependency>
+            <groupId>cz.masci.commons</groupId>
+            <artifactId>commons-springfx-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cz.masci.commons</groupId>
+            <artifactId>commons-springfx-data</artifactId>
+        </dependency>
+
+        <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
 
+        <!-- spring fx -->
+        <dependency>
+            <groupId>net.rgielen</groupId>
+            <artifactId>javafx-weaver-spring-boot-starter</artifactId>
+        </dependency>
+
         <!-- open jfx -->
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
+            <artifactId>javafx-fxml</artifactId>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
+            <artifactId>javafx-graphics</artifactId>
         </dependency>
     </dependencies>
 </project>

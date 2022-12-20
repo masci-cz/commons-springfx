@@ -39,16 +39,36 @@
     <modules>
         <module>commons-springfx-autoconfigure</module>
         <module>commons-springfx-data</module>
+        <module>commons-springfx-mve</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <!-- javafx dependencies -->
+            <!-- commons spring fx -->
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-autoconfigure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-mve</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- spring fx -->
             <dependency>
                 <groupId>net.rgielen</groupId>
                 <artifactId>javafx-weaver-spring-boot-starter</artifactId>
                 <version>${javafx.weaver.version}</version>
             </dependency>
+
+            <!-- open jfx -->
             <dependency>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-base</artifactId>

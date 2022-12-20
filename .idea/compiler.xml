@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="commons-springfx-data" />
+        <module name="commons-springfx-mve" />
         <module name="commons-springfx-autoconfigure" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
       <module name="commons-springfx" options="-parameters" />
       <module name="commons-springfx-autoconfigure" options="-parameters" />
       <module name="commons-springfx-data" options="-parameters" />
+      <module name="commons-springfx-mve" options="-parameters" />
     </option>
   </component>
 </project>
