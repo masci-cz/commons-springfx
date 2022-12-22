@@ -9,10 +9,10 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>commons-springfx-autoconfigure</artifactId>
+    <artifactId>commons-springfx-fxml</artifactId>
 
-    <name>Commons: SpringFX - Autoconfigure</name>
-    <description>Commons Spring for JavaFX autoconfiguration</description>
+    <name>Commons: SpringFX - Fxml</name>
+    <description>Commons Spring for JavaFX fxml configuration</description>
 
     <properties>
     </properties>

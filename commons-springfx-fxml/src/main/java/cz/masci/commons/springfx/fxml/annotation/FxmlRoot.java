@@ -1,4 +1,4 @@
-package cz.masci.commons.springfx.annotation;
+package cz.masci.commons.springfx.fxml.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

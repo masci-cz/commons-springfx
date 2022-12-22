@@ -1,7 +1,7 @@
 package cz.masci.commons.springfx.autoconfigure;
 
-import cz.masci.commons.springfx.annotation.FxmlController;
-import cz.masci.commons.springfx.annotation.FxmlRoot;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.commons.springfx.fxml.annotation.FxmlRoot;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;

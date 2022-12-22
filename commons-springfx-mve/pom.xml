@@ -21,7 +21,7 @@
         <!-- commons spring fx -->
         <dependency>
             <groupId>cz.masci.commons</groupId>
-            <artifactId>commons-springfx-autoconfigure</artifactId>
+            <artifactId>commons-springfx-fxml</artifactId>
         </dependency>
 
         <dependency>
