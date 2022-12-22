@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.0.0</version>
-        <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>cz.masci.commons</groupId>
@@ -15,21 +15,51 @@
 
     <packaging>pom</packaging>
 
-    <name>Commons SpringFX - Parent</name>
-    <description>Commons Spring for JavaFX</description>
+    <name>Commons: SpringFX - Parent</name>
+    <description>Commons Spring for JavaFX libraries</description>
 
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <!-- maven plugin versions -->
         <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <maven.javadoc.plugin.version>3.3.2</maven.javadoc.plugin.version>
         <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
 
+        <!-- plugin versions -->
         <nexus.staging.plugin.version>1.6.13</nexus.staging.plugin.version>
     </properties>
+
+    <modules>
+        <module>commons-springfx-bom</module>
+        <module>commons-springfx-fxml</module>
+        <module>commons-springfx-data</module>
+        <module>commons-springfx-mve</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- commons spring fx -->
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <!-- Build process -->
     <build>

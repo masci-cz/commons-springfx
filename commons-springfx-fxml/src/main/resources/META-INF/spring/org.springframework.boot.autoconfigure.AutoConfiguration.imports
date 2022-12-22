@@ -1,0 +1,2 @@
+net.rgielen.fxweaver.spring.boot.autoconfigure.FxWeaverAutoConfiguration
+cz.masci.commons.springfx.autoconfigure.SpringFxAutoConfiguration
