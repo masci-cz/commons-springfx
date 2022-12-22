@@ -10,7 +10,7 @@
 
     <groupId>cz.masci.commons</groupId>
     <artifactId>commons-springfx</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
 
     <packaging>pom</packaging>
 
@@ -180,7 +180,7 @@
         <connection>scm:git:git://github.com/masci-cz/commons-springfx.git</connection>
         <developerConnection>scm:git:https://github.com/masci-cz/commons-springfx.git</developerConnection>
         <url>https://github.com/masci-cz/commons-springfx.git/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>commons-springfx-0.0.3</tag>
     </scm>
 
 </project>
