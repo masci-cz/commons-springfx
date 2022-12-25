@@ -21,6 +21,10 @@ import org.springframework.core.annotation.AliasFor;
 @FxmlView
 public @interface FxmlRoot {
 
+  /**
+   * Alias for FxmlView annotation value
+   * @return Name of the view
+   */
   @AliasFor(annotation = FxmlView.class, attribute = "value")
   String value() default "";
 }

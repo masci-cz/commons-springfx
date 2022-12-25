@@ -27,17 +27,15 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Abstract controller for master-detail view.
- * <p>
- * Displays table view with items loaded by the item service.
- * <p>
+ * Abstract controller for master-detail view.<br>
+ * Displays table view with items loaded by the item service.<br>
  * Displays three buttons for actions:
  * <ul>
- * <li>new item</li>
- * <li>save all</li>
- * <li>delete</li </ul> <p>
+ *   <li>new item</li>
+ *   <li>save all</li>
+ *   <li>delete</li>
+ * </ul>
  *
-
  * @author Daniel Masek
  *
  * @param <T> Item type
@@ -47,10 +45,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 @FxmlView("fxml/master-view.fxml")
 public abstract class AbstractMasterController<T extends Modifiable> {
 
+  /**
+   * FxWeaver instance
+   */
   private final FxWeaver fxWeaver;
+  /**
+   * Item service responsible for CRUD operations
+   */
   private final CrudService<T> itemService;
+  /**
+   * Item key used for items group
+   */
   private final String itemKey;
+  /**
+   * Edit controller class
+   */
   private final Class<? extends EditDialogControllerService<T>> editControllerClass;
+  /**
+   * Observable list of displayed items
+   */
   private ObservableListMap observableListMap;
 
   @FXML
@@ -94,6 +107,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * end removes them from observable list map.
    * <p>
    * Open alert dialog.
+   * </p>
    *
    * @param event Action event
    */
@@ -142,6 +156,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * Set observable list map.
    * <p>
    * It is set by Spring injection.
+   * </p>
    *
    * @param observableListMap Observable list map to set
    */
@@ -154,6 +169,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * Initialize FX controller.
    * <p>
    * Load items from item service and set in table view.
+   * </p>
    */
   public final void initialize() {
     log.debug("Initialize");
@@ -198,6 +214,11 @@ public abstract class AbstractMasterController<T extends Modifiable> {
 
   }
 
+  /**
+   * Sets the row factory
+   *
+   * @param styleClass Name of the style class to used in row factory
+   */
   protected void setRowFactory(String styleClass) {
     tableView.setRowFactory(new StyleChangingRowFactory<>(styleClass, itemKey, observableListMap));
   }
