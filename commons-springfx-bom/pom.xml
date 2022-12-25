@@ -26,17 +26,17 @@
             <dependency>
                 <groupId>cz.masci.commons</groupId>
                 <artifactId>commons-springfx-fxml</artifactId>
-                <version>${project.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>cz.masci.commons</groupId>
                 <artifactId>commons-springfx-data</artifactId>
-                <version>${project.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>cz.masci.commons</groupId>
                 <artifactId>commons-springfx-mve</artifactId>
-                <version>${project.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
 
             <!-- spring fx -->
