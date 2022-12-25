@@ -15,7 +15,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="commons-springfx" options="-parameters" />
-      <module name="commons-springfx-bom" options="-parameters" />
+      <module name="commons-springfx-bom" options="" />
       <module name="commons-springfx-data" options="-parameters" />
       <module name="commons-springfx-fxml" options="-parameters" />
       <module name="commons-springfx-mve" options="-parameters" />
