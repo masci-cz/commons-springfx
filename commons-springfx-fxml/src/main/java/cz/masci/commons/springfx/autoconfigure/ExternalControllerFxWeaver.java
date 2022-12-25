@@ -36,6 +36,11 @@ public class ExternalControllerFxWeaver extends FxWeaver {
   private final Callback<Class<?>, Object> beanFactory;
   private final BuilderFactory builderFactory;
 
+  /**
+   * Create ExternalControllerFXWeaver instance
+   *
+   * @param context Spring context
+   */
   public ExternalControllerFxWeaver(ConfigurableApplicationContext context) {
     super(context::getBean, context::close);
 
@@ -59,7 +64,7 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    * if it was not annotated like this. If the FXML file is resolvable, the
    * defined view within will be loaded by {@link FXMLLoader}. The controller
    * will then be instantiated based on the fx:controller attribute, using the
-   * bean factory from {@link FxWeaver(Callback, Runnable)}. If the bean
+   * bean factory from {@link FxWeaver#FxWeaver(Callback, Runnable)}. If the bean
    * factory is based on a dependency management framework such as Spring, Guice
    * or CDI, this means that the instance will be fully managed and injected as
    * declared.
@@ -79,7 +84,7 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    * @return A {@link SimpleFxControllerAndView} container with the managed
    * instance of the requested controller and the corresponding view, if
    * applicable
-   * @see FxWeaver(Callback, Runnable)
+   * @see FxWeaver#FxWeaver(Callback, Runnable) FxWeaver
    * @see FXMLLoader
    */
   @Override

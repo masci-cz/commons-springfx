@@ -22,6 +22,14 @@ public class StyleChangingRowFactory<T extends Modifiable> implements Callback<T
   private final String modifiableKey;
   private final Callback<TableView<T>, TableRow<T>> baseFactory;
 
+  /**
+   * Constructor with all parameters
+   *
+   * @param styleClass Name of the style class
+   * @param modifiableKey Modifiable key
+   * @param modifiableService Observable list map
+   * @param baseFactory Row base factory
+   */
   public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
     this.styleClass = styleClass;
     this.modifiableKey = modifiableKey;
@@ -29,14 +37,36 @@ public class StyleChangingRowFactory<T extends Modifiable> implements Callback<T
     this.baseFactory = baseFactory;
   }
 
+  /**
+   * Constructor with all parameters
+   *
+   * @param styleClass Name of the style class
+   * @param modifiableKey Modifiable key
+   * @param modifiableService Observable list map
+   */
   public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap modifiableService) {
     this(styleClass, modifiableKey, modifiableService, null);
   }
 
+  /**
+   * Constructor with all parameters
+   *
+   * @param styleClass Name of the style class
+   * @param modifiableKey Modifiable class key
+   * @param modifiableService Observable list map
+   * @param baseFactory Row base factory
+   */
   public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ObservableListMap modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
     this(styleClass, modifiableKey.getSimpleName(), modifiableService, baseFactory);
   }
 
+  /**
+   * Constructor with all parameters
+   *
+   * @param styleClass Name of the style class
+   * @param modifiableKey Modifiable class key
+   * @param modifiableService Observable list map
+   */
   public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ObservableListMap modifiableService) {
     this(styleClass, modifiableKey, modifiableService, null);
   }

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * It is responsible for hooking listeners on every observable value defined by
  * child class. When any change is risen on observable values it adds the item
  * to global observableListMap where it can be later taken from.
- * <p>
+ * </p>
  *
  * @author Daniel
  *
@@ -96,6 +96,11 @@ public abstract class AbstractDetailController<T extends Modifiable> {
     return item;
   }
 
+  /**
+   * Set item to be controlled
+   *
+   * @param itemKey Set item key
+   */
   public void setItemKey(String itemKey) {
     this.itemKey = itemKey;
   }

@@ -10,7 +10,7 @@
 
     <groupId>cz.masci.commons</groupId>
     <artifactId>commons-springfx</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.9-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -30,10 +30,14 @@
 
         <!-- plugin versions -->
         <nexus.staging.plugin.version>1.6.13</nexus.staging.plugin.version>
+
+        <!-- other dependency versions -->
+        <javafx.weaver.version>1.3.0</javafx.weaver.version>
+        <javafx.version>17.0.2</javafx.version>
     </properties>
 
     <modules>
-        <module>commons-springfx-bom</module>
+<!--        <module>commons-springfx-bom</module>-->
         <module>commons-springfx-fxml</module>
         <module>commons-springfx-data</module>
         <module>commons-springfx-mve</module>
@@ -44,11 +48,56 @@
             <!-- commons spring fx -->
             <dependency>
                 <groupId>cz.masci.commons</groupId>
-                <artifactId>commons-springfx-bom</artifactId>
+                <artifactId>commons-springfx-fxml</artifactId>
                 <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-mve</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- spring fx -->
+            <dependency>
+                <groupId>net.rgielen</groupId>
+                <artifactId>javafx-weaver-spring-boot-starter</artifactId>
+                <version>${javafx.weaver.version}</version>
+            </dependency>
+
+            <!-- open jfx -->
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-base</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-controls</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-graphics</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-fxml</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+            <!-- commons spring fx -->
+<!--            <dependency>-->
+<!--                <groupId>cz.masci.commons</groupId>-->
+<!--                <artifactId>commons-springfx-bom</artifactId>-->
+<!--                <version>${project.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -92,7 +141,7 @@
                     <!-- Used build profile -->
                     <releaseProfiles>release</releaseProfiles>
                     <!-- Tells maven to run deploy with nexus staging plugin -->
-                    <goals>deploy nexus-staging:release</goals>
+                    <goals>deploy org.sonatype.plugins:nexus-staging-maven-plugin:release</goals>
                 </configuration>
             </plugin>
         </plugins>
