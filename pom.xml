@@ -92,7 +92,7 @@
                     <!-- Used build profile -->
                     <releaseProfiles>release</releaseProfiles>
                     <!-- Tells maven to run deploy with nexus staging plugin -->
-                    <goals>deploy nexus-staging-maven-plugin:release</goals>
+                    <goals>deploy org.sonatype.plugins:nexus-staging-maven-plugin:release</goals>
                 </configuration>
             </plugin>
         </plugins>
