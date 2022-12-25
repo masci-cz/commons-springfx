@@ -4,7 +4,7 @@
 
     <groupId>cz.masci.commons</groupId>
     <artifactId>commons-springfx-bom</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
 
     <name>Commons: SpringFX - BOM</name>
     <packaging>pom</packaging>
