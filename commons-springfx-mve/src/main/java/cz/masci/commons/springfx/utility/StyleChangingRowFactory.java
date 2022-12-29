@@ -27,13 +27,13 @@ public class StyleChangingRowFactory<T extends Modifiable> implements Callback<T
    *
    * @param styleClass Name of the style class
    * @param modifiableKey Modifiable key
-   * @param modifiableService Observable list map
+   * @param observableListMap Observable list map
    * @param baseFactory Row base factory
    */
-  public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
+  public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap observableListMap, Callback<TableView<T>, TableRow<T>> baseFactory) {
     this.styleClass = styleClass;
     this.modifiableKey = modifiableKey;
-    this.observableListMap = modifiableService;
+    this.observableListMap = observableListMap;
     this.baseFactory = baseFactory;
   }
 

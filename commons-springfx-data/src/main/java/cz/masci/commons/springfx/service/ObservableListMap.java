@@ -5,12 +5,11 @@ import java.util.List;
 import javafx.collections.ListChangeListener;
 
 /**
- * Modifiable observable lists identified by key. Every edit action 
- * (like {@link #add(String, Modifiable)},
- * {@link #remove(String, Modifiable)}
- * ) on specific list rises change list event which could be listened by external
- * listener.
+ * Modifiable observable lists identified by a key.
  * <p>
+ * Every edit action (like {@link #add(String, Modifiable)}, {@link #remove(String, Modifiable)})
+ * on specific list rises change list event which could be listened by external listener.
+ * </p>
  * Every list is identified by key and contains {@link Modifiable} items.
  * 
  * @author Daniel Masek
