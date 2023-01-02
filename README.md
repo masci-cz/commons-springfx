@@ -45,3 +45,75 @@ Another interface is `CrudService` defining CRUD methods (list, save, delete).
 This package contains two abstract controllers:
 * `AbstractDetailController` - uses `ObservableListMap` to add selected item to the list of changed items and display selected item attributes
 * `AbstractMasterController` - uses `ObservableListMap` to highlight changed items and set selected item in detail controller
+
+### AbstractMasterController usage
+
+```java
+@Component
+@Slf4j
+@FxmlController
+public class AdventureController extends AbstractMasterController<AdventureDTO> {
+
+  private TableColumn<AdventureDTO, String> name;
+
+  public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
+    super(fxWeaver, itemService, AdventureDTO.class.getSimpleName(), AdventureDetailDialogController.class);
+  }
+    
+  @Override
+  protected void init() {
+    name = new TableColumn<>("Název");
+    name.setPrefWidth(250);
+    name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    
+    addColumns(name);
+    
+    setDetailController(AdventureDetailEditorController.class);
+    setRowFactory("edited-row");
+  }
+
+}
+```
+
+### AbstractDetailController usage
+
+```java
+@Component
+@Slf4j
+@FxmlView("fxml/adventure-detail-editor.fxml")
+@FxmlController
+public class AdventureDetailEditorController extends AbstractDetailController<AdventureDTO> {
+
+  @FXML
+  private AdventureDetailControl editor;
+
+  public AdventureDetailEditorController(ObservableListMap observableListMap) {
+    super(observableListMap);
+  }
+
+  @Override
+  protected List<ObservableValue<String>> initObservableValues() {
+    return List.of(
+        editor.nameProperty()
+    );
+  }
+
+  @Override
+  protected void fillInputs(AdventureDTO item) {
+    if (item == null) {
+      editor.setName("");
+    } else {
+      editor.setName(item.getName());
+    }
+  }
+
+  @Override
+  protected void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+    if (editor.nameProperty().equals(observable)) {
+      getItem().setName(newValue);
+    }
+  }
+
+}
+
+```
