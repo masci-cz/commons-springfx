@@ -6,8 +6,10 @@ import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.commons.springfx.service.EditDialogControllerService;
 import cz.masci.commons.springfx.service.ObservableListMap;
 import cz.masci.commons.springfx.utility.StyleChangingRowFactory;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -65,6 +67,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * Observable list of displayed items
    */
   private ObservableListMap observableListMap;
+  private ObservableList<T> observableList;
 
   @FXML
   protected BorderPane borderPane;
@@ -114,19 +117,26 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   @FXML
   public void onSaveAll(ActionEvent event) {
     log.debug("Save all action occurred");
+    if (observableList == null) {
+      log.error("Observable list of {} class is null.", this.getClass().getSimpleName());
+      return;
+    }
 
     Alert alert = new Alert(AlertType.INFORMATION, "Saving all items");
     alert.showAndWait().ifPresent(button -> {
-      List<T> modifiedItemList = observableListMap.getAll(itemKey);
-      modifiedItemList
+      List<T> removedList = new ArrayList<>();
+//      List<T> errorList = new ArrayList<>();
+      observableList
               .forEach(item -> {
                 try {
                   itemService.save(item);
-                  observableListMap.remove(item);
+                  removedList.add(item);
                 } catch (CrudException ex) {
                   log.error(ex.getMessage());
+//                  errorList.add(item);
                 }
               });
+      observableList.removeAll(removedList);
     });
   }
 
@@ -145,7 +155,8 @@ public abstract class AbstractMasterController<T extends Modifiable> {
         T item = tableView.getSelectionModel().getSelectedItem();
         tableView.getItems().remove(item);
         itemService.delete(item);
-        observableListMap.remove(item);
+        observableList.remove(item);
+//        observableListMap.remove(item);
       } catch (CrudException ex) {
         log.error(ex.getMessage());
       }
@@ -163,6 +174,19 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   @Autowired
   public final void setObservableListMap(ObservableListMap observableListMap) {
     this.observableListMap = observableListMap;
+  }
+
+  /**
+   * Set observable list.
+   * <p>
+   * It is set by Spring injection.
+   * </p>
+   *
+   * @param observableList Observable list map to set
+   */
+  @Autowired
+  public final void setObservableList(ObservableList<T> observableList) {
+    this.observableList = observableList;
   }
 
   /**
