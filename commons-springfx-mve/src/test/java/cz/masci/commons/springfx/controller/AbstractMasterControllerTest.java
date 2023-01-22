@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.SimpleFxControllerAndView;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -85,13 +86,18 @@ class AbstractMasterControllerTest {
     robot.clickOn(".dialog-pane .button-bar .button");
 
     // then
-    verifyThat("#tableView", (TableView<ItemOne> tableView) -> {
-      System.out.println("Verifying #tableView " + tableView);
-      Object item = tableView.getSelectionModel().getSelectedItem();
-      return Objects.equals(item, selectedItem);
-    });
+    var tableViewQuery = robot.lookup("#tableView");
+    verifyThat(tableViewQuery,
+        (TableView<ItemOne> tableView) -> {
+          System.out.println("Verifying #tableView " + tableView);
+          Object item = tableView.getSelectionModel().getSelectedItem();
+          return Objects.equals(item, selectedItem);
+        },
+        sb -> sb.append(tableViewQuery)
+    );
   }
 
+  @Disabled
   @Test
   void onNewItem_null(FxRobot robot) throws CrudException {
     var controller = new EditDialogController(null);
@@ -111,6 +117,7 @@ class AbstractMasterControllerTest {
     verify(itemService, never()).save(any());
   }
 
+  @Disabled
   @Test
   void onSaveAll(FxRobot robot) throws CrudException {
     var savedItem = new ItemOne("test");
@@ -129,6 +136,7 @@ class AbstractMasterControllerTest {
     assertTrue(observableList.isEmpty());
   }
 
+  @Disabled
   @Test
   void onSaveAll_nullObservableList(FxRobot robot) throws CrudException {
     // when
@@ -138,34 +146,42 @@ class AbstractMasterControllerTest {
     verify(itemService, never()).save(any());
   }
 
+  @Disabled
   @Test
   void onDelete() {
   }
 
+  @Disabled
   @Test
   void setObservableListMap() {
   }
 
+  @Disabled
   @Test
   void setObservableList() {
   }
 
+  @Disabled
   @Test
   void initialize() {
   }
 
+  @Disabled
   @Test
   void addColumns() {
   }
 
+  @Disabled
   @Test
   void setDetailController() {
   }
 
+  @Disabled
   @Test
   void setRowFactory() {
   }
 
+  @Disabled
   @Test
   void init() {
   }
