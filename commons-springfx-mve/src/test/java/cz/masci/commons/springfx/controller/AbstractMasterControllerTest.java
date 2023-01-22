@@ -1,5 +1,6 @@
 package cz.masci.commons.springfx.controller;
 
+import static cz.masci.commons.springfx.controller.TestFxUtils.clickOnDialogButton;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -14,13 +15,11 @@ import cz.masci.commons.springfx.service.EditDialogControllerService;
 import cz.masci.commons.springfx.service.ObservableListMap;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableView;
@@ -40,7 +39,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
-import org.testfx.util.WaitForAsyncUtils;
 
 @ExtendWith({MockitoExtension.class, ApplicationExtension.class})
 class AbstractMasterControllerTest {
@@ -71,7 +69,6 @@ class AbstractMasterControllerTest {
 
   @Stop
   private void stop() {
-//    WaitForAsyncUtils.sleep(3, TimeUnit.SECONDS);
   }
 
   @Test
@@ -85,12 +82,7 @@ class AbstractMasterControllerTest {
 
     // when
     robot.clickOn("#newItem");
-    System.out.println("Clicked on #newItem");
-//    robot.clickOn(".dialog-pane .button-bar .button");
-    Button button = robot.lookup(".dialog-pane .button-bar .button").query();
-    WaitForAsyncUtils.asyncFx(button::fire);
-    WaitForAsyncUtils.waitForFxEvents();
-    System.out.println("Clicked on .button");
+    clickOnDialogButton(robot, ".dialog-pane .button-bar .button");
 
     // then
     AtomicReference<ItemOne> selectedItem = new AtomicReference<>();
@@ -104,7 +96,6 @@ class AbstractMasterControllerTest {
     );
   }
 
-  @Disabled
   @Test
   void onNewItem_null(FxRobot robot) throws CrudException {
     var controller = new EditDialogController(null);
@@ -114,7 +105,7 @@ class AbstractMasterControllerTest {
 
     // when
     robot.clickOn("#newItem");
-    robot.clickOn(".dialog-pane .button-bar .button");
+    clickOnDialogButton(robot, ".dialog-pane .button-bar .button");
 
     // then
     verifyThat("#tableView", (TableView<ItemOne> tableView) ->
@@ -124,7 +115,6 @@ class AbstractMasterControllerTest {
     verify(itemService, never()).save(any());
   }
 
-  @Disabled
   @Test
   void onSaveAll(FxRobot robot) throws CrudException {
     var savedItem = new ItemOne("test");
@@ -137,13 +127,12 @@ class AbstractMasterControllerTest {
 
     // when
     robot.clickOn("#saveAll");
-    robot.clickOn(".alert .button-bar .button");
+    clickOnDialogButton(robot, ".alert .button-bar .button");
 
     // then
     assertTrue(observableList.isEmpty());
   }
 
-  @Disabled
   @Test
   void onSaveAll_nullObservableList(FxRobot robot) throws CrudException {
     // when
