@@ -60,7 +60,6 @@ class AbstractMasterControllerTest {
    */
   @Start
   private void start(Stage stage) throws IOException {
-    //    itemService = mock(CrudService.class);
     masterController = new MasterController(fxWeaver, itemService);
     var fxmlLoader = new FXMLLoader();
     fxmlLoader.setController(masterController);
@@ -84,6 +83,7 @@ class AbstractMasterControllerTest {
 
     // then
     verifyThat("#tableView", (TableView<ItemOne> tableView) -> {
+      System.out.println("Verifying #tableView " + tableView);
       Object item = tableView.getSelectionModel().getSelectedItem();
       return Objects.equals(item, selectedItem);
     });

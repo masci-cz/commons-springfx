@@ -18,6 +18,4 @@ jobs:
           cache: 'maven'
 
       - name: Verify package
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          run: mvn verify
+        run: xvfb-run mvn verify
