@@ -84,15 +84,14 @@ class AbstractMasterControllerTest {
 
     // when
     robot.clickOn("#newItem");
+    WaitForAsyncUtils.sleep(500, TimeUnit.MILLISECONDS);
     robot.clickOn(".dialog-pane .button-bar .button");
 
     // then
     AtomicReference<ItemOne> selectedItem = new AtomicReference<>();
     verifyThat("#tableView",
         (TableView<ItemOne> tableView) -> {
-          System.out.println("Verifying #tableView: " + tableView);
           ItemOne item = tableView.getSelectionModel().getSelectedItem();
-          System.out.println("Selected item: " + item);
           selectedItem.set(item);
           return Objects.equals(newItem, item);
         },
