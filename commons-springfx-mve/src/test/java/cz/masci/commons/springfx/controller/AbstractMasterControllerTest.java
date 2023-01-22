@@ -84,8 +84,10 @@ class AbstractMasterControllerTest {
 
     // when
     robot.clickOn("#newItem");
-    WaitForAsyncUtils.sleep(500, TimeUnit.MILLISECONDS);
+    System.out.println("Clicked on #newItem");
+    WaitForAsyncUtils.sleep(3, TimeUnit.SECONDS);
     robot.clickOn(".dialog-pane .button-bar .button");
+    System.out.println("Clicked on .button");
 
     // then
     AtomicReference<ItemOne> selectedItem = new AtomicReference<>();
