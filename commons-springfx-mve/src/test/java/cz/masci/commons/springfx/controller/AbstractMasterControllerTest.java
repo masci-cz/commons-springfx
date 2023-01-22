@@ -211,7 +211,10 @@ class AbstractMasterControllerTest {
     }
     @Override
     public Callback<ButtonType, ItemOne> getResultConverter() {
-      return buttonType -> value;
+      return buttonType -> {
+        System.out.println("getResultConverter returning: " + value);
+        return value;
+      };
     }
   }
 
