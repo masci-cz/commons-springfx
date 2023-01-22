@@ -1,12 +1,11 @@
 package cz.masci.commons.springfx.controller;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testfx.api.FxAssert.verifyThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import cz.masci.commons.springfx.data.Modifiable;
 import cz.masci.commons.springfx.exception.CrudException;
@@ -15,6 +14,7 @@ import cz.masci.commons.springfx.service.EditDialogControllerService;
 import cz.masci.commons.springfx.service.ObservableListMap;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +23,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import lombok.AllArgsConstructor;
@@ -38,8 +36,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
-import org.testfx.service.query.NodeQuery;
-import org.testfx.util.NodeQueryUtils;
+import org.testfx.framework.junit5.Stop;
+import org.testfx.util.WaitForAsyncUtils;
 
 @ExtendWith({MockitoExtension.class, ApplicationExtension.class})
 class AbstractMasterControllerTest {
@@ -66,6 +64,11 @@ class AbstractMasterControllerTest {
     BorderPane pane = fxmlLoader.load(Objects.requireNonNull(getClass().getResourceAsStream("fxml/master-view.fxml")));
     stage.setScene(new Scene(pane, 100, 100));
     stage.show();
+  }
+
+  @Stop
+  private void stop() {
+    WaitForAsyncUtils.sleep(3, TimeUnit.SECONDS);
   }
 
   @Test
