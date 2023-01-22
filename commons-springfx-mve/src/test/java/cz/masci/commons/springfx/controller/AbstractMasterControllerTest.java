@@ -74,7 +74,7 @@ class AbstractMasterControllerTest {
 
   @Test
   void onNewItem(FxRobot robot) throws CrudException {
-    var selectedItem = new ItemOne("message");
+    var selectedItem = new ItemOne("test");
     var controller = new EditDialogController(selectedItem);
     var view = new EditDialogView();
 
@@ -89,8 +89,9 @@ class AbstractMasterControllerTest {
     var tableViewQuery = robot.lookup("#tableView");
     verifyThat(tableViewQuery,
         (TableView<ItemOne> tableView) -> {
-          System.out.println("Verifying #tableView " + tableView);
+          System.out.println("Verifying #tableView: " + tableView);
           Object item = tableView.getSelectionModel().getSelectedItem();
+          System.out.println("Selected item: " + item);
           return Objects.equals(item, selectedItem);
         },
         sb -> sb.append(tableViewQuery)
