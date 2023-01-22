@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableView;
@@ -85,7 +86,10 @@ class AbstractMasterControllerTest {
     // when
     robot.clickOn("#newItem");
     System.out.println("Clicked on #newItem");
-    robot.clickOn(".dialog-pane .button-bar .button");
+//    robot.clickOn(".dialog-pane .button-bar .button");
+    Button button = robot.lookup(".dialog-pane .button-bar .button").query();
+    WaitForAsyncUtils.asyncFx(button::fire);
+    WaitForAsyncUtils.waitForFxEvents();
     System.out.println("Clicked on .button");
 
     // then
