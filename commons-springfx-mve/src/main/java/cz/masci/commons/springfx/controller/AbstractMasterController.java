@@ -95,6 +95,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     dialog.showAndWait()
             .ifPresent(item -> {
               try {
+                log.debug("Saving new item: " + item);
                 var savedItem = itemService.save(item);
                 tableView.getItems().add(savedItem);
                 tableView.getSelectionModel().select(savedItem);

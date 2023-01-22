@@ -15,6 +15,7 @@ import cz.masci.commons.springfx.service.ObservableListMap;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -69,32 +70,33 @@ class AbstractMasterControllerTest {
 
   @Stop
   private void stop() {
-    WaitForAsyncUtils.sleep(3, TimeUnit.SECONDS);
+//    WaitForAsyncUtils.sleep(3, TimeUnit.SECONDS);
   }
 
   @Test
   void onNewItem(FxRobot robot) throws CrudException {
-    var selectedItem = new ItemOne("test");
-    var controller = new EditDialogController(selectedItem);
+    var newItem = new ItemOne("test");
+    var controller = new EditDialogController(newItem);
     var view = new EditDialogView();
 
     when(fxWeaver.load(EditDialogController.class)).thenReturn(SimpleFxControllerAndView.of(controller, view));
-    when(itemService.save(any())).thenReturn(selectedItem);
+    when(itemService.save(any())).thenReturn(newItem);
 
     // when
     robot.clickOn("#newItem");
     robot.clickOn(".dialog-pane .button-bar .button");
 
     // then
-    var tableViewQuery = robot.lookup("#tableView");
-    verifyThat(tableViewQuery,
+    AtomicReference<ItemOne> selectedItem = new AtomicReference<>();
+    verifyThat("#tableView",
         (TableView<ItemOne> tableView) -> {
           System.out.println("Verifying #tableView: " + tableView);
-          Object item = tableView.getSelectionModel().getSelectedItem();
+          ItemOne item = tableView.getSelectionModel().getSelectedItem();
           System.out.println("Selected item: " + item);
-          return Objects.equals(item, selectedItem);
+          selectedItem.set(item);
+          return Objects.equals(newItem, item);
         },
-        sb -> sb.append(tableViewQuery)
+        sb -> sb.append("\nSelected item: ").append(selectedItem.get())
     );
   }
 
