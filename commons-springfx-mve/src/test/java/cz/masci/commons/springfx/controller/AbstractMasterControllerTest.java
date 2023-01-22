@@ -85,7 +85,6 @@ class AbstractMasterControllerTest {
     // when
     robot.clickOn("#newItem");
     System.out.println("Clicked on #newItem");
-    WaitForAsyncUtils.sleep(3, TimeUnit.SECONDS);
     robot.clickOn(".dialog-pane .button-bar .button");
     System.out.println("Clicked on .button");
 

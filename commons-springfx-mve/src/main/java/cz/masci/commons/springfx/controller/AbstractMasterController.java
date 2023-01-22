@@ -92,8 +92,8 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     dialog.setTitle("New Item");
     editor.getView().ifPresent(dialog::setDialogPane);
     dialog.setResultConverter(editor.getController().getResultConverter());
-    dialog.showAndWait()
-            .ifPresent(item -> {
+    var result = dialog.showAndWait();
+    result.ifPresent(item -> {
               try {
                 log.debug("Saving new item: " + item);
                 var savedItem = itemService.save(item);
@@ -104,6 +104,9 @@ public abstract class AbstractMasterController<T extends Modifiable> {
                 log.error(ex.getMessage());
               }
             });
+    if (result.isEmpty()) {
+      log.debug("Dialog result is empty");
+    }
   }
 
   /**
