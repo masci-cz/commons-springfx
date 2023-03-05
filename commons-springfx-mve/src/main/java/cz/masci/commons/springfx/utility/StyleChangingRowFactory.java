@@ -1,39 +1,36 @@
 package cz.masci.commons.springfx.utility;
 
 import cz.masci.commons.springfx.data.Modifiable;
-import cz.masci.commons.springfx.service.ObservableListMap;
 import java.util.Collections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 /**
- * Row factory for items in observable list map. Add style class to the row if
- * the item row is found in appropriate list.
+ * Row factory for items in observable list. Add style class to the row if
+ * the item is found in the list.
  *
  * @author Daniel Masek
  * @param <T> Type of table item
  */
 public class StyleChangingRowFactory<T extends Modifiable> implements Callback<TableView<T>, TableRow<T>> {
 
-  private final ObservableListMap observableListMap;
+  private final ObservableList<T> selectionList;
   private final String styleClass;
-  private final String modifiableKey;
   private final Callback<TableView<T>, TableRow<T>> baseFactory;
 
   /**
    * Constructor with all parameters
    *
    * @param styleClass Name of the style class
-   * @param modifiableKey Modifiable key
-   * @param observableListMap Observable list map
+   * @param selectionList Observable list of selected items
    * @param baseFactory Row base factory
    */
-  public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap observableListMap, Callback<TableView<T>, TableRow<T>> baseFactory) {
+  public StyleChangingRowFactory(String styleClass, ObservableList<T> selectionList, Callback<TableView<T>, TableRow<T>> baseFactory) {
     this.styleClass = styleClass;
-    this.modifiableKey = modifiableKey;
-    this.observableListMap = observableListMap;
+    this.selectionList = selectionList;
     this.baseFactory = baseFactory;
   }
 
@@ -41,38 +38,14 @@ public class StyleChangingRowFactory<T extends Modifiable> implements Callback<T
    * Constructor with all parameters
    *
    * @param styleClass Name of the style class
-   * @param modifiableKey Modifiable key
-   * @param modifiableService Observable list map
+   * @param selectionList Observable list of selected items
    */
-  public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap modifiableService) {
-    this(styleClass, modifiableKey, modifiableService, null);
+  public StyleChangingRowFactory(String styleClass, ObservableList<T> selectionList) {
+    this(styleClass, selectionList, null);
   }
 
   /**
-   * Constructor with all parameters
-   *
-   * @param styleClass Name of the style class
-   * @param modifiableKey Modifiable class key
-   * @param modifiableService Observable list map
-   * @param baseFactory Row base factory
-   */
-  public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ObservableListMap modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
-    this(styleClass, modifiableKey.getSimpleName(), modifiableService, baseFactory);
-  }
-
-  /**
-   * Constructor with all parameters
-   *
-   * @param styleClass Name of the style class
-   * @param modifiableKey Modifiable class key
-   * @param modifiableService Observable list map
-   */
-  public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ObservableListMap modifiableService) {
-    this(styleClass, modifiableKey, modifiableService, null);
-  }
-
-  /**
-   * Add listener on table item and observable list map to check item existence
+   * Add listener on table item to an observable list to check the item existence
    * and therefor style changing.
    *
    * @param tableView Table view to check
@@ -88,22 +61,34 @@ public class StyleChangingRowFactory<T extends Modifiable> implements Callback<T
       row = baseFactory.call(tableView);
     }
 
+    // listen to row selection in the table view
     row.itemProperty().addListener((obs, oldValue, newValue) -> updateStyleClass(row));
 
-    observableListMap.addListener(modifiableKey, (change) -> updateStyleClass(row));
+    // listen to adding item to the selection list
+    selectionList.addListener(createListChangeListener(row));
 
     return row;
   }
 
   /**
+   * Listen to change in selection list.
+   *
+   * @param row Selected row
+   * @return list change listener
+   */
+  private ListChangeListener<T> createListChangeListener(TableRow<T> row) {
+    return (change -> updateStyleClass(row));
+  }
+
+  /**
    * Add or remove style class from row style classes based on existence of
-   * selected item in the list map.
+   * selected item in the selection list.
    *
    * @param row Selected table row
    */
   private void updateStyleClass(TableRow<T> row) {
     final ObservableList<String> rowStyleClasses = row.getStyleClass();
-    if (observableListMap.contains(row.getItem())) {
+    if (selectionList.contains(row.getItem())) {
       if (!rowStyleClasses.contains(styleClass)) {
         rowStyleClasses.add(styleClass);
       }

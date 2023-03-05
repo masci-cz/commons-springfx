@@ -1,36 +1,43 @@
 package cz.masci.commons.springfx.controller;
 
-import static cz.masci.commons.springfx.controller.TestFxUtils.clickOnDialogButton;
+import static cz.masci.commons.springfx.TestFxUtils.clickOnDialogButton;
+import static cz.masci.commons.springfx.TestFxUtils.clickOnDialogButtonWithText;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testfx.api.FxAssert.verifyThat;
 
-import cz.masci.commons.springfx.data.Modifiable;
+import cz.masci.commons.springfx.ItemOne;
 import cz.masci.commons.springfx.exception.CrudException;
 import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.commons.springfx.service.EditDialogControllerService;
-import cz.masci.commons.springfx.service.ObservableListMap;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.SimpleFxControllerAndView;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -47,10 +54,9 @@ class AbstractMasterControllerTest {
   private FxWeaver fxWeaver;
   @Mock
   private CrudService<ItemOne> itemService;
-  private ObservableListMap observableListMap;
-  private ObservableList<ItemOne> observableList;
+  private final ObservableList<ItemOne> changedItemList = FXCollections.observableArrayList();
 
-  private MasterController masterController;
+  private TestMasterController masterController;
 
   /**
    * Will be called with {@code @Before} semantics, i.e. before each test method.
@@ -59,11 +65,11 @@ class AbstractMasterControllerTest {
    */
   @Start
   private void start(Stage stage) throws IOException {
-    masterController = new MasterController(fxWeaver, itemService);
+    masterController = new TestMasterController();
     var fxmlLoader = new FXMLLoader();
     fxmlLoader.setController(masterController);
     BorderPane pane = fxmlLoader.load(Objects.requireNonNull(getClass().getResourceAsStream("fxml/master-view.fxml")));
-    stage.setScene(new Scene(pane, 100, 100));
+    stage.setScene(new Scene(pane, 640, 400));
     stage.show();
   }
 
@@ -74,10 +80,10 @@ class AbstractMasterControllerTest {
   @Test
   void onNewItem(FxRobot robot) throws CrudException {
     var newItem = new ItemOne("test");
-    var controller = new EditDialogController(newItem);
+    var controller = new TestEditDialogController(newItem);
     var view = new EditDialogView();
 
-    when(fxWeaver.load(EditDialogController.class)).thenReturn(SimpleFxControllerAndView.of(controller, view));
+    when(fxWeaver.load(TestEditDialogController.class)).thenReturn(SimpleFxControllerAndView.of(controller, view));
     when(itemService.save(any())).thenReturn(newItem);
 
     // when
@@ -98,10 +104,10 @@ class AbstractMasterControllerTest {
 
   @Test
   void onNewItem_null(FxRobot robot) throws CrudException {
-    var controller = new EditDialogController(null);
+    var controller = new TestEditDialogController(null);
     var view = new EditDialogView();
 
-    when(fxWeaver.load(EditDialogController.class)).thenReturn(SimpleFxControllerAndView.of(controller, view));
+    when(fxWeaver.load(TestEditDialogController.class)).thenReturn(SimpleFxControllerAndView.of(controller, view));
 
     // when
     robot.clickOn("#newItem");
@@ -118,19 +124,30 @@ class AbstractMasterControllerTest {
   @Test
   void onSaveAll(FxRobot robot) throws CrudException {
     var savedItem = new ItemOne("test");
-    observableList = FXCollections.observableArrayList();
-    observableList.add(savedItem);
+    changedItemList.add(savedItem);
 
     when(itemService.save(savedItem)).thenReturn(savedItem);
-
-    masterController.setObservableList(observableList);
 
     // when
     robot.clickOn("#saveAll");
     clickOnDialogButton(robot, ".alert .button-bar .button");
 
     // then
-    assertTrue(observableList.isEmpty());
+    assertTrue(changedItemList.isEmpty());
+  }
+
+  @Test
+  void onSaveAll_cancel(FxRobot robot) throws CrudException {
+    var savedItem = new ItemOne("test");
+    changedItemList.add(savedItem);
+
+    // when
+    robot.clickOn("#saveAll");
+    clickOnDialogButtonWithText(robot, "Cancel");
+
+    // then
+    assertFalse(changedItemList.isEmpty());
+    verify(itemService, never()).save(any());
   }
 
   @Test
@@ -142,50 +159,100 @@ class AbstractMasterControllerTest {
     verify(itemService, never()).save(any());
   }
 
-  @Disabled
   @Test
-  void onDelete() {
+  void onDelete(FxRobot robot) throws CrudException {
+    var itemToDelete = new ItemOne("test");
+    changedItemList.add(itemToDelete);
+
+    doNothing().when(itemService).delete(itemToDelete);
+
+    // when
+    TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+    tableView.getSelectionModel().select(itemToDelete);
+    robot.clickOn("#delete");
+    clickOnDialogButton(robot, ".alert .button-bar .button");
+
+    // then
+    assertTrue(changedItemList.isEmpty());
   }
 
-  @Disabled
   @Test
-  void setObservableListMap() {
+  void onDelete_cancel(FxRobot robot) throws CrudException {
+    var itemToDelete = new ItemOne("test");
+    changedItemList.add(itemToDelete);
+
+    // when
+    TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+    tableView.getSelectionModel().select(itemToDelete);
+    robot.clickOn("#delete");
+    clickOnDialogButtonWithText(robot, "Cancel");
+
+    // then
+    assertFalse(changedItemList.isEmpty());
+    verify(itemService, never()).delete(any());
   }
 
-  @Disabled
   @Test
-  void setObservableList() {
+  void initialize(FxRobot robot) throws CrudException {
+    when(itemService.list()).thenReturn(List.of(new ItemOne("test")));
+
+    masterController.initialize();
+
+    TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+    assertEquals(1, tableView.getItems().size());
   }
 
-  @Disabled
   @Test
-  void initialize() {
+  void initialize_error(FxRobot robot) throws CrudException {
+    when(itemService.list()).thenThrow(new CrudException("Error"));
+
+    masterController.initialize();
+
+    TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+    assertEquals(0, tableView.getItems().size());
   }
 
-  @Disabled
   @Test
-  void addColumns() {
+  void addColumns(FxRobot robot) {
+    Platform.runLater(() -> {
+      masterController.addColumns(new TableColumn<>("First column"));
+
+      TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+      assertEquals(1, tableView.getColumns().size());
+    });
   }
 
-  @Disabled
   @Test
-  void setDetailController() {
+  void setDetailController(FxRobot robot) {
+    var itemToSelect = new ItemOne("test");
+    AbstractDetailController<ItemOne> controller = mock(AbstractDetailController.class);
+    Node view = new Pane();
+
+    when(fxWeaver.load(AbstractDetailController.class)).thenReturn(SimpleFxControllerAndView.of(controller, view));
+
+    Platform.runLater(() -> {
+      masterController.setDetailController(AbstractDetailController.class);
+
+      // check the listener is set
+      TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+      tableView.getSelectionModel().select(itemToSelect);
+
+      verify(controller).setItem(itemToSelect);
+    });
   }
 
-  @Disabled
   @Test
-  void setRowFactory() {
+  void setRowFactory(FxRobot robot) {
+    masterController.setRowFactory("TEST");
+
+    TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
+    assertNotNull(tableView.getRowFactory());
   }
 
-  @Disabled
-  @Test
-  void init() {
-  }
+  private class TestMasterController extends AbstractMasterController<ItemOne> {
 
-  private static class MasterController extends AbstractMasterController<ItemOne> {
-
-    public MasterController(FxWeaver fxWeaver, CrudService<ItemOne> itemService) {
-      super(fxWeaver, itemService, "test", EditDialogController.class);
+    public TestMasterController() {
+      super(fxWeaver, itemService, "test", TestEditDialogController.class, changedItemList);
     }
 
     @Override
@@ -194,11 +261,11 @@ class AbstractMasterControllerTest {
     }
   }
 
-  private static class EditDialogController implements EditDialogControllerService<ItemOne> {
+  private static class TestEditDialogController implements EditDialogControllerService<ItemOne> {
 
     ItemOne value;
 
-    public EditDialogController(ItemOne value) {
+    public TestEditDialogController(ItemOne value) {
       this.value = value;
     }
     @Override
@@ -216,11 +283,5 @@ class AbstractMasterControllerTest {
       super();
       getButtonTypes().add(ButtonType.OK);
     }
-  }
-
-  @Data
-  @AllArgsConstructor
-  private static class ItemOne implements Modifiable {
-    private String message;
   }
 }

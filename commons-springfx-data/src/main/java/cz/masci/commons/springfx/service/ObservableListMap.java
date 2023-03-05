@@ -4,6 +4,7 @@ import cz.masci.commons.springfx.data.Modifiable;
 import java.util.List;
 import javafx.collections.ListChangeListener;
 
+// TODO: Remove completely
 /**
  * Modifiable observable lists identified by a key.
  * <p>
