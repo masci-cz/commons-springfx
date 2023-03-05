@@ -129,7 +129,7 @@ class AbstractMasterControllerTest {
 
     // when
     robot.clickOn("#saveAll");
-    clickOnDialogButton(robot, ".alert .button-bar .button");
+    clickOnDialogButtonWithText(robot, "OK");
 
     // then
     assertThat(changedItemList)
@@ -171,7 +171,7 @@ class AbstractMasterControllerTest {
     TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
     tableView.getSelectionModel().select(itemToDelete);
     robot.clickOn("#delete");
-    clickOnDialogButton(robot, ".alert .button-bar .button");
+    clickOnDialogButtonWithText(robot, "OK");
 
     // then
     assertThat(changedItemList)
