@@ -2,10 +2,9 @@ package cz.masci.commons.springfx.controller;
 
 import static cz.masci.commons.springfx.TestFxUtils.clickOnDialogButton;
 import static cz.masci.commons.springfx.TestFxUtils.clickOnDialogButtonWithText;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -133,7 +132,8 @@ class AbstractMasterControllerTest {
     clickOnDialogButton(robot, ".alert .button-bar .button");
 
     // then
-    assertTrue(changedItemList.isEmpty());
+    assertThat(changedItemList)
+        .doesNotContain(savedItem);
   }
 
   @Test
@@ -146,7 +146,8 @@ class AbstractMasterControllerTest {
     clickOnDialogButtonWithText(robot, "Cancel");
 
     // then
-    assertFalse(changedItemList.isEmpty());
+    assertThat(changedItemList)
+        .contains(savedItem);
     verify(itemService, never()).save(any());
   }
 
@@ -173,7 +174,8 @@ class AbstractMasterControllerTest {
     clickOnDialogButton(robot, ".alert .button-bar .button");
 
     // then
-    assertTrue(changedItemList.isEmpty());
+    assertThat(changedItemList)
+        .doesNotContain(itemToDelete);
   }
 
   @Test
@@ -188,7 +190,8 @@ class AbstractMasterControllerTest {
     clickOnDialogButtonWithText(robot, "Cancel");
 
     // then
-    assertFalse(changedItemList.isEmpty());
+    assertThat(changedItemList)
+        .contains(itemToDelete);
     verify(itemService, never()).delete(any());
   }
 
