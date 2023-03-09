@@ -1,11 +1,11 @@
 package cz.masci.commons.springfx.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import cz.masci.commons.springfx.ItemOne;
 import java.util.List;
-import javafx.beans.DefaultProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -43,7 +43,7 @@ class AbstractDetailControllerTest {
     final StringProperty name = new SimpleStringProperty();
 
     public TestDetailController() {
-      super(changedItemList);
+      setChangedItemList(changedItemList);
     }
 
     @Override

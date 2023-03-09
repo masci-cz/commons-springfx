@@ -55,11 +55,6 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    */
   private final CrudService<T> itemService;
   /**
-   * Item key used for items group
-   */
-  // TODO: Remove after DetailController change
-  private final String itemKey;
-  /**
    * Edit controller class
    */
   private final Class<? extends EditDialogControllerService<T>> editControllerClass;
@@ -201,6 +196,8 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    */
   public <E extends AbstractDetailController<T>> void setDetailController(Class<E> detailController) {
     FxControllerAndView<E, Node> detailView = fxWeaver.load(detailController);
+
+    detailView.getController().setChangedItemList(this.changedItemList);
 
     borderPane.setCenter(detailView.getView().orElseThrow(
         () -> new RuntimeException("There is no view defined for controller " + detailController))

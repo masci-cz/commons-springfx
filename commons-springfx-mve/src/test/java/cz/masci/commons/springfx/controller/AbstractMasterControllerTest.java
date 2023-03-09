@@ -255,7 +255,7 @@ class AbstractMasterControllerTest {
   private class TestMasterController extends AbstractMasterController<ItemOne> {
 
     public TestMasterController() {
-      super(fxWeaver, itemService, "test", TestEditDialogController.class, changedItemList);
+      super(fxWeaver, itemService, TestEditDialogController.class, changedItemList);
     }
 
     @Override

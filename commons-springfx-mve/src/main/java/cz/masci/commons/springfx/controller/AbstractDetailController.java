@@ -27,7 +27,7 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   /**
    * Global observable list map
    */
-  private final ObservableList<T> changedItemList;
+  private ObservableList<T> changedItemList;
 
   /**
    * List of observable values for which the change event should be risen
@@ -66,7 +66,16 @@ public abstract class AbstractDetailController<T extends Modifiable> {
    * @param newValue New value
    */
   protected abstract void changed(ObservableValue<? extends String> observable, String oldValue, String newValue);
-  
+
+  /**
+   * Set changed item list. When some observable values change, the values is added to this list.
+   *
+   * @param changedItemList Observable changed item list
+   */
+  public void setChangedItemList(ObservableList<T> changedItemList) {
+    this.changedItemList = changedItemList;
+  }
+
   /**
    * Set item to be controlled
    *
@@ -112,7 +121,9 @@ public abstract class AbstractDetailController<T extends Modifiable> {
         log.trace("{} value changed from {} to {}", observable, oldValue, newValue);
         
         changed(observable, oldValue, newValue);
-        changedItemList.add(item);
+        if (changedItemList != null) {
+          changedItemList.add(item);
+        }
       };
       getObservableValues().forEach(t -> t.addListener(listener));
     }
