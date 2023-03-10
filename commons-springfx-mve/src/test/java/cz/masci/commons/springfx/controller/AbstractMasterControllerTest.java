@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -53,7 +51,6 @@ class AbstractMasterControllerTest {
   private FxWeaver fxWeaver;
   @Mock
   private CrudService<ItemOne> itemService;
-  private final ObservableList<ItemOne> changedItemList = FXCollections.observableArrayList();
 
   private TestMasterController masterController;
 
@@ -123,7 +120,7 @@ class AbstractMasterControllerTest {
   @Test
   void onSaveAll(FxRobot robot) throws CrudException {
     var savedItem = new ItemOne("test");
-    changedItemList.add(savedItem);
+    masterController.getChangedItemList().add(savedItem);
 
     when(itemService.save(savedItem)).thenReturn(savedItem);
 
@@ -132,21 +129,21 @@ class AbstractMasterControllerTest {
     clickOnDialogButtonWithText(robot, "OK");
 
     // then
-    assertThat(changedItemList)
+    assertThat(masterController.getChangedItemList())
         .doesNotContain(savedItem);
   }
 
   @Test
   void onSaveAll_cancel(FxRobot robot) throws CrudException {
     var savedItem = new ItemOne("test");
-    changedItemList.add(savedItem);
+    masterController.getChangedItemList().add(savedItem);
 
     // when
     robot.clickOn("#saveAll");
     clickOnDialogButtonWithText(robot, "Cancel");
 
     // then
-    assertThat(changedItemList)
+    assertThat(masterController.getChangedItemList())
         .contains(savedItem);
     verify(itemService, never()).save(any());
   }
@@ -163,7 +160,7 @@ class AbstractMasterControllerTest {
   @Test
   void onDelete(FxRobot robot) throws CrudException {
     var itemToDelete = new ItemOne("test");
-    changedItemList.add(itemToDelete);
+    masterController.getChangedItemList().add(itemToDelete);
 
     doNothing().when(itemService).delete(itemToDelete);
 
@@ -174,14 +171,14 @@ class AbstractMasterControllerTest {
     clickOnDialogButtonWithText(robot, "OK");
 
     // then
-    assertThat(changedItemList)
+    assertThat(masterController.getChangedItemList())
         .doesNotContain(itemToDelete);
   }
 
   @Test
   void onDelete_cancel(FxRobot robot) throws CrudException {
     var itemToDelete = new ItemOne("test");
-    changedItemList.add(itemToDelete);
+    masterController.getChangedItemList().add(itemToDelete);
 
     // when
     TableView<ItemOne> tableView = robot.lookup("#tableView").queryTableView();
@@ -190,7 +187,7 @@ class AbstractMasterControllerTest {
     clickOnDialogButtonWithText(robot, "Cancel");
 
     // then
-    assertThat(changedItemList)
+    assertThat(masterController.getChangedItemList())
         .contains(itemToDelete);
     verify(itemService, never()).delete(any());
   }
@@ -255,7 +252,7 @@ class AbstractMasterControllerTest {
   private class TestMasterController extends AbstractMasterController<ItemOne> {
 
     public TestMasterController() {
-      super(fxWeaver, itemService, TestEditDialogController.class, changedItemList);
+      super(fxWeaver, itemService, TestEditDialogController.class);
     }
 
     @Override

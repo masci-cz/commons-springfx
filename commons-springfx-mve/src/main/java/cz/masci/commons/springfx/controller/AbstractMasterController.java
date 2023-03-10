@@ -21,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -42,7 +41,6 @@ import net.rgielen.fxweaver.core.FxmlView;
  * @param <T> Item type
  */
 @Slf4j
-@RequiredArgsConstructor
 @FxmlView("fxml/master-view.fxml")
 public abstract class AbstractMasterController<T extends Modifiable> {
 
@@ -71,6 +69,13 @@ public abstract class AbstractMasterController<T extends Modifiable> {
 
   @FXML
   protected VBox items;
+
+  public AbstractMasterController(FxWeaver fxWeaver, CrudService<T> itemService, Class<? extends EditDialogControllerService<T>> editControllerClass) {
+    this.fxWeaver = fxWeaver;
+    this.itemService = itemService;
+    this.editControllerClass = editControllerClass;
+    changedItemList = FXCollections.observableArrayList();
+  }
 
   /**
    * Open edit dialog and save new item defined in edit controller.
@@ -208,6 +213,10 @@ public abstract class AbstractMasterController<T extends Modifiable> {
         .addListener(
             (observable, oldValue, newValue) -> detailView.getController().setItem(newValue)
         );
+  }
+
+  public ObservableList<T> getChangedItemList() {
+    return changedItemList;
   }
 
   /**
