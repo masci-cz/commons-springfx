@@ -35,16 +35,16 @@ used when `&lt;fx:root&gt;` is used in the fxml as custom component.
 ## commons-springfx-data
 
 This package contains support interfaces for fxml controllers.  
-All items has to implement `Modifiable` interface.  
-The main interface with base implementation is `ObservableListMap`. It stores lists of changed items
-based on the mapping key. This list could be read in other services, checking which items where updated.  
-Another interface is `CrudService` defining CRUD methods (list, save, delete).
+All items has to implement `Modifiable` interface.
+The main interface is `CrudService` defining CRUD methods (list, save, delete).
+Second one is `EditDialogControllerService` with method which converts dialog result `ButtonType` do item class.
 
 ## commons-springfx-mve
 
 This package contains two abstract controllers:
-* `AbstractDetailController` - uses `ObservableListMap` to add selected item to the list of changed items and display selected item attributes
-* `AbstractMasterController` - uses `ObservableListMap` to highlight changed items and set selected item in detail controller
+* `AbstractMasterController<T>` - lists data items and highlights changed items and set selected item in the detail controller
+  * Default view contains button for `New`, `Save all`, `Delete` actions
+* `AbstractDetailController<T>` - displays selected item in the master controller and updates list of changed items whenever one of attribute is updated
 
 ### AbstractMasterController usage
 
@@ -57,7 +57,7 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
   private TableColumn<AdventureDTO, String> name;
 
   public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
-    super(fxWeaver, itemService, AdventureDTO.class.getSimpleName(), AdventureDetailDialogController.class);
+    super(fxWeaver, itemService, AdventureDetailDialogController.class);
   }
     
   @Override
@@ -65,10 +65,11 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
     name = new TableColumn<>("Název");
     name.setPrefWidth(250);
     name.setCellValueFactory(new PropertyValueFactory<>("name"));
-    
+    // Adds columns to the list view
     addColumns(name);
-    
+    // Sets editor part with item attributes to view or update
     setDetailController(AdventureDetailEditorController.class);
+    // Sets the row factory class to distinguish updated items in the master view
     setRowFactory("edited-row");
   }
 
@@ -86,13 +87,10 @@ public class AdventureDetailEditorController extends AbstractDetailController<Ad
 
   @FXML
   private AdventureDetailControl editor;
-
-  public AdventureDetailEditorController(ObservableListMap observableListMap) {
-    super(observableListMap);
-  }
-
+  
   @Override
   protected List<ObservableValue<String>> initObservableValues() {
+    // return list of properties where the change enables save ability and mark the item in the master view
     return List.of(
         editor.nameProperty()
     );
@@ -100,6 +98,7 @@ public class AdventureDetailEditorController extends AbstractDetailController<Ad
 
   @Override
   protected void fillInputs(AdventureDTO item) {
+    // fills components with values from selected item 
     if (item == null) {
       editor.setName("");
     } else {
@@ -109,6 +108,7 @@ public class AdventureDetailEditorController extends AbstractDetailController<Ad
 
   @Override
   protected void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+    // sets the appropriate item value from the input component
     if (editor.nameProperty().equals(observable)) {
       getItem().setName(newValue);
     }
