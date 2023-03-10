@@ -4,27 +4,27 @@ import cz.masci.commons.springfx.data.Modifiable;
 import cz.masci.commons.springfx.exception.CrudException;
 import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.commons.springfx.service.EditDialogControllerService;
-import cz.masci.commons.springfx.service.ObservableListMap;
 import cz.masci.commons.springfx.utility.StyleChangingRowFactory;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Abstract controller for master-detail view.<br>
@@ -41,7 +41,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <T> Item type
  */
 @Slf4j
-@RequiredArgsConstructor
 @FxmlView("fxml/master-view.fxml")
 public abstract class AbstractMasterController<T extends Modifiable> {
 
@@ -54,17 +53,13 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    */
   private final CrudService<T> itemService;
   /**
-   * Item key used for items group
-   */
-  private final String itemKey;
-  /**
    * Edit controller class
    */
   private final Class<? extends EditDialogControllerService<T>> editControllerClass;
   /**
-   * Observable list of displayed items
+   * Changed item list
    */
-  private ObservableListMap observableListMap;
+  private final ObservableList<T> changedItemList;
 
   @FXML
   protected BorderPane borderPane;
@@ -75,10 +70,17 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   @FXML
   protected VBox items;
 
+  public AbstractMasterController(FxWeaver fxWeaver, CrudService<T> itemService, Class<? extends EditDialogControllerService<T>> editControllerClass) {
+    this.fxWeaver = fxWeaver;
+    this.itemService = itemService;
+    this.editControllerClass = editControllerClass;
+    changedItemList = FXCollections.observableArrayList();
+  }
+
   /**
    * Open edit dialog and save new item defined in edit controller.
    *
-   * @param event Action event
+   * @param event Action event - is not used
    */
   @FXML
   public void onNewItem(ActionEvent event) {
@@ -89,9 +91,10 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     dialog.setTitle("New Item");
     editor.getView().ifPresent(dialog::setDialogPane);
     dialog.setResultConverter(editor.getController().getResultConverter());
-    dialog.showAndWait()
-            .ifPresent(item -> {
+    var result = dialog.showAndWait();
+    result.ifPresent(item -> {
               try {
+                log.debug("Saving new item: " + item);
                 var savedItem = itemService.save(item);
                 tableView.getItems().add(savedItem);
                 tableView.getSelectionModel().select(savedItem);
@@ -100,11 +103,13 @@ public abstract class AbstractMasterController<T extends Modifiable> {
                 log.error(ex.getMessage());
               }
             });
+    if (result.isEmpty()) {
+      log.debug("Dialog result is empty");
+    }
   }
 
   /**
-   * Get modified item list from observable list map and save them all. At the
-   * end removes them from observable list map.
+   * Save all items from the changed item list. At the end removes them from the list.
    * <p>
    * Open alert dialog.
    * </p>
@@ -115,18 +120,20 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   public void onSaveAll(ActionEvent event) {
     log.debug("Save all action occurred");
 
-    Alert alert = new Alert(AlertType.INFORMATION, "Saving all items");
-    alert.showAndWait().ifPresent(button -> {
-      List<T> modifiedItemList = observableListMap.getAll(itemKey);
-      modifiedItemList
-              .forEach(item -> {
-                try {
-                  itemService.save(item);
-                  observableListMap.remove(item);
-                } catch (CrudException ex) {
-                  log.error(ex.getMessage());
-                }
-              });
+    Alert alert = new Alert(AlertType.CONFIRMATION, "Saving all items");
+    alert.showAndWait()
+        .filter(ButtonType.OK::equals)
+        .ifPresent(button -> {
+          List<T> removedList = new ArrayList<>();
+          changedItemList.forEach(item -> {
+            try {
+              itemService.save(item);
+              removedList.add(item);
+            } catch (CrudException ex) {
+              log.error(ex.getMessage());
+            }
+          });
+          changedItemList.removeAll(removedList);
     });
   }
 
@@ -140,29 +147,18 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     log.debug("Delete action occurred");
 
     Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure to delete selected item?");
-    alert.showAndWait().ifPresent(button -> {
-      try {
-        T item = tableView.getSelectionModel().getSelectedItem();
-        tableView.getItems().remove(item);
-        itemService.delete(item);
-        observableListMap.remove(item);
-      } catch (CrudException ex) {
-        log.error(ex.getMessage());
-      }
+    alert.showAndWait()
+        .filter(ButtonType.OK::equals)
+        .ifPresent(unused -> {
+          try {
+            T item = tableView.getSelectionModel().getSelectedItem();
+            tableView.getItems().remove(item);
+            itemService.delete(item);
+            changedItemList.remove(item);
+          } catch (CrudException ex) {
+            log.error(ex.getMessage());
+          }
     });
-  }
-
-  /**
-   * Set observable list map.
-   * <p>
-   * It is set by Spring injection.
-   * </p>
-   *
-   * @param observableListMap Observable list map to set
-   */
-  @Autowired
-  public final void setObservableListMap(ObservableListMap observableListMap) {
-    this.observableListMap = observableListMap;
   }
 
   /**
@@ -179,6 +175,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     try {
       newList.addAll(itemService.list());
     } catch (CrudException ex) {
+      // TODO: Inform user about an error somehow
       log.error(ex.getMessage());
     }
     tableView.setItems(newList);
@@ -205,13 +202,21 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   public <E extends AbstractDetailController<T>> void setDetailController(Class<E> detailController) {
     FxControllerAndView<E, Node> detailView = fxWeaver.load(detailController);
 
+    detailView.getController().setChangedItemList(this.changedItemList);
+
     borderPane.setCenter(detailView.getView().orElseThrow(
         () -> new RuntimeException("There is no view defined for controller " + detailController))
     );
-    detailView.getController().setItemKey(itemKey);
 
-    tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> detailView.getController().setItem(newValue));
+    tableView.getSelectionModel()
+        .selectedItemProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> detailView.getController().setItem(newValue)
+        );
+  }
 
+  public ObservableList<T> getChangedItemList() {
+    return changedItemList;
   }
 
   /**
@@ -220,7 +225,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * @param styleClass Name of the style class to used in row factory
    */
   protected void setRowFactory(String styleClass) {
-    tableView.setRowFactory(new StyleChangingRowFactory<>(styleClass, itemKey, observableListMap));
+    tableView.setRowFactory(new StyleChangingRowFactory<>(styleClass, changedItemList));
   }
 
   /**

@@ -18,4 +18,4 @@ jobs:
           cache: 'maven'
 
       - name: Verify package
-        run: mvn verify
+        run: xvfb-run mvn verify

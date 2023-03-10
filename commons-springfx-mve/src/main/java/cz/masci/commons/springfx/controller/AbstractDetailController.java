@@ -1,10 +1,10 @@
 package cz.masci.commons.springfx.controller;
 
 import cz.masci.commons.springfx.data.Modifiable;
-import cz.masci.commons.springfx.service.ObservableListMap;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>
  * It is responsible for hooking listeners on every observable value defined by
  * child class. When any change is risen on observable values it adds the item
- * to global observableListMap where it can be later taken from.
+ * to changed item list where it can be later taken from. Specifically by master controller.
  * </p>
  *
  * @author Daniel
@@ -27,7 +27,7 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   /**
    * Global observable list map
    */
-  private final ObservableListMap observableListMap;
+  private ObservableList<T> changedItemList;
 
   /**
    * List of observable values for which the change event should be risen
@@ -44,11 +44,6 @@ public abstract class AbstractDetailController<T extends Modifiable> {
    */
   private T item;
   
-  /**
-   * Key of observable list
-   */
-  private String itemKey;
-
   /**
    * Initiate observable values list
    *
@@ -71,7 +66,16 @@ public abstract class AbstractDetailController<T extends Modifiable> {
    * @param newValue New value
    */
   protected abstract void changed(ObservableValue<? extends String> observable, String oldValue, String newValue);
-  
+
+  /**
+   * Set changed item list. When some observable values change, the values is added to this list.
+   *
+   * @param changedItemList Observable changed item list
+   */
+  public void setChangedItemList(ObservableList<T> changedItemList) {
+    this.changedItemList = changedItemList;
+  }
+
   /**
    * Set item to be controlled
    *
@@ -97,15 +101,6 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   }
 
   /**
-   * Set item to be controlled
-   *
-   * @param itemKey Set item key
-   */
-  public void setItemKey(String itemKey) {
-    this.itemKey = itemKey;
-  }
-  
-  /**
    * Unhook listener from all observable values
    */
   private void unhookListener() {
@@ -126,7 +121,9 @@ public abstract class AbstractDetailController<T extends Modifiable> {
         log.trace("{} value changed from {} to {}", observable, oldValue, newValue);
         
         changed(observable, oldValue, newValue);
-        observableListMap.add(itemKey, item);
+        if (changedItemList != null) {
+          changedItemList.add(item);
+        }
       };
       getObservableValues().forEach(t -> t.addListener(listener));
     }
