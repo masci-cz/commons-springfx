@@ -18,6 +18,7 @@
 
         <!-- dependency versions -->
         <javafx.weaver.version>1.3.0</javafx.weaver.version>
+        <materialfx.version>11.16.1</materialfx.version>
         <javafx.version>17.0.2</javafx.version>
     </properties>
 
@@ -67,6 +68,13 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-fxml</artifactId>
                 <version>${javafx.version}</version>
+            </dependency>
+
+            <!-- Material FX -->
+            <dependency>
+                <groupId>io.github.palexdev</groupId>
+                <artifactId>materialfx</artifactId>
+                <version>${materialfx.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
