@@ -10,7 +10,7 @@
     <left>
         <VBox fx:id="items" alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <MFXTableView fx:id="tableView" VBox.vgrow="ALWAYS"/>
+                <MFXTableView fx:id="tableView" VBox.vgrow="ALWAYS" maxHeight="Infinity" maxWidth="Infinity" prefWidth="300"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0"/>
