@@ -6,7 +6,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTableView?>
 
-<BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane styleClass="master-view" stylesheets="@../css/master-view.css" fx:id="borderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <left>
         <VBox fx:id="items" alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
             <children>

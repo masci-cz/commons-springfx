@@ -1,0 +1,6 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Copyright (c) &amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year&quot;)&amp;#36;today.year&#10;&#10;This file is part of commons-springfx library.&#10;&#10;commons-springfx library is free software: you can redistribute it and/or modify it under the &#10;terms of the GNU General Public License as published by the Free&#10; Software Foundation, either version 3 of the License, or (at your option)&#10;  any later version.&#10;&#10;commons-springfx library is distributed in the hope that it will be useful, but WITHOUT ANY&#10; WARRANTY; without even the implied warranty of MERCHANTABILITY or&#10;  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public&#10;   License for more details.&#10;&#10;You should have received a copy of the GNU General Public License&#10; along with Foobar. If not, see &lt;https://www.gnu.org/licenses/&gt;." />
+    <option name="myName" value="GNU 3" />
+  </copyright>
+</component>
