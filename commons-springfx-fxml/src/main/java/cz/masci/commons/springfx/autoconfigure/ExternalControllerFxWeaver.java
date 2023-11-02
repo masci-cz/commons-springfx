@@ -25,19 +25,19 @@ import org.springframework.stereotype.Component;
 /**
  * <p>
  *   Reasons to extend {@link FxWeaver} class.
- *   <ul>
- *     <li>When using abstract class annotated with {@link FxmlView} the controller is not set.</li>
- *     <li>When using root fxml inside the fxml the root controller is not loaded.</li>
- *   </ul>
  * </p>
+ * <ul>
+ *   <li>When using abstract class annotated with {@link FxmlView} the controller is not set.</li>
+ *   <li>When using root fxml inside the fxml the root controller is not loaded.</li>
+ * </ul>
  * <p>
  *   Overrides method {@link FxWeaver#load(Class, String, ResourceBundle)} adding to FxmlLoader
- *   <ul>
- *     <li>builder factory</li>
- *     <li>set the controller</li>
- *     <li>set the root</li>
- *   </ul>
  * </p>
+ * <ul>
+ *   <li>builder factory</li>
+ *   <li>set the controller</li>
+ *   <li>set the root</li>
+ * </ul>
  * <p>
  *   Builder factory is used for loading controllers defined as inner elements in fxml. If the class is annotated with {@link FxmlView},
  *   it uses this loader to load the controller.
