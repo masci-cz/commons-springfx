@@ -89,8 +89,6 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
 @FxmlController
 public class AdventureController extends AbstractMFXMasterController<AdventureDTO> {
 
-  private TableColumn<AdventureDTO, String> name;
-
   public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
     super(fxWeaver, itemService, AdventureDetailDialogController.class);
   }
