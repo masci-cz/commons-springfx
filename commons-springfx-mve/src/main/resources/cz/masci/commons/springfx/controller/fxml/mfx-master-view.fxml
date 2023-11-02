@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+
+<BorderPane styleClass="masterView" fx:id="borderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox fx:id="items" alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+            <children>
+                <MFXTableView fx:id="tableView" VBox.vgrow="ALWAYS" maxHeight="Infinity" maxWidth="Infinity" prefWidth="300"/>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0"/>
+            </BorderPane.margin>
+        </VBox>
+    </left>
+    <top>
+        <ToolBar BorderPane.alignment="CENTER" maxHeight="Infinity">
+            <items>
+                <MFXButton fx:id="newItem" styleClass="filled" onAction="#onNewItem" text="New"/>
+                <MFXButton fx:id="saveAll" styleClass="filledTonal" onAction="#onSaveAll" text="Save All"/>
+                <Separator orientation="VERTICAL"/>
+                <MFXButton fx:id="delete" styleClass="filledTonal" onAction="#onDelete" text="Delete"/>
+            </items>
+            <BorderPane.margin>
+                <Insets top="5.0" bottom="5.0" left="10.0"/>
+            </BorderPane.margin>
+        </ToolBar>
+    </top>
+</BorderPane>

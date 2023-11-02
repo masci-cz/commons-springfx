@@ -23,10 +23,33 @@ import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Component;
 
 /**
- * Extending FxWeaver class to be able to load fxml files only without controller
- * specification fx:controller. It set FXMLLoader controller before loading fxml
- * file.
- *
+ * <p>
+ *   Reasons to extend {@link FxWeaver} class.
+ *   <ul>
+ *     <li>When using abstract class annotated with {@link FxmlView} the controller is not set.</li>
+ *     <li>When using root fxml inside the fxml the root controller is not loaded.</li>
+ *   </ul>
+ * </p>
+ * <p>
+ *   Overrides method {@link FxWeaver#load(Class, String, ResourceBundle)} adding to FxmlLoader
+ *   <ul>
+ *     <li>builder factory</li>
+ *     <li>set the controller</li>
+ *     <li>set the root</li>
+ *   </ul>
+ * </p>
+ * <p>
+ *   Builder factory is used for loading controllers defined as inner elements in fxml. If the class is annotated with {@link FxmlView},
+ *   it uses this loader to load the controller.
+ * </p>
+ * <p>
+ *   When an abstract class is annotated with {@link FxmlView} but the controller is subclass of it the {@link FxmlController}
+ *   annotation is used to instantiate the controller.
+ *   If the controller class (subclass of the abstract) is not annotated with {@link FxmlController}, the {@link FXMLLoader} use the abstract class as a controller.
+ * </p>
+ * <p>
+ *   When the fxml is defined as <i>fx:root</i> the controller class has to be annotated with {@link FxmlRoot}.
+ * </p>
  * @author Daniel Mašek
  */
 @Component

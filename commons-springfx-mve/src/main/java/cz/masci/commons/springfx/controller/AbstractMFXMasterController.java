@@ -4,10 +4,13 @@ import cz.masci.commons.springfx.data.Modifiable;
 import cz.masci.commons.springfx.exception.CrudException;
 import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.commons.springfx.service.EditDialogControllerService;
-import cz.masci.commons.springfx.utility.StyleChangingRowFactory;
+import cz.masci.commons.springfx.utility.MFXStyleChangingRowFactory;
+import io.github.palexdev.materialfx.controls.MFXTableColumn;
+import io.github.palexdev.materialfx.controls.MFXTableView;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,8 +20,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -46,8 +47,8 @@ import net.rgielen.fxweaver.core.FxmlView;
  * @param <T> Item type
  */
 @Slf4j
-@FxmlView("fxml/master-view.fxml")
-public abstract class AbstractMasterController<T extends Modifiable> {
+@FxmlView("fxml/mfx-master-view.fxml")
+public abstract class AbstractMFXMasterController<T extends Modifiable> {
 
   /**
    * FxWeaver instance
@@ -71,12 +72,12 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   protected BorderPane borderPane;
 
   @FXML
-  protected TableView<T> tableView;
+  protected MFXTableView<T> tableView;
 
   @FXML
   protected VBox items;
 
-  public AbstractMasterController(FxWeaver fxWeaver, CrudService<T> itemService, Class<? extends EditDialogControllerService<T>> editControllerClass) {
+  public AbstractMFXMasterController(FxWeaver fxWeaver, CrudService<T> itemService, Class<? extends EditDialogControllerService<T>> editControllerClass) {
     this.fxWeaver = fxWeaver;
     this.itemService = itemService;
     this.editControllerClass = editControllerClass;
@@ -103,8 +104,8 @@ public abstract class AbstractMasterController<T extends Modifiable> {
                 log.debug("Saving new item: " + item);
                 var savedItem = itemService.save(item);
                 tableView.getItems().add(savedItem);
-                tableView.getSelectionModel().select(savedItem);
-                tableView.scrollTo(savedItem);
+                tableView.getSelectionModel().selectItem(savedItem);
+                tableView.scrollTo(tableView.getItems().indexOf(savedItem));
               } catch (CrudException ex) {
                 log.error(ex.getMessage());
               }
@@ -157,7 +158,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
         .filter(ButtonType.OK::equals)
         .ifPresent(unused -> {
           try {
-            T item = tableView.getSelectionModel().getSelectedItem();
+            T item = tableView.getSelectionModel().getSelectedValue();
             tableView.getItems().remove(item);
             itemService.delete(item);
             changedItemList.remove(item);
@@ -193,10 +194,10 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * @param columns Columns to add
    */
   @SafeVarargs
-  public final void addColumns(TableColumn<T, ?>... columns) {
+  public final void addColumns(MFXTableColumn<T>... columns) {
     log.trace("Add table view columns: {}", (Object[]) columns);
 
-    tableView.getColumns().addAll(columns);
+    tableView.getTableColumns().addAll(columns);
   }
 
   /**
@@ -215,9 +216,9 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     );
 
     tableView.getSelectionModel()
-        .selectedItemProperty()
+        .selectionProperty()
         .addListener(
-            (observable, oldValue, newValue) -> detailView.getController().setItem(newValue)
+            (MapChangeListener<? super Integer, ? super T>) (change) -> detailView.getController().setItem(change.wasAdded() ? change.getValueAdded() : null)
         );
   }
 
@@ -227,7 +228,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * @param styleClass Name of the style class to used in row factory
    */
   protected void setRowFactory(String styleClass) {
-    tableView.setRowFactory(new StyleChangingRowFactory<>(styleClass, changedItemList));
+    tableView.setTableRowFactory(new MFXStyleChangingRowFactory<>(tableView, changedItemList, styleClass));
   }
 
   /**

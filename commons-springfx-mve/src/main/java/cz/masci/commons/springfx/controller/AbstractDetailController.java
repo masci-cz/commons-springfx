@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +42,11 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   
   /**
    * Controlled set item
+   * -- GETTER --
+   *  Returns set item. Could be null
+   *
    */
+  @Getter
   private T item;
   
   /**
@@ -89,15 +94,6 @@ public abstract class AbstractDetailController<T extends Modifiable> {
     }
     this.item = item;
     hookTo(this.item);
-  }
-
-  /**
-   * Returns set item. Could be null
-   *
-   * @return Set item
-   */
-  public T getItem() {
-    return item;
   }
 
   /**

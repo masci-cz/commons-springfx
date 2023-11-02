@@ -41,20 +41,53 @@ Second one is `EditDialogControllerService` with method which converts dialog re
 
 ## commons-springfx-mve
 
-This package contains two abstract controllers:
+This package contains three abstract controllers:
 * `AbstractMasterController<T>` - lists data items and highlights changed items and set selected item in the detail controller
   * Default view contains button for `New`, `Save all`, `Delete` actions
+* `AbstractMFXMasterController<T>` - lists data items and highlights changed items and set selected item in the detail controller
+    * Default view contains button for `New`, `Save all`, `Delete` actions
+    * This controller is designed with Material Design library
+    * The buttons are preset with these style classes
+      * New - `filled`
+      * Save all - `filledTonal`
+      * Delete - `filledTonal`
+    * Whole view is styled with class `masterView`
 * `AbstractDetailController<T>` - displays selected item in the master controller and updates list of changed items whenever one of attribute is updated
 
 ### AbstractMasterController usage
 
 ```java
+import javax.swing.table.TableColumn;
+
 @Component
 @Slf4j
 @FxmlController
 public class AdventureController extends AbstractMasterController<AdventureDTO> {
 
-  private TableColumn<AdventureDTO, String> name;
+  public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
+    super(fxWeaver, itemService, AdventureDetailDialogController.class);
+  }
+
+  @Override
+  protected void init() {
+    TableColumn<AdventureDTO, String> name = new TableColumn<>("Název");
+    name.setPrefWidth(250);
+    name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    // Adds columns to the list view
+    addColumns(name);
+    // Sets editor part with item attributes to view or update
+    setDetailController(AdventureDetailEditorController.class);
+    // Sets the row factory class to distinguish updated items in the master view
+    setRowFactory("edited-row");
+  }
+}
+```
+
+```java
+@Component
+@Slf4j
+@FxmlController
+public class AdventureController extends AbstractMFXMasterController<AdventureDTO> {
 
   public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
     super(fxWeaver, itemService, AdventureDetailDialogController.class);
@@ -62,9 +95,10 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
     
   @Override
   protected void init() {
-    name = new TableColumn<>("Název");
+    MFXTableColumn<AdventureDTO> name = new MFXTableColumn<>("Název");
     name.setPrefWidth(250);
-    name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    name.setRowCellFactory(new MFXTableRowCellFactory<>(AdventureDTO::getName));
+
     // Adds columns to the list view
     addColumns(name);
     // Sets editor part with item attributes to view or update
@@ -75,7 +109,6 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
 
 }
 ```
-
 ### AbstractDetailController usage
 
 ```java
