@@ -10,6 +10,7 @@ import io.github.palexdev.materialfx.controls.MFXTableView;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -186,6 +187,14 @@ public abstract class AbstractMFXMasterController<T extends Modifiable> {
       log.error(ex.getMessage());
     }
     tableView.setItems(newList);
+    changedItemList.addListener((ListChangeListener<? super T>) change -> {
+      log.debug("Change in changed item list");
+      while (change.next()) {
+        if (change.wasAdded()) {
+            tableView.update();
+        }
+      }
+    });
   }
 
   /**
