@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="commons-springfx-data" />
         <module name="commons-springfx-mve" />
+        <module name="commons-springfx-mvci" />
         <module name="commons-springfx-fxml" />
       </profile>
     </annotationProcessing>
