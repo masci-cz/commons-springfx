@@ -150,3 +150,8 @@ public class AdventureDetailEditorController extends AbstractDetailController<Ad
 }
 
 ```
+
+## commons-springfx-mvci
+TODO add information about the new module
+This module contains classes related to MVCI design pattern I found more flexible and productive than FXML.  
+More info about this pattern could be found on [pragmaticcoding](https://www.pragmaticcoding.ca/javafx/mvci/)
