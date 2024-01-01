@@ -19,30 +19,29 @@
 
 package cz.masci.springfx.mvci.model;
 
-import javafx.beans.property.ListProperty;
+import cz.masci.springfx.mvci.model.dirty.DirtyListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.nield.dirtyfx.tracking.DirtyProperty;
 
 /**
  * This class represents base list model with observable list to observe changes.
  */
-public class ListModel<T> {
-  protected final ListProperty<T> items = new SimpleListProperty<>(FXCollections.observableArrayList());
+public class ListModel<E extends DirtyProperty> {
+  protected final DirtyListProperty<E> items = new DirtyListProperty<>();
 
-  protected final ObjectProperty<T> selectedItem = new SimpleObjectProperty<>();
+  protected final ObjectProperty<E> selectedItem = new SimpleObjectProperty<>();
 
-  public ObservableList<T> getItems() {
+  public ObservableList<E> getItems() {
     return items.get();
   }
 
-  public T getSelectedItem() {
+  public E getSelectedItem() {
     return selectedItem.getValue();
   }
 
-  public ObjectProperty<T> selectedItemProperty() {
+  public ObjectProperty<E> selectedItemProperty() {
     return selectedItem;
   }
 }

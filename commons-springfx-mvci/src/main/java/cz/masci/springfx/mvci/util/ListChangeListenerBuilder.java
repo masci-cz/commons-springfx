@@ -25,38 +25,38 @@ import javafx.collections.ListChangeListener;
 /**
  * Builder for ListChangeListener. See {@link ListenerUtils}
  *
- * @param <T> Type of list item
+ * @param <E> Tne type of <code>List</code> elements
  */
-public class ListChangeListenerBuilder<T> {
-  private Consumer<T> onAdd;
-  private Consumer<T> onRemove;
-  private Consumer<T> onUpdated;
-  private Consumer<T> onPermutated;
+public class ListChangeListenerBuilder<E> {
+  private Consumer<E> onAdd;
+  private Consumer<E> onRemove;
+  private Consumer<E> onUpdated;
+  private Consumer<E> onPermutated;
 
   public ListChangeListenerBuilder() {
   }
 
-  public ListChangeListenerBuilder<T> onAdd(Consumer<T> onAdd) {
+  public ListChangeListenerBuilder<E> onAdd(Consumer<E> onAdd) {
     this.onAdd = onAdd;
     return this;
   }
 
-  public ListChangeListenerBuilder<T> onRemove(Consumer<T> onRemove) {
+  public ListChangeListenerBuilder<E> onRemove(Consumer<E> onRemove) {
     this.onRemove = onRemove;
     return this;
   }
 
-  public ListChangeListenerBuilder<T> onUpdated(Consumer<T> onUpdated) {
+  public ListChangeListenerBuilder<E> onUpdated(Consumer<E> onUpdated) {
     this.onUpdated = onUpdated;
     return this;
   }
 
-  public ListChangeListenerBuilder<T> onPermutated(Consumer<T> onPermutated) {
+  public ListChangeListenerBuilder<E> onPermutated(Consumer<E> onPermutated) {
     this.onPermutated = onPermutated;
     return this;
   }
 
-  public ListChangeListener<T> build() {
+  public ListChangeListener<E> build() {
     return ListenerUtils.createListChangeListener(onAdd, onRemove, onUpdated, onPermutated);
   }
 }
