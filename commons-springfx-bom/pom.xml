@@ -18,8 +18,12 @@
 
         <!-- dependency versions -->
         <javafx.weaver.version>1.3.0</javafx.weaver.version>
-        <materialfx.version>11.16.1</materialfx.version>
         <javafx.version>17.0.2</javafx.version>
+        <materialfx.version>11.17.0</materialfx.version>
+
+        <!-- utility versions -->
+        <dirtyfx.version>0.1.2</dirtyfx.version>
+        <apache.lang.version>3.12.0</apache.lang.version>
     </properties>
 
     <dependencyManagement>
@@ -38,6 +42,11 @@
             <dependency>
                 <groupId>cz.masci.commons</groupId>
                 <artifactId>commons-springfx-mve</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.commons</groupId>
+                <artifactId>commons-springfx-mvci</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
 
@@ -75,6 +84,18 @@
                 <groupId>io.github.palexdev</groupId>
                 <artifactId>materialfx</artifactId>
                 <version>${materialfx.version}</version>
+            </dependency>
+
+            <!-- utils -->
+            <dependency>
+                <groupId>org.nield</groupId>
+                <artifactId>dirtyfx</artifactId>
+                <version>${dirtyfx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.lang.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
