@@ -36,19 +36,22 @@ import org.apache.commons.lang3.StringUtils;
  *   Provide button supplier with button class to be created.
  * </pre>
  *
- * <pre>
  *   Last set command will win. Either consumable or runnable command. If no command is set, no action is set.
  *   <dl>
- *     <dt>appThreadCommand</dt><dd>- the command is executed with accepting button related process running in JavaFX main thread. It is used for long processes running in app thread.</dd>
- *     <dt>fxThreadCommand</dt><dd>- the command is executed before button related process. It is used for quick processes not running in app thread but in JavaFX main thread.</dd>
+ *     <dt>appThreadCommand
+ *     <dd>- the command is executed with accepting button related process running in JavaFX main thread. It is used for long processes running in app thread.
+ *     <dt>fxThreadCommand
+ *     <dd>- the command is executed before button related process. It is used for quick processes not running in app thread but in JavaFX main thread.
  *   </dl>
  *   Remaining attributes are
  *   <dl>
- *     <dt>disableExpression</dt><dd>- expression connected to button disable property. It is combined with internal disable property</dd>
- *     <dt>text</dt><dd>- button text.</dd>
- *     <dt>styleClass</dt><dd>- button style class.</dd>
+ *     <dt>disableExpression
+ *     <dd>- expression connected to button disable property. It is combined with internal disable property
+ *     <dt>text
+ *     <dd>- button text.
+ *     <dt>styleClass
+ *     <dd>- button style class.
  *   </dl>
- * </pre>
  */
 public class ButtonBuilder {
   private Consumer<Runnable> appThreadCommand;
