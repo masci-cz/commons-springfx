@@ -45,31 +45,28 @@ public interface DirtyStyleable<T extends DirtyProperty> extends Styleable {
   }
 
   default ChangeListener<? super Boolean> getDirtyPropertyChangeListener() {
-    return  (dirtyObservable, dirtyOldValue, dirtyNewValue) -> updateDirtyClassStyle(dirtyNewValue);
+    return  (dirtyObservable, dirtyOldValue, dirtyNewValue) -> updateDirtyClassStyle();
   }
 
   default void initDirtyPropertyChangeListener() {
-    updateDirtyClassStyle(getItemOptional().map(DirtyProperty::isDirty).orElse(false));
+    updateDirtyClassStyle();
 
     // create dirty property change listener to be able to add/remove it in dirtyProperty
     ChangeListener<? super Boolean> dirtyPropertyChangeListener = getDirtyPropertyChangeListener();
 
     itemProperty().addListener((observable, oldValue, newValue) -> {
       if (oldValue != null) {
-        updateDirtyClassStyle(null);
         oldValue.isDirtyProperty().removeListener(dirtyPropertyChangeListener);
       }
-      if (newValue == null) {
-        updateDirtyClassStyle(null);
-      } else {
-        updateDirtyClassStyle(newValue.isDirty());
+      if (newValue != null) {
         newValue.isDirtyProperty().addListener(dirtyPropertyChangeListener);
       }
+      updateDirtyClassStyle();
     });
   }
 
-  default void updateDirtyClassStyle(Boolean isDirty) {
-    if (Boolean.TRUE.equals(isDirty)) {
+  default void updateDirtyClassStyle() {
+    if (Boolean.TRUE.equals(getItemOptional().map(DirtyProperty::isDirty).orElse(false))) {
       getStyleClass().add(getDirtyStyleClass());
     } else {
       getStyleClass().remove(getDirtyStyleClass());

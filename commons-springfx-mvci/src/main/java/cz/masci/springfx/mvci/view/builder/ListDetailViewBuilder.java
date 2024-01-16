@@ -24,17 +24,21 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import lombok.RequiredArgsConstructor;
 
 /**
  * A border pane with provided region is created. Region could be null.
  */
-@RequiredArgsConstructor
 public class ListDetailViewBuilder implements Builder<Region> {
 
-  private final Region left;
-  private final Region center;
-  private final Region top;
+  private Region left;
+  private Region right;
+  private Region center;
+  private Region top;
+  private Region bottom;
+
+  public static ListDetailViewBuilder builder() {
+    return new ListDetailViewBuilder();
+  }
 
   @Override
   public Region build() {
@@ -42,9 +46,36 @@ public class ListDetailViewBuilder implements Builder<Region> {
     result.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
 
     Optional.ofNullable(left).ifPresent(result::setLeft);
+    Optional.ofNullable(right).ifPresent(result::setRight);
     Optional.ofNullable(center).ifPresent(result::setCenter);
     Optional.ofNullable(top).ifPresent(result::setTop);
+    Optional.ofNullable(bottom).ifPresent(result::setBottom);
 
     return result;
+  }
+
+  public ListDetailViewBuilder withLeft(Region view) {
+    left = view;
+    return this;
+  }
+
+  public ListDetailViewBuilder withRight(Region view) {
+    right = view;
+    return this;
+  }
+
+  public ListDetailViewBuilder withCenter(Region view) {
+    center = view;
+    return this;
+  }
+
+  public ListDetailViewBuilder withTop(Region view) {
+    top = view;
+    return this;
+  }
+
+  public ListDetailViewBuilder withBottom(Region view) {
+    bottom = view;
+    return this;
   }
 }
