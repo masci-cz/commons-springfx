@@ -21,6 +21,7 @@ package cz.masci.springfx.mvci.view.builder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,11 +31,41 @@ import org.testfx.framework.junit5.ApplicationExtension;
 class ListDetailViewBuilderTest {
 
   @Test
-  void build() {
+  void build_center() {
     Pane center = new Pane();
 
-    var result = new ListDetailViewBuilder(null, center, null).build();
+    var result = ListDetailViewBuilder.builder().withCenter(center).build();
 
-    assertTrue(result.getChildrenUnmodifiable().contains(center));
+    assertInstanceOf(BorderPane.class, result);
+    BorderPane borderPane = (BorderPane) result;
+    assertAll("Border Pane",
+        () -> assertNull(borderPane.getLeft()),
+        () -> assertNull(borderPane.getRight()),
+        () -> assertEquals(center, borderPane.getCenter()),
+        () -> assertNull(borderPane.getTop()),
+        () -> assertNull(borderPane.getBottom())
+    );
+  }
+
+  @Test
+  void build_all() {
+    var result = ListDetailViewBuilder.builder()
+        .withLeft(new Pane())
+        .withRight(new Pane())
+        .withCenter(new Pane())
+        .withTop(new Pane())
+        .withBottom(new Pane())
+        .build();
+
+    assertInstanceOf(BorderPane.class, result);
+    BorderPane borderPane = (BorderPane) result;
+    assertAll("Border Pane",
+        () -> assertNotNull(borderPane.getLeft()),
+        () -> assertNotNull(borderPane.getRight()),
+        () -> assertNotNull(borderPane.getCenter()),
+        () -> assertNotNull(borderPane.getTop()),
+        () -> assertNotNull(borderPane.getBottom())
+    );
+
   }
 }
