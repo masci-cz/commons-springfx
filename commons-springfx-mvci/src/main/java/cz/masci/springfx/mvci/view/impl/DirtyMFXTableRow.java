@@ -22,8 +22,8 @@ package cz.masci.springfx.mvci.view.impl;
 import cz.masci.springfx.mvci.view.DirtyStyleable;
 import io.github.palexdev.materialfx.controls.MFXTableRow;
 import io.github.palexdev.materialfx.controls.MFXTableView;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import org.nield.dirtyfx.tracking.DirtyProperty;
+import org.reactfx.value.Val;
 
 /**
  * MFX table row with dirty style implementation.
@@ -32,27 +32,10 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  */
 public class DirtyMFXTableRow<T extends DirtyProperty> extends MFXTableRow<T> implements DirtyStyleable<T> {
 
-  String dirtyRowStyleClass;
-
   public DirtyMFXTableRow(MFXTableView<T> tableView, T data, String dirtyRowStyleClass) {
     super(tableView, data);
-    this.dirtyRowStyleClass = dirtyRowStyleClass;
-    initDirtyPropertyChangeListener();
+    var itemProperty = Val.wrap(dataProperty());
+    initDirtyPropertyChangeListener(itemProperty, dirtyRowStyleClass);
   }
 
-  @Override
-  public String getDirtyStyleClass() {
-    return dirtyRowStyleClass;
-  }
-
-  @Override
-  public ReadOnlyObjectProperty<T> itemProperty() {
-    return dataProperty();
-  }
-
-  @Override
-  public void initDirtyPropertyChangeListener() {
-    DirtyStyleable.super.initDirtyPropertyChangeListener();
-    getItemOptional().ifPresent(item -> item.isDirtyProperty().addListener(getDirtyPropertyChangeListener()));
-  }
 }

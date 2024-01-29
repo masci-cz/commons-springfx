@@ -32,14 +32,14 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
 public class DirtyBooleanProperty extends BooleanProperty implements DirtyProperty {
 
   private final BooleanProperty originalValue;
-  private final BooleanProperty isDirty;
+  private final BooleanProperty isDirty = new SimpleBooleanProperty(false);
   private final BooleanProperty delegate;
+  private final ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> isDirty.set(!Objects.equals(getOriginalValue(), newValue));
 
   public DirtyBooleanProperty(@NotNull Boolean initialValue) {
     originalValue = new SimpleBooleanProperty(initialValue);
     delegate = new SimpleBooleanProperty(initialValue);
-    isDirty = new SimpleBooleanProperty(false);
-    addListener(new WeakChangeListener<>((observable, oldValue, newValue) -> isDirty.set(!Objects.equals(getOriginalValue(), newValue))));
+    addListener(new WeakChangeListener<>(listener));
   }
 
   public Boolean getOriginalValue() {
