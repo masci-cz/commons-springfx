@@ -22,6 +22,7 @@ package cz.masci.springfx.mvci.view.impl;
 import cz.masci.springfx.mvci.view.DirtyStyleable;
 import javafx.scene.control.TableRow;
 import org.nield.dirtyfx.tracking.DirtyProperty;
+import org.reactfx.value.Val;
 
 /**
  * JFX table row dirty style implementation.
@@ -30,17 +31,10 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  */
 public class DirtyJFXTableRow<T extends DirtyProperty> extends TableRow<T> implements DirtyStyleable<T> {
 
-  String dirtyRowStyleClass;
-
   public DirtyJFXTableRow(String dirtyRowStyleClass) {
     super();
-    this.dirtyRowStyleClass = dirtyRowStyleClass;
-    initDirtyPropertyChangeListener();
-  }
-
-  @Override
-  public String getDirtyStyleClass() {
-    return dirtyRowStyleClass;
+    var itemProperty = Val.wrap(itemProperty());
+    initDirtyPropertyChangeListener(itemProperty, dirtyRowStyleClass);
   }
 
 }

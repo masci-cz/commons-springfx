@@ -19,11 +19,9 @@
 
 package cz.masci.springfx.mvci.view;
 
-import java.util.Optional;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.css.Styleable;
 import org.nield.dirtyfx.tracking.DirtyProperty;
+import org.reactfx.value.Val;
 
 /**
  * <pre>
@@ -36,40 +34,28 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  * @param <T> Property implementing {@link DirtyProperty} interface
  */
 public interface DirtyStyleable<T extends DirtyProperty> extends Styleable {
-  String getDirtyStyleClass();
 
-  ReadOnlyObjectProperty<T> itemProperty();
-
-  default Optional<T> getItemOptional() {
-    return Optional.ofNullable(itemProperty()).map(ReadOnlyObjectProperty::get);
-  }
-
-  default ChangeListener<? super Boolean> getDirtyPropertyChangeListener() {
-    return  (dirtyObservable, dirtyOldValue, dirtyNewValue) -> updateDirtyClassStyle();
-  }
-
-  default void initDirtyPropertyChangeListener() {
-    updateDirtyClassStyle();
-
-    // create dirty property change listener to be able to add/remove it in dirtyProperty
-    ChangeListener<? super Boolean> dirtyPropertyChangeListener = getDirtyPropertyChangeListener();
-
-    itemProperty().addListener((observable, oldValue, newValue) -> {
-      if (oldValue != null) {
-        oldValue.isDirtyProperty().removeListener(dirtyPropertyChangeListener);
-      }
-      if (newValue != null) {
-        newValue.isDirtyProperty().addListener(dirtyPropertyChangeListener);
-      }
-      updateDirtyClassStyle();
+  default void initDirtyPropertyChangeListener(Val<T> itemProperty, String dirtyClassStyle) {
+    System.out.format("Initializing dirty property change listener for property: %s\n", itemProperty);
+    Val<Boolean> dirtyProperty = itemProperty.flatMap(DirtyProperty::isDirtyProperty);
+    System.out.format("Got dirty property from item property: %s\n", dirtyProperty);
+//    itemProperty.addListener((unused, oldValue, newValue) -> {
+//      System.out.format("Item property has changed of observable: %s\n", unused);
+//      updateDirtyClassStyle(newValue != null && newValue.isDirty(), dirtyClassStyle);
+//    });
+    dirtyProperty.addListener((unused, oldValue, newValue) -> {
+      System.out.format("Dirty property has changed of observable: %s\n", unused);
+      updateDirtyClassStyle(newValue, dirtyClassStyle);
     });
+
+    updateDirtyClassStyle(dirtyProperty.getOrElse(false), dirtyClassStyle);
   }
 
-  default void updateDirtyClassStyle() {
-    if (Boolean.TRUE.equals(getItemOptional().map(DirtyProperty::isDirty).orElse(false))) {
-      getStyleClass().add(getDirtyStyleClass());
+  default void updateDirtyClassStyle(Boolean dirtyProperty, String dirtyClassStyle) {
+    if (Boolean.TRUE.equals(dirtyProperty)) {
+      getStyleClass().add(dirtyClassStyle);
     } else {
-      getStyleClass().remove(getDirtyStyleClass());
+      getStyleClass().remove(dirtyClassStyle);
     }
   }
 }
