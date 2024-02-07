@@ -21,6 +21,7 @@ package cz.masci.springfx.mvci.util;
 
 import io.github.palexdev.materialfx.validation.Constraint;
 import io.github.palexdev.materialfx.validation.Validated;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import javafx.beans.value.ChangeListener;
@@ -51,13 +52,13 @@ public class BuilderUtils {
    *
    * @param validatedNode Node with validator to be validated
    * @param revalidateFlagListener Boolean property listener. Whenever value changes from <code>false</code> to <code>true</code> the node is revalidated.
-   * @param constraint Constraint to check
+   * @param inputConstraints Constraints to check
    * @param <T> Type of Node to validate extends {@link Node} and implements {@link Validated}
 
    * @return Region with the Node and supported text
    */
-  public <T extends Node & Validated> Region enhanceValidatedNodeWithSupportingText(T validatedNode, Consumer<ChangeListener<? super Boolean>> revalidateFlagListener, Constraint constraint) {
-    return enhanceValidatedNodeWithSupportingText(validatedNode, createValidationSupportingText(), revalidateFlagListener, constraint);
+  public <T extends Node & Validated> Region enhanceValidatedNodeWithSupportingText(T validatedNode, Consumer<ChangeListener<? super Boolean>> revalidateFlagListener, Constraint... inputConstraints) {
+    return enhanceValidatedNodeWithSupportingText(validatedNode, createValidationSupportingText(), revalidateFlagListener, inputConstraints);
   }
 
   /**
@@ -70,13 +71,13 @@ public class BuilderUtils {
    *
    * @param validatedNode Node with validator to be validated
    * @param revalidateFlagListener Boolean property listener. Whenever value changes from <code>false</code> to <code>true</code> the node is revalidated.
-   * @param constraint Constraint to check
+   * @param inputConstraints Constraints to check
    * @param <T> Type of Node to validate extends {@link Node} and implements {@link Validated}
 
    * @return Region with the Node and supported text
    */
-  public <T extends Node & Validated> Region enhanceValidatedNodeWithSupportingText(T validatedNode, Label supportingText, Consumer<ChangeListener<? super Boolean>> revalidateFlagListener, Constraint constraint) {
-    validatedNode.getValidator().constraint(constraint);
+  public <T extends Node & Validated> Region enhanceValidatedNodeWithSupportingText(T validatedNode, Label supportingText, Consumer<ChangeListener<? super Boolean>> revalidateFlagListener, Constraint... inputConstraints) {
+    Arrays.stream(inputConstraints).forEach(validatedNode.getValidator()::constraint);
     validatedNode.getValidator().validProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue) {
         supportingText.setVisible(false);
