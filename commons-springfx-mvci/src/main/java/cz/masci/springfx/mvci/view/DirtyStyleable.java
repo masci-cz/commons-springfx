@@ -36,17 +36,9 @@ import org.reactfx.value.Val;
 public interface DirtyStyleable<T extends DirtyProperty> extends Styleable {
 
   default void initDirtyPropertyChangeListener(Val<T> itemProperty, String dirtyClassStyle) {
-    System.out.format("Initializing dirty property change listener for property: %s\n", itemProperty);
     Val<Boolean> dirtyProperty = itemProperty.flatMap(DirtyProperty::isDirtyProperty);
-    System.out.format("Got dirty property from item property: %s\n", dirtyProperty);
-//    itemProperty.addListener((unused, oldValue, newValue) -> {
-//      System.out.format("Item property has changed of observable: %s\n", unused);
-//      updateDirtyClassStyle(newValue != null && newValue.isDirty(), dirtyClassStyle);
-//    });
-    dirtyProperty.addListener((unused, oldValue, newValue) -> {
-      System.out.format("Dirty property has changed of observable: %s\n", unused);
-      updateDirtyClassStyle(newValue, dirtyClassStyle);
-    });
+
+    dirtyProperty.addListener((unused, oldValue, newValue) -> updateDirtyClassStyle(newValue, dirtyClassStyle));
 
     updateDirtyClassStyle(dirtyProperty.getOrElse(false), dirtyClassStyle);
   }

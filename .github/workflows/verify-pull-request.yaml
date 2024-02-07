@@ -1,0 +1,30 @@
+name: Check the preparation status for publishing package to the Maven Central Repository
+on:
+  pull_request:
+    branches:
+      - master
+
+env:
+  MAVEN_OPTS: --add-opens=java.base/java.util=ALL-UNNAMED
+
+jobs:
+  verify:
+    name: Validate package for PR to master
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java for maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+          gpg-private-key: ${{ secrets.GPG_SECRET_KEY }} # Value of the GPG private key to import - without any modification
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE  # env variable for GPG private key passphrase
+
+      - name: Verify package
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SECRET_KEY_PASSWORD }}
+        run: xvfb-run mvn verify -Prelease --no-transfer-progress
