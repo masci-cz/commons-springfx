@@ -26,7 +26,7 @@ package cz.masci.springfx.mvci.model.list;
  * </pre>
  *
  * <pre>
- *   class UpdatableImpl implements Updatable<Model> {
+ *   {@code class UpdatableImpl implements Updatable<Model> } {
  *     private Runnable onUpdateElementsProperty;
  *
  *     public void updateElementsProperty() {
