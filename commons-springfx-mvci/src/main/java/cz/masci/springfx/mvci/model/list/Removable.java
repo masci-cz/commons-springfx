@@ -28,8 +28,8 @@ import java.util.function.Consumer;
  * </pre>
  *
  * <pre>
- *   class RemovableImpl implements Removable<Model> {
- *     private Consumer<Model> onRemoveElement;
+ *   {@code class RemovableImpl implements Removable<Model>} {
+ *     {@code private Consumer<Model> onRemoveElement; }
  *
  *     public void removeElement(Model element) {
  *       if (onRemoveElement != null) {
@@ -37,7 +37,7 @@ import java.util.function.Consumer;
  *       }
  *     }
  *
- *     public void setOnRemoveElement(Consumer<Model> command) {
+ *     {@code public void setOnRemoveElement(Consumer<Model> command) } {
  *       onRemoveElement = command;
  *     }
  *   }

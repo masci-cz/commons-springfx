@@ -32,20 +32,20 @@ import org.reactfx.value.Var;
  * </pre>
  *
  * <pre>
- *   class SelectableImpl implements Selectable<Model> {
- *     protected final ListProperty<Model> elements = FXCollections.arrayList();
- *     protected final Var<Model> selectedElement = Var.newSimpleVar(null);
- *     protected Consumer<Model> onSelectElement;
+ *   {@code class SelectableImpl implements Selectable<Model> }{
+ *     {@code protected final ListProperty<Model> elements = FXCollections.arrayList(); }
+ *     {@code protected final Var<Model> selectedElement = Var.newSimpleVar(null); }
+ *     {@code protected Consumer<Model> onSelectElement; }
  *
- *     public ObservableList<Model> getElements() {
+ *     {@code public ObservableList<Model> getElements() } {
  *       return elements.get();
  *     }
  *
- *     public Var<Model> selectedElementProperty() {
+ *     {@code public Var<Model> selectedElementProperty() } {
  *       return selectedElement;
  *     }
  *
- *     public void setOnSelectElement(Consumer<Model> command) {
+ *     {@code public void setOnSelectElement(Consumer<Model> command) } {
  *       onSelectElement = command;
  *     }
  *
