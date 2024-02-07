@@ -25,7 +25,7 @@ package cz.masci.springfx.mvci.model.list;
  *   First set {@code setOnUpdateElementsProperty} which will be used when calling {@code updateElementsProperty}.
  * </pre>
  *
- * {@code
+ * <pre>
  *   class UpdatableImpl implements Updatable<Model> {
  *     private Runnable onUpdateElementsProperty;
  *
@@ -39,7 +39,7 @@ package cz.masci.springfx.mvci.model.list;
  *       onFocusView = command;
  *     }
  *   }
- * }
+ * </pre>
  */
 public interface Updatable {
   void updateElementsProperty();

@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  *   Setting the {@code setOnRemoveElement} is not necessary even is used when calling {@code removeElement}.
  * </pre>
  *
- * {@code
+ * <pre>
  *   class RemovableImpl implements Removable<Model> {
  *     private Consumer<Model> onRemoveElement;
  *
@@ -41,7 +41,7 @@ import java.util.function.Consumer;
  *       onRemoveElement = command;
  *     }
  *   }
- * }
+ * </pre>
  */
 public interface Removable<E> {
   void removeElement(E element);

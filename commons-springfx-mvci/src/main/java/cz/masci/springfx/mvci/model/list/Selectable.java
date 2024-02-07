@@ -31,7 +31,7 @@ import org.reactfx.value.Var;
  *   {@code selectedItemProperty} should be bound to selected element in list view from list-detail view pattern.
  * </pre>
  *
- * {@code
+ * <pre>
  *   class SelectableImpl implements Selectable<Model> {
  *     protected final ListProperty<Model> elements = FXCollections.arrayList();
  *     protected final Var<Model> selectedElement = Var.newSimpleVar(null);
@@ -54,8 +54,7 @@ import org.reactfx.value.Var;
  *         onSelectElement.accept(element);
  *       }
  *     }
- *
- * }
+ * </pre>
  */
 public interface Selectable<E> {
   ObservableList<E> getElements();

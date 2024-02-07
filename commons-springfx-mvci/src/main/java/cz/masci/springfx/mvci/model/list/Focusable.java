@@ -25,7 +25,7 @@ package cz.masci.springfx.mvci.model.list;
  *   First set {@code setOnFocusView} which will be used when calling {@code focusView}.
  * </pre>
  *
- * {@code
+ * <pre>
  *   class FocusableImpl implements Focusable {
  *     private Runnable onFocusView;
  *
@@ -39,7 +39,7 @@ package cz.masci.springfx.mvci.model.list;
  *       onFocusView = command;
  *     }
  *   }
- * }
+ * </pre>
  */
 public interface Focusable {
   /** Runs predefined runnable. */
