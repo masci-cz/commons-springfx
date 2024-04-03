@@ -29,6 +29,10 @@ import javafx.beans.value.WeakChangeListener;
 import org.jetbrains.annotations.NotNull;
 import org.nield.dirtyfx.tracking.DirtyProperty;
 
+/**
+ * A boolean property that tracks and manages its "dirty" state.
+ * It extends the BooleanProperty class and implements the DirtyProperty interface.
+ */
 public class DirtyBooleanProperty extends BooleanProperty implements DirtyProperty {
 
   private final BooleanProperty originalValue;

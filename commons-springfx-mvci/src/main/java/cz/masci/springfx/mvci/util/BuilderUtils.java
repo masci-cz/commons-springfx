@@ -43,12 +43,12 @@ public class BuilderUtils {
   public static final String ERROR_STYLE_CLASS = "error";
 
   /**
-   * <pre>
+   * <p>
    *   Creates region with node and supporting text which appears when the node is invalid.
    *   When the node is invalid the supporting text appears with the text from the {@link Constraint}.
    *   The supporting text disappears when the node is valid again.
    *   The constrain is validated based on the change coming from revalidateFlagListener.
-   * </pre>
+   * </p>
    *
    * @param validatedNode Node with validator to be validated
    * @param revalidateFlagListener Boolean property listener. Whenever value changes from <code>false</code> to <code>true</code> the node is revalidated.
@@ -62,12 +62,12 @@ public class BuilderUtils {
   }
 
   /**
-   * <pre>
-   *   Creates region with node and supporting text which appears when the node is invalid.
+   * <p>
+   *   Creates a region with node and supporting text which appears when the node is invalid.
    *   When the node is invalid the supporting text appears with the text from the {@link Constraint}.
    *   The supporting text disappears when the node is valid again.
-   *   The constrain is validated based on the change coming from revalidateFlagListener.
-   * </pre>
+   *   The constraint is validated based on the change coming from revalidateFlagListener.
+   * </p>
    *
    * @param validatedNode Node with validator to be validated
    * @param revalidateFlagListener Boolean property listener. Whenever value changes from <code>false</code> to <code>true</code> the node is revalidated.
@@ -103,11 +103,11 @@ public class BuilderUtils {
   }
 
   /**
-   * <pre>
+   * <p>
    *   Creates validation supporting text label with set style class <b>error</b>.
    *   Set the label as not managed to not layout the node.
    *   Visibility and managing is updated when validating supporting input.
-   * </pre>
+   * </p>
    *
    * @return Created label
    */

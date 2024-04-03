@@ -26,6 +26,13 @@ import org.jetbrains.annotations.NotNull;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 import org.nield.dirtyfx.tracking.DirtyProperty;
 
+/**
+ * The DirtyModel interface extends the {@link DirtyProperty} interface and provides additional methods related to managing dirty state of a model.
+ * Simplifies implementation of the DirtyProperty for composite object.
+ * <p>
+ *   Only {@link DirtyModel#getComposite()} has to be defined and all {@link DirtyProperty} methods could be used targeting the composite property.
+ * </p>
+ */
 public interface DirtyModel extends DirtyProperty {
 
   CompositeDirtyProperty getComposite();

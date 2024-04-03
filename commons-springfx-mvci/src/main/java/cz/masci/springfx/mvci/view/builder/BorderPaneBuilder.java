@@ -26,24 +26,26 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
 /**
- * A border pane with provided region is created. Region could be null.
+ * A border pane builder with provided regions is created. Regions could be null.
+ * If the padding is null the implicit paddings are used (5.0)
  */
-public class ListDetailViewBuilder implements Builder<Region> {
+public class BorderPaneBuilder implements Builder<BorderPane> {
 
   private Region left;
   private Region right;
   private Region center;
   private Region top;
   private Region bottom;
+  private Insets padding;
 
-  public static ListDetailViewBuilder builder() {
-    return new ListDetailViewBuilder();
+  public static BorderPaneBuilder builder() {
+    return new BorderPaneBuilder();
   }
 
   @Override
-  public Region build() {
+  public BorderPane build() {
     BorderPane result = new BorderPane();
-    result.setPadding(new Insets(5.0, 5.0, 5.0, 5.0));
+    result.setPadding(padding == null ? new Insets(5.0, 5.0, 5.0, 5.0) : padding);
 
     Optional.ofNullable(left).ifPresent(result::setLeft);
     Optional.ofNullable(right).ifPresent(result::setRight);
@@ -54,28 +56,33 @@ public class ListDetailViewBuilder implements Builder<Region> {
     return result;
   }
 
-  public ListDetailViewBuilder withLeft(Region view) {
+  public BorderPaneBuilder withLeft(Region view) {
     left = view;
     return this;
   }
 
-  public ListDetailViewBuilder withRight(Region view) {
+  public BorderPaneBuilder withRight(Region view) {
     right = view;
     return this;
   }
 
-  public ListDetailViewBuilder withCenter(Region view) {
+  public BorderPaneBuilder withCenter(Region view) {
     center = view;
     return this;
   }
 
-  public ListDetailViewBuilder withTop(Region view) {
+  public BorderPaneBuilder withTop(Region view) {
     top = view;
     return this;
   }
 
-  public ListDetailViewBuilder withBottom(Region view) {
+  public BorderPaneBuilder withBottom(Region view) {
     bottom = view;
+    return this;
+  }
+
+  public BorderPaneBuilder withPadding(Insets padding) {
+    this.padding = padding;
     return this;
   }
 }

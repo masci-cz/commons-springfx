@@ -19,8 +19,17 @@
 
 package cz.masci.springfx.mvci.model.detail;
 
+/**
+ * The Identifiable interface defines a contract for objects that have an identifier and
+ * can be identified as transient.
+ *
+ * @param <T> The type of the identifier
+ */
 public interface Identifiable<T> {
+  /** Returns the id */
   T getId();
+  /** Set the id */
   void setId(T id);
+  /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persistent it returns {@code false}. */
   boolean isTransient();
 }

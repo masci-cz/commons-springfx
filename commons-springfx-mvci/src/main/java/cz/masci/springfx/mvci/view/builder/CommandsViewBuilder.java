@@ -28,8 +28,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
+
 /**
- * All provided buttons are put in the HBox.
+ * A builder class for creating a view containing a list of buttons.
  */
 public class CommandsViewBuilder implements Builder<Region> {
 

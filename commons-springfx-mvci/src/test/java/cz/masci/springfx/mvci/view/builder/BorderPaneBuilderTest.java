@@ -28,16 +28,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 
 @ExtendWith(ApplicationExtension.class)
-class ListDetailViewBuilderTest {
+class BorderPaneBuilderTest {
 
   @Test
   void build_center() {
     Pane center = new Pane();
 
-    var result = ListDetailViewBuilder.builder().withCenter(center).build();
+    var borderPane = BorderPaneBuilder.builder().withCenter(center).build();
 
-    assertInstanceOf(BorderPane.class, result);
-    BorderPane borderPane = (BorderPane) result;
     assertAll("Border Pane",
         () -> assertNull(borderPane.getLeft()),
         () -> assertNull(borderPane.getRight()),
@@ -49,16 +47,14 @@ class ListDetailViewBuilderTest {
 
   @Test
   void build_all() {
-    var result = ListDetailViewBuilder.builder()
-        .withLeft(new Pane())
-        .withRight(new Pane())
-        .withCenter(new Pane())
-        .withTop(new Pane())
-        .withBottom(new Pane())
-        .build();
+    var borderPane = BorderPaneBuilder.builder()
+                                  .withLeft(new Pane())
+                                  .withRight(new Pane())
+                                  .withCenter(new Pane())
+                                  .withTop(new Pane())
+                                  .withBottom(new Pane())
+                                  .build();
 
-    assertInstanceOf(BorderPane.class, result);
-    BorderPane borderPane = (BorderPane) result;
     assertAll("Border Pane",
         () -> assertNotNull(borderPane.getLeft()),
         () -> assertNotNull(borderPane.getRight()),

@@ -24,12 +24,12 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
 import org.reactfx.value.Val;
 
 /**
- * <pre>
+ * <p>
  *   Interface for listening changes on dirty property.
  *   Add or remove dirty style class in this {@link Styleable} based on dirty property value.
  *   Adds when the property is dirty.
  *   Removes when the property is not dirty.
- * </pre>
+ * </p>
  *
  * @param <T> Property implementing {@link DirtyProperty} interface
  */

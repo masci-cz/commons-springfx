@@ -20,13 +20,13 @@
 package cz.masci.springfx.mvci.model.list;
 
 /**
- * <pre>
+ * <p>
  *   Ability to update view. Mostly used to update element in list view in list-detail view pattern.
  *   First set {@code setOnUpdateElementsProperty} which will be used when calling {@code updateElementsProperty}.
- * </pre>
+ * </p>
  *
- * <pre>
- *   {@code class UpdatableImpl implements Updatable<Model> } {
+ * <pre>{@code
+ *   class UpdatableImpl implements Updatable<Model> {
  *     private Runnable onUpdateElementsProperty;
  *
  *     public void updateElementsProperty() {
@@ -39,9 +39,11 @@ package cz.masci.springfx.mvci.model.list;
  *       onFocusView = command;
  *     }
  *   }
- * </pre>
+ * }</pre>
  */
 public interface Updatable {
+  /** Runs predefined command set by {@link Updatable#setOnUpdateElementsProperty}  */
   void updateElementsProperty();
+  /** Sets the command which is run in {@link Updatable#updateElementsProperty} */
   void setOnUpdateElementsProperty(Runnable command);
 }

@@ -27,6 +27,20 @@ import lombok.RequiredArgsConstructor;
 /**
  * Simple controller implementation providing view through the view builder provided in the constructor.
  *
+ * <pre>{@code
+ *   public MyBuilder implements Builder<Region> {
+ *     Region build() {
+ *       return new VBox();
+ *     }
+ *   }
+ *
+ *   public MyController extends SimpleController<Region, MyBuilder> {
+ *     public MyController() {
+ *       super(new MyBuilder());
+ *     }
+ *   }
+ * }</pre>
+ *
  * @param <T> Type of the view returned by this controller
  * @param <U> Type of the view builder
  */

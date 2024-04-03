@@ -26,6 +26,13 @@ import javafx.collections.ObservableList;
 import lombok.Setter;
 import org.reactfx.value.Var;
 
+/**
+ * SimpleListModel is a generic implementation of the ListModel interface and the Focusable interface.
+ * It provides basic functionality for managing a list of elements and interacting with them.
+ *
+ * @param <T> The type of the elements in the list.
+ * @param <E> The type of the DetailModel which extends DetailModel<T>.
+ */
 public class SimpleListModel<T, E extends DetailModel<T>> implements ListModel<E>, Focusable {
   protected final DirtyListProperty<E> elements = new DirtyListProperty<>();
   protected final Var<E> selectedElement = Var.newSimpleVar(null);
