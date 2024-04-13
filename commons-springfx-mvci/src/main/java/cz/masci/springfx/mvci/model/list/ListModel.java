@@ -20,7 +20,8 @@
 package cz.masci.springfx.mvci.model.list;
 
 /**
- * This list groups {@code Selectable}, {@code Updatable} and {@code Removable} interfaces
+ * This list interface groups {@code Selectable}, {@code Updatable} and {@code Removable} interfaces
+ *
  * @param <E>
  */
 public interface ListModel<E> extends Selectable<E>, Updatable, Removable<E> {}

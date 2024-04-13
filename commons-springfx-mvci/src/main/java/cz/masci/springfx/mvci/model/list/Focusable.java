@@ -20,12 +20,12 @@
 package cz.masci.springfx.mvci.model.list;
 
 /**
- * <pre>
- *   Ability to focus view. Mostly used to focus detail view in list-detail view pattern.
- *   First set {@code setOnFocusView} which will be used when calling {@code focusView}.
- * </pre>
+ * <p>
+ * Ability to focus view. Mostly used to focus detail view in list-detail view pattern. First set {@code setOnFocusView} which will be used when calling
+ * {@code focusView}.
+ * </p>
  *
- * <pre>
+ * <pre>{@code
  *   class FocusableImpl implements Focusable {
  *     private Runnable onFocusView;
  *
@@ -39,11 +39,16 @@ package cz.masci.springfx.mvci.model.list;
  *       onFocusView = command;
  *     }
  *   }
- * </pre>
+ * }</pre>
  */
 public interface Focusable {
-  /** Runs predefined runnable. */
+  /**
+   * Runs predefined command set by {@link Focusable#setOnFocusView}.
+   */
   void focusView();
-  /** Sets runnable command which should be executed in {@code focusView}. */
+
+  /**
+   * Sets the command which should be executed in {@link Focusable#focusView}.
+   */
   void setOnFocusView(Runnable command);
 }

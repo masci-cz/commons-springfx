@@ -22,14 +22,14 @@ package cz.masci.springfx.mvci.model.list;
 import java.util.function.Consumer;
 
 /**
- * <pre>
- *   Ability to remove element from list. Mostly used to remove element in the list view in list-detail view pattern.
- *   Setting the {@code setOnRemoveElement} is not necessary even is used when calling {@code removeElement}.
- * </pre>
+ * <p>
+ * Ability to remove element from list. Mostly used to remove element in the list view in list-detail view pattern. Setting the {@code setOnRemoveElement} is
+ * not necessary even is used when calling {@code removeElement}.
+ * </p>
  *
- * <pre>
- *   {@code class RemovableImpl implements Removable<Model>} {
- *     {@code private Consumer<Model> onRemoveElement; }
+ * <pre>{@code
+ *   class RemovableImpl implements Removable<Model> {
+ *     private Consumer<Model> onRemoveElement;
  *
  *     public void removeElement(Model element) {
  *       if (onRemoveElement != null) {
@@ -37,13 +37,20 @@ import java.util.function.Consumer;
  *       }
  *     }
  *
- *     {@code public void setOnRemoveElement(Consumer<Model> command) } {
+ *     public void setOnRemoveElement(Consumer<Model> command) {
  *       onRemoveElement = command;
  *     }
  *   }
- * </pre>
+ * }</pre>
  */
 public interface Removable<E> {
+  /**
+   * Runs predefined command set by {@link Removable#setOnRemoveElement}
+   */
   void removeElement(E element);
+
+  /**
+   * Sets the command which should be called in {@link Removable#removeElement}
+   */
   void setOnRemoveElement(Consumer<E> command);
 }

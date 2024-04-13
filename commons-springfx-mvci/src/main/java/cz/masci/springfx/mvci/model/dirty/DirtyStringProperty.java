@@ -31,6 +31,11 @@ import javafx.beans.value.WeakChangeListener;
 import org.jetbrains.annotations.NotNull;
 import org.nield.dirtyfx.tracking.DirtyProperty;
 
+
+/**
+ * A string property that tracks and manages its "dirty" state.
+ * It extends the StringProperty class and implements the DirtyProperty interface.
+ */
 public class DirtyStringProperty extends StringProperty implements DirtyProperty {
 
   private final StringProperty originalValue;

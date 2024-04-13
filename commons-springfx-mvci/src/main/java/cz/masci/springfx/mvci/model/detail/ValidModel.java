@@ -22,7 +22,13 @@ package cz.masci.springfx.mvci.model.detail;
 import io.github.palexdev.materialfx.validation.Validated;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 
+/**
+ * The ValidModel interface extends the {@link Validated} interface and provides additional methods
+ * related to the validation status of a model.
+ * Simplify get valid property for {@link Validated} interface.
+ */
 public interface ValidModel extends Validated {
+  /** Returns valid property of the object */
   default ReadOnlyBooleanProperty validProperty() {
     return getValidator().validProperty();
   }

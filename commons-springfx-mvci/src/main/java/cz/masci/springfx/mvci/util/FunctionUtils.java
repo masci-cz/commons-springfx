@@ -27,10 +27,10 @@ import lombok.experimental.UtilityClass;
 public class FunctionUtils {
 
   /**
-   * <pre>
+   * <p>
    *   Accepts not null source and applies the transform function on it.
    *   If the source is null returns null.
-   * </pre>
+   * </p>
    *
    * @param source Source object
    * @param transform Transformation function
@@ -43,10 +43,10 @@ public class FunctionUtils {
   }
 
   /**
-   * <pre>
+   * <p>
    *   Accepts not null source and applies the transform function on it.
    *   If the source is null returns value.
-   * </pre>
+   * </p>
    *
    * @param source Source object
    * @param transform Transformation function
@@ -60,10 +60,10 @@ public class FunctionUtils {
   }
 
   /**
-   * <pre>
+   * <p>
    *   Accepts not null source and applies the transform function on it.
    *   If the source is null returns supplied value.
-   * </pre>
+   * </p>
    *
    * @param source Source object
    * @param transform Transformation function

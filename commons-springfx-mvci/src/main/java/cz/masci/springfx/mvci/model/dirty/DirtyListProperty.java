@@ -36,6 +36,11 @@ import javafx.collections.WeakListChangeListener;
 import org.jetbrains.annotations.NotNull;
 import org.nield.dirtyfx.tracking.DirtyProperty;
 
+/**
+ * Represents a list property that tracks its dirty state and the dirty state of its elements.
+ *
+ * @param <E> the type of elements in the list
+ */
 public class DirtyListProperty<E extends DirtyProperty> extends ListProperty<E> implements DirtyProperty {
 
   private final BooleanProperty isDirty = new SimpleBooleanProperty(false);

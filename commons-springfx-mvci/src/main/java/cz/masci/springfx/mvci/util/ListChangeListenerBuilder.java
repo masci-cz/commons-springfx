@@ -22,10 +22,20 @@ package cz.masci.springfx.mvci.util;
 import java.util.function.Consumer;
 import javafx.collections.ListChangeListener;
 
+
 /**
- * Builder for ListChangeListener. See {@link ListenerUtils}
+ * Builder class for creating a ListChangeListener with different event handlers.
+ * Usage example:
+ * <pre>{@code
+ * ObservableList<String> list = FXCollections.observableArrayList();
+ * ListChangeListener<String> listener = new ListChangeListenerBuilder<String>()
+ *        .onAdd(item -> System.out.println("Item added: " + item))
+ *        .onRemove(item -> System.out.println("Item removed: " + item))
+ *        .build();
+ * list.addListener(listener);
+ * }</pre>
  *
- * @param <E> Tne type of <code>List</code> elements
+ * @param <E> The type of elements in the list
  */
 public class ListChangeListenerBuilder<E> {
   private Consumer<E> onAdd;
@@ -57,6 +67,38 @@ public class ListChangeListenerBuilder<E> {
   }
 
   public ListChangeListener<E> build() {
-    return ListenerUtils.createListChangeListener(onAdd, onRemove, onUpdated, onPermutated);
+    return createListChangeListener(onAdd, onRemove, onUpdated, onPermutated);
   }
+
+  private static <T> ListChangeListener<T> createListChangeListener(Consumer<T> onAddItem, Consumer<T> onRemoveItem, Consumer<T> onUpdatedItem, Consumer<T> onPermutatedItem) {
+    return c -> {
+      while (c.next()) {
+        if (c.wasPermutated()) {
+          if (onPermutatedItem != null) {
+            for (int i = c.getFrom(); i < c.getTo(); ++i) {
+              onPermutatedItem.accept(c.getList().get(i));
+            }
+          }
+        } else if (c.wasUpdated()) {
+          if (onUpdatedItem != null) {
+            for (int i = c.getFrom(); i < c.getTo(); ++i) {
+              onUpdatedItem.accept(c.getList().get(i));
+            }
+          }
+        } else {
+          if (onRemoveItem != null) {
+            for (T remItem : c.getRemoved()) {
+              onRemoveItem.accept(remItem);
+            }
+          }
+          if (onAddItem != null) {
+            for (T addItem : c.getAddedSubList()) {
+              onAddItem.accept(addItem);
+            }
+          }
+        }
+      }
+    };
+  }
+
 }

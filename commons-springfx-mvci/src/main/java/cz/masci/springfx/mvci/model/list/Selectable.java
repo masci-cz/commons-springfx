@@ -24,28 +24,28 @@ import javafx.collections.ObservableList;
 import org.reactfx.value.Var;
 
 /**
- * <pre>
+ * <p>
  *   Ability to select element in elements observable list.
  *   First set {@code setOnSelectElement} which will be used when calling {@code selectElement}.
  *   {@code selectElement} explicitly selects an element in the list view from list-detail view pattern.
  *   {@code selectedItemProperty} should be bound to selected element in list view from list-detail view pattern.
- * </pre>
+ * </p>
  *
- * <pre>
- *   {@code class SelectableImpl implements Selectable<Model> }{
- *     {@code protected final ListProperty<Model> elements = FXCollections.arrayList(); }
- *     {@code protected final Var<Model> selectedElement = Var.newSimpleVar(null); }
- *     {@code protected Consumer<Model> onSelectElement; }
+ * <pre>{@code
+ *   class SelectableImpl implements Selectable<Model> {
+ *     protected final ListProperty<Model> elements = FXCollections.arrayList();
+ *     protected final Var<Model> selectedElement = Var.newSimpleVar(null);
+ *     protected Consumer<Model> onSelectElement;
  *
- *     {@code public ObservableList<Model> getElements() } {
+ *     public ObservableList<Model> getElements() {
  *       return elements.get();
  *     }
  *
- *     {@code public Var<Model> selectedElementProperty() } {
+ *     public Var<Model> selectedElementProperty() {
  *       return selectedElement;
  *     }
  *
- *     {@code public void setOnSelectElement(Consumer<Model> command) } {
+ *     public void setOnSelectElement(Consumer<Model> command) {
  *       onSelectElement = command;
  *     }
  *
@@ -54,11 +54,16 @@ import org.reactfx.value.Var;
  *         onSelectElement.accept(element);
  *       }
  *     }
- * </pre>
+ *   }
+ * }</pre>
  */
 public interface Selectable<E> {
+  /** Returns elements */
   ObservableList<E> getElements();
+  /** Returns selected element property */
   Var<E> selectedElementProperty();
+  /** Runs the predefined command set by {@link Selectable#setOnSelectElement}*/
   void selectElement(E element);
+  /** Sets the command which should be run in {@link Selectable#selectElement}*/
   void setOnSelectElement(Consumer<E> command);
 }

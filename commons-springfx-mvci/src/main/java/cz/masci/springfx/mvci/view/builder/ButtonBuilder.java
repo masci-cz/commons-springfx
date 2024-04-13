@@ -29,12 +29,12 @@ import javafx.scene.control.Button;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * <pre>
+ * <p>
  *   Button builder.
  *   Based on this builder the new button is created and configured with the command to process.
  *   The {@link ButtonBuilder#builder()} is used to build button with set attributes.
  *   Provide button supplier with button class to be created.
- * </pre>
+ * </p>
  *
  *   Last set command will win. Either consumable or runnable command. If no command is set, no action is set.
  *   <dl>

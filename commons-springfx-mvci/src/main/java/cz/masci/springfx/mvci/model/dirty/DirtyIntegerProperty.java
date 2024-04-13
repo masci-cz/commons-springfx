@@ -32,6 +32,10 @@ import javafx.beans.value.WeakChangeListener;
 import org.jetbrains.annotations.NotNull;
 import org.nield.dirtyfx.tracking.DirtyProperty;
 
+/**
+ * An integer property that tracks and manages its "dirty" state.
+ * It extends the IntegerProperty class and implements the DirtyProperty interface.
+ */
 public class DirtyIntegerProperty extends IntegerProperty implements DirtyProperty {
 
   private final IntegerProperty originalValue;

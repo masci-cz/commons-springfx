@@ -25,7 +25,7 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
 import org.reactfx.value.Val;
 
 /**
- * JFX table row dirty style implementation.
+ * JFX table row with dirty style implementation.
  *
  * @param <T> Type of row data
  */
