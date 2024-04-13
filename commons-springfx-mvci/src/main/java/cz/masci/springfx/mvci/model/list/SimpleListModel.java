@@ -31,7 +31,7 @@ import org.reactfx.value.Var;
  * It provides basic functionality for managing a list of elements and interacting with them.
  *
  * @param <T> The type of the elements in the list.
- * @param <E> The type of the DetailModel which extends DetailModel<T>.
+ * @param <E> The type of the {@code DetailModel<T>} which extends.
  */
 public class SimpleListModel<T, E extends DetailModel<T>> implements ListModel<E>, Focusable {
   protected final DirtyListProperty<E> elements = new DirtyListProperty<>();

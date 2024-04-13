@@ -54,6 +54,7 @@ import org.reactfx.value.Var;
  *         onSelectElement.accept(element);
  *       }
  *     }
+ *   }
  * }</pre>
  */
 public interface Selectable<E> {
