@@ -22,6 +22,7 @@ package cz.masci.springfx.mvci.view.builder;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,10 +32,19 @@ import org.testfx.framework.junit5.ApplicationExtension;
 class CommandsViewBuilderTest {
 
   @Test
-  void build() {
+  void build_hbox() {
     Button expectedButton = new Button();
 
     var result = new CommandsViewBuilder(List.of(expectedButton)).build();
+
+    assertTrue(result.getChildrenUnmodifiable().contains(expectedButton));
+  }
+
+  @Test
+  void build_vbox() {
+    Button expectedButton = new Button();
+
+    var result = new CommandsViewBuilder(List.of(expectedButton), true, Pos.CENTER).build();
 
     assertTrue(result.getChildrenUnmodifiable().contains(expectedButton));
   }

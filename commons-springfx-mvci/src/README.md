@@ -23,18 +23,16 @@ There are two interface types.
 * `Selectable` used for select element from list, get all elements, run action when element is selected and returns selected element property for binding possibility.
 * `Removable` used for remove element from list and run action when element is removed.
 * `Updateable` used for update element in list and run action when element is updated.
-
-
+  
 * `ListModel` combines `Selectable`, `Updatable` and `Removable` interfaces used as view model for list in the mvci pattern.
 * `SimpleListModel` is simple implementation of dirty list model with all `Selectable`, `Updatable`, `Removable` and `Focusable` interfaces.
 
 ### Detail
 
-* `Identifiable` used for object with id or without when it is in transient state.
+* `Identifiable` used for object with id or without when it is in transient (not saved yet) state.
 * `ValidModel` extends [validated](https://github.com/palexdev/MaterialFX/blob/main/materialfx/src/main/java/io/github/palexdev/materialfx/validation/Validated.java) to simplify get the valid property.
-* `DirtyModel` wraps the dirty property for composite object. Change in any property in the object will update dirty property.
-
-
+* `DirtyModel` wraps the dirty property for composite object. Change in any property in the object will update the dirty property.
+  
 * `DetailModel` combines `Identifiable`, `ValidModel` and `DirtyModel` interfaces used as view model for detail in the mvci pattern.
 
 ## Package VIEW

@@ -23,11 +23,12 @@ import jakarta.annotation.Nonnull;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.util.Builder;
-
 
 /**
  * A builder class for creating a view containing a list of buttons.
@@ -36,24 +37,64 @@ public class CommandsViewBuilder implements Builder<Region> {
 
   private final List<? extends Button> buttons;
   private final Pos alignment;
+  private final boolean isVertical;
 
+  /**
+   * Create a horizontal view containing a list of buttons aligned to center left of the view.
+   *
+   * @param buttons a list of buttons to be displayed in the view
+   */
   public CommandsViewBuilder(@Nonnull List<? extends Button> buttons) {
-    this(buttons, Pos.CENTER_LEFT);
+    this(buttons, false, Pos.CENTER_LEFT);
   }
 
+  /**
+   * Create a horizontal view containing a list of buttons aligned with provided alignment.
+   *
+   * @param buttons   a list of buttons to be displayed in the view
+   * @param alignment the alignment of the buttons in the view
+   */
   public CommandsViewBuilder(@Nonnull List<? extends Button> buttons, @Nonnull Pos alignment) {
+    this(buttons, false, alignment);
+  }
+
+  /**
+   * Create a horizontal or vertical view containing a list of buttons aligned with provided alignment.
+   *
+   * @param buttons    a list of buttons to be displayed in the view
+   * @param isVertical if <code>true</code> creates vertical view
+   * @param alignment  the alignment of the buttons in the view
+   */
+  public CommandsViewBuilder(@Nonnull List<? extends Button> buttons, boolean isVertical, @Nonnull Pos alignment) {
     this.buttons = buttons;
+    this.isVertical = isVertical;
     this.alignment = alignment;
   }
 
   @Override
   public Region build() {
-    HBox hBox = new HBox(buttons.toArray(new Button[]{}));
-    hBox.setSpacing(15.0);
-    hBox.setPadding(new Insets(10.0));
+    Node[] children = buttons.toArray(new Button[]{});
+    double spacing = 15.0;
+
+    Region result = isVertical ? createVBox(spacing, alignment, children) : createHBox(spacing, alignment, children);
+    result.setPadding(new Insets(10.0));
+
+    return result;
+  }
+
+  private HBox createHBox(double spacing, Pos alignment, Node... children) {
+    HBox hBox = new HBox(children);
+    hBox.setSpacing(spacing);
     hBox.setAlignment(alignment);
 
     return hBox;
   }
 
+  private VBox createVBox(double spacing, Pos alignment, Node... children) {
+    VBox vBox = new VBox(children);
+    vBox.setSpacing(spacing);
+    vBox.setAlignment(alignment);
+
+    return vBox;
+  }
 }
