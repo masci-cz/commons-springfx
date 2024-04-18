@@ -45,6 +45,20 @@
             <artifactId>javafx-controls</artifactId>
         </dependency>
 
+        <!-- Validations -->
+        <dependency>
+            <groupId>io.github.palexdev</groupId>
+            <artifactId>materialfx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.reactfx</groupId>
+            <artifactId>reactfx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
         <!-- tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

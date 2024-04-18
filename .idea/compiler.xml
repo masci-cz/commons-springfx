@@ -11,6 +11,7 @@
         <module name="commons-springfx-mve" />
         <module name="commons-springfx-mvci" />
         <module name="commons-springfx-fxml" />
+        <module name="commons-springfx-demo" />
       </profile>
     </annotationProcessing>
   </component>
