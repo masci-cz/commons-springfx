@@ -97,7 +97,7 @@ public class BookDetailController implements ViewProvider<Region> {
     if (!discardDisableProperty.get()) {
       selectedItemProperty.ifPresent(item -> {
         if (item.isTransient()) {
-          viewModel.removeElement(item);
+          viewModel.remove(item);
         } else {
           item.reset();
         }
@@ -136,7 +136,7 @@ public class BookDetailController implements ViewProvider<Region> {
           .task(() -> {
             log.info("Deleting item");
             interactor.delete(item);
-            ConcurrentUtils.runInFXThread(() -> viewModel.removeElement(item));
+            ConcurrentUtils.runInFXThread(() -> viewModel.remove(item));
             return item;
           })
           .onFailed(task -> log.error("Something happen when saving book", task.getException()))

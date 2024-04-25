@@ -19,7 +19,7 @@
 
 package cz.masci.springfx.demo.model;
 
-import cz.masci.springfx.mvci.model.list.SimpleListModel;
+import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
 
-public class BookListModel extends SimpleListModel<Long, BookDetailModel> {
+public class BookListModel extends BaseListModel<Long, BookDetailModel> {
 }

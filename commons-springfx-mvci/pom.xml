@@ -47,6 +47,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- spring fx -->
+        <dependency>
+            <groupId>cz.masci.commons</groupId>
+            <artifactId>commons-springfx-data</artifactId>
+        </dependency>
+
         <!-- open jfx -->
         <dependency>
             <groupId>org.openjfx</groupId>

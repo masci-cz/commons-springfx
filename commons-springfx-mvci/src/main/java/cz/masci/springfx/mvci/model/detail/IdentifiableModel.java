@@ -17,11 +17,17 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.model.list;
+package cz.masci.springfx.mvci.model.detail;
+
+import cz.masci.commons.springfx.data.Identifiable;
 
 /**
- * Ability to remove element from list. Mostly used to remove element in the list view in list-detail view pattern.
+ * The IdentifiableModel interface defines a contract for objects that have an identifier and
+ * can be identified as a transient.
+ *
+ * @param <T> The type of the identifier
  */
-public interface Removable<E> {
-  void remove(E element);
+public interface IdentifiableModel<T> extends Identifiable<T> {
+  /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persisted it returns {@code false}. */
+  boolean isTransient();
 }

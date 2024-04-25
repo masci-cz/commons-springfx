@@ -20,7 +20,7 @@
 package cz.masci.springfx.mvci.util;
 
 import cz.masci.springfx.mvci.model.detail.DetailModel;
-import cz.masci.springfx.mvci.model.list.SimpleListModel;
+import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
 import io.github.palexdev.materialfx.builders.control.TextFieldBuilder;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -60,7 +60,7 @@ public class MFXBuilderUtils {
   }
 
   public static <T, E extends DetailModel<T>> void initSelectionModel(IMultipleSelectionModel<E> selectionModel, Runnable update,
-                                                                      SimpleListModel<T, E> viewModel) {
+                                                                      BaseListModel<T, E> viewModel) {
     ObservableMap<Integer, E> selectionProperty = selectionModel.selectionProperty();
     EventStreams.changesOf(selectionProperty)
                 .filter(Change::wasAdded)

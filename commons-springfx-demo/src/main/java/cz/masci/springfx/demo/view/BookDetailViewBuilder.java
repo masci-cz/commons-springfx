@@ -62,11 +62,11 @@ public class BookDetailViewBuilder implements Builder<Region> {
                    .bindBidirectional(authorProperty);
 
     // listen to changes and update source properties in the list view model
-    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.updateElementsProperty();
+    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.update();
     titleProperty.observeChanges(changeListener);
     authorProperty.observeChanges(changeListener);
 
-    // which node should be selected when list view model focusView is called
+    // which node should be selected when list view model focus is called
     viewModel.setOnFocusView(titleTextField::requestFocus);
 
     // create region to show

@@ -67,12 +67,12 @@ public class BookManagerController implements ViewProvider<Region> {
       var element = new BookDetailModel();
       element.setTitle("New Book");
       viewModel.getElements().add(element);
-      viewModel.selectElement(element);
-      viewModel.focusView();
+      viewModel.select(element);
+      viewModel.focus();
   }
 
   private void load(Runnable postGuiStuff) {
-    viewModel.selectElement(null);
+    viewModel.select(null);
     viewModel.getElements().clear();
     BackgroundTaskBuilder
         .task(interactor::list)
@@ -115,7 +115,7 @@ public class BookManagerController implements ViewProvider<Region> {
         element.reset();
       }
     });
-    elementsToRemove.forEach(viewModel::removeElement);
+    elementsToRemove.forEach(viewModel::remove);
     log.info("Changes were discarded");
   }
 
