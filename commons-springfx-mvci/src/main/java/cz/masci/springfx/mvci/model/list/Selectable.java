@@ -33,4 +33,8 @@ public interface Selectable<E> {
    * Returns selected element property
    */
   Var<E> selectedElementProperty();
+
+  default E getSelectedElement() {
+    return selectedElementProperty().getValue();
+  }
 }

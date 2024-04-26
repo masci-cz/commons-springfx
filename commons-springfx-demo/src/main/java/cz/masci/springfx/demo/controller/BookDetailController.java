@@ -26,54 +26,42 @@ import cz.masci.springfx.demo.model.BookDetailModel;
 import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.demo.view.BookDetailViewBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
+import cz.masci.springfx.mvci.controller.impl.OperableDetailController;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
-import cz.masci.springfx.mvci.model.detail.DirtyModel;
-import cz.masci.springfx.mvci.model.detail.ValidModel;
 import cz.masci.springfx.mvci.util.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.util.ConcurrentUtils;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.List;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.reactfx.value.Val;
 
 @Slf4j
 public class BookDetailController implements ViewProvider<Region> {
 
-  private final Val<BookDetailModel> selectedItemProperty;
-  private final BookListModel viewModel;
-  private final BookInteractor interactor;
+  private final OperableDetailController<BookDetailModel, BookListModel> operableDetailController;
 
-  private final BooleanProperty saveDisableProperty = new SimpleBooleanProperty(true);
-  private final BooleanProperty discardDisableProperty = new SimpleBooleanProperty(true);
-  private final BooleanProperty deleteDisableProperty = new SimpleBooleanProperty(true);
+  private final BookInteractor interactor;
 
   private final Builder<Region> builder;
 
   public BookDetailController(BookListModel viewModel, BookInteractor interactor) {
-    this.selectedItemProperty = Val.wrap(viewModel.selectedElementProperty());
-    this.viewModel = viewModel;
     this.interactor = interactor;
+    operableDetailController = new OperableDetailController<>(viewModel);
 
     var detailViewBuilder = new BookDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);
     var commandViewBuilder = new CommandsViewBuilder(
         List.of(
-            ButtonBuilder.builder().text("Save").command(this::saveItem).styleClass("filledTonal").disableExpression(saveDisableProperty).build(MFXButton::new),
-            ButtonBuilder.builder().text("Cancel").command(this::discardDirtyItem).styleClass("outlined").disableExpression(discardDisableProperty).build(MFXButton::new),
-            ButtonBuilder.builder().text("Delete").command(this::deleteItem).disableExpression(deleteDisableProperty).styleClass("outlined").build(MFXButton::new)
+            ButtonBuilder.builder().text("Save").command(this::saveItem).styleClass("filledTonal").disableExpression(operableDetailController.saveDisabledProperty()).build(MFXButton::new),
+            ButtonBuilder.builder().text("Cancel").command(this::discardDirtyItem).styleClass("outlined").disableExpression(operableDetailController.discardDisabledProperty()).build(MFXButton::new),
+            ButtonBuilder.builder().text("Delete").command(this::deleteItem).disableExpression(operableDetailController.deleteDisabledProperty()).styleClass("outlined").build(MFXButton::new)
         ),
         Pos.CENTER_RIGHT
     );
-
-    initDisableProperties();
 
     builder = createDetailWithCommandViewBuilder(detailController.getView(), commandViewBuilder.build());
   }
@@ -83,66 +71,39 @@ public class BookDetailController implements ViewProvider<Region> {
     return builder.build();
   }
 
-  private void initDisableProperties() {
-    // delete disabled => not selected
-    Val<Boolean> dirtyProperty = selectedItemProperty.flatMap(DirtyModel::isDirtyProperty);
-    Val<Boolean> validProperty = selectedItemProperty.flatMap(ValidModel::validProperty);
-    Val<Boolean> saveDisable = Val.combine(dirtyProperty, validProperty, (dirty, valid) -> !dirty || !valid);
-    deleteDisableProperty.bind(Bindings.createBooleanBinding(selectedItemProperty::isEmpty, selectedItemProperty));
-    saveDisableProperty.bind(Bindings.createBooleanBinding(() -> selectedItemProperty.isEmpty() || saveDisable.getOrElse(true), selectedItemProperty, saveDisable));
-    discardDisableProperty.bind(Bindings.createBooleanBinding(() -> selectedItemProperty.isEmpty() || !dirtyProperty.getOrElse(true), selectedItemProperty, dirtyProperty));
+  private void saveItem(Runnable postGuiStuff) {
+    operableDetailController.save((item, afterSave) ->
+        BackgroundTaskBuilder
+            .task(() -> {
+              var savedItem = interactor.save(item);
+              ConcurrentUtils.runInFXThread(() -> afterSave.accept(savedItem));
+              return savedItem;
+            })
+            .onFailed(task -> {
+              var e = task.getException();
+              log.error("Error saving book", e);
+            })
+            .onSucceeded(savedItem -> log.info("Book was saved"))
+            .postGuiCall(postGuiStuff)
+            .start());
   }
 
   private void discardDirtyItem() {
-    if (!discardDisableProperty.get()) {
-      selectedItemProperty.ifPresent(item -> {
-        if (item.isTransient()) {
-          viewModel.remove(item);
-        } else {
-          item.reset();
-        }
-      });
-    }
-  }
-
-  private void saveItem(Runnable postGuiStuff) {
-    if (!saveDisableProperty.get()) {
-      selectedItemProperty.ifPresent(item ->
-          BackgroundTaskBuilder
-              .task(() -> {
-                var savedItem = interactor.save(item);
-                ConcurrentUtils.runInFXThread(() -> {
-                  if (item.isTransient()) {
-                    item.setId(savedItem.getId());
-                  }
-                  item.rebaseline();
-                });
-                return savedItem;
-              })
-              .onFailed(task -> {
-                var e = task.getException();
-                log.error("Error saving book", e);
-              })
-              .onSucceeded(savedItem -> log.info("Book was saved"))
-              .postGuiCall(postGuiStuff)
-              .start()
-      );
-    }
+    operableDetailController.discard();
   }
 
   private void deleteItem(Runnable postGuiStuff) {
-    if (!deleteDisableProperty.get()) {
-      selectedItemProperty.ifPresent(item -> BackgroundTaskBuilder
-          .task(() -> {
-            log.info("Deleting item");
-            interactor.delete(item);
-            ConcurrentUtils.runInFXThread(() -> viewModel.remove(item));
-            return item;
-          })
-          .onFailed(task -> log.error("Something happen when saving book", task.getException()))
-          .onSucceeded(deletedItem -> log.info("Book was deleted"))
-          .postGuiCall(postGuiStuff)
-          .start());
-    }
+    operableDetailController.delete((item, afterDelete) ->
+        BackgroundTaskBuilder
+            .task(() -> {
+              log.info("Deleting item");
+              interactor.delete(item);
+              ConcurrentUtils.runInFXThread(afterDelete);
+              return item;
+            })
+            .onFailed(task -> log.error("Something happen when saving book", task.getException()))
+            .onSucceeded(deletedItem -> log.info("Book was deleted"))
+            .postGuiCall(postGuiStuff)
+            .start());
   }
 }

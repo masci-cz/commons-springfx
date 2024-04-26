@@ -33,10 +33,10 @@ import org.reactfx.value.Var;
  * BaseListModel is a generic implementation of the ListModel interface.
  * It provides basic functionality for managing a list of elements and interacting with them.
  *
- * @param <T> The type of the elements in the list.
- * @param <E> The type of the {@code DetailModel<T>} which extends.
+ * @param <I> The type of the element id identifier.
+ * @param <E> The type of the elements in the list extending {@link DetailModel<I>}.
  */
-public class BaseListModel<T, E extends DetailModel<T>> implements ListModel<E>, Focusable, Elements<E> {
+public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>, Focusable, Elements<E> {
   protected final DirtyListProperty<E> elements = new DirtyListProperty<>();
   protected final Var<E> selectedElement = Var.newSimpleVar(null);
   @Setter
