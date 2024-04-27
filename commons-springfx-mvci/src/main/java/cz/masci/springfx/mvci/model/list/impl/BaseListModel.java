@@ -22,7 +22,6 @@ package cz.masci.springfx.mvci.model.list.impl;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyListProperty;
 import cz.masci.springfx.mvci.model.list.Elements;
-import cz.masci.springfx.mvci.model.list.Focusable;
 import cz.masci.springfx.mvci.model.list.ListModel;
 import java.util.function.Consumer;
 import javafx.collections.ObservableList;
@@ -36,7 +35,7 @@ import org.reactfx.value.Var;
  * @param <I> The type of the element id identifier.
  * @param <E> The type of the elements in the list extending {@link DetailModel<I>}.
  */
-public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>, Focusable, Elements<E> {
+public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>, Elements<E> {
   protected final DirtyListProperty<E> elements = new DirtyListProperty<>();
   protected final Var<E> selectedElement = Var.newSimpleVar(null);
   @Setter

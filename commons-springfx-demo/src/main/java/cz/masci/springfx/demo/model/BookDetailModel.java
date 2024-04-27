@@ -19,25 +19,17 @@
 
 package cz.masci.springfx.demo.model;
 
-import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
-import cz.masci.springfx.mvci.model.detail.DetailModel;
+import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import io.github.palexdev.materialfx.validation.MFXValidator;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import lombok.Data;
-import lombok.Getter;
-import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class BookDetailModel implements DetailModel<Long> {
-  private ObjectProperty<Long> id = new SimpleObjectProperty<>();
+@EqualsAndHashCode(callSuper = true)
+public class BookDetailModel extends BaseDetailModel<Long> {
   private DirtyStringProperty title = new DirtyStringProperty("");
   private DirtyStringProperty author = new DirtyStringProperty("");
-  @Getter
-  private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
-  @Getter
-  private final MFXValidator validator = new MFXValidator();
 
   public BookDetailModel() {
     composite.addAll(title, author);
@@ -50,15 +42,6 @@ public class BookDetailModel implements DetailModel<Long> {
   }
 
   // region setters and getters
-
-  public Long getId() {
-    return id.get();
-  }
-
-  public void setId(Long id) {
-    this.id.set(id);
-  }
-
   public String getTitle() {
     return title.get();
   }

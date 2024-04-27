@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BookDetailController implements ViewProvider<Region> {
 
-  private final OperableDetailController<BookDetailModel, BookListModel> operableDetailController;
+  private final OperableDetailController<Long, BookDetailModel, BookListModel> operableDetailController;
 
   private final BookInteractor interactor;
 
@@ -72,7 +72,7 @@ public class BookDetailController implements ViewProvider<Region> {
   }
 
   private void saveItem(Runnable postGuiStuff) {
-    operableDetailController.save((item, afterSave) ->
+    operableDetailController.update((item, afterSave) ->
         BackgroundTaskBuilder
             .task(() -> {
               var savedItem = interactor.save(item);
@@ -93,7 +93,7 @@ public class BookDetailController implements ViewProvider<Region> {
   }
 
   private void deleteItem(Runnable postGuiStuff) {
-    operableDetailController.delete((item, afterDelete) ->
+    operableDetailController.remove((item, afterDelete) ->
         BackgroundTaskBuilder
             .task(() -> {
               log.info("Deleting item");

@@ -31,7 +31,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.reactfx.value.Val;
 
-public class OperableDetailController<E extends DetailModel<?>, T extends Removable<E> & Selectable<E>> {
+public class OperableDetailController<I, E extends DetailModel<I>, T extends Removable<E> & Selectable<E>> {
 
   private final Val<E> selectedElement;
   private final T viewModel;
@@ -61,30 +61,30 @@ public class OperableDetailController<E extends DetailModel<?>, T extends Remova
 
   public void discard() {
     if (isDiscardEnabled()) {
-      selectedElement.ifPresent(item -> {
-        if (item.isTransient()) {
-          viewModel.remove(item);
+      selectedElement.ifPresent(element -> {
+        if (element.isTransient()) {
+          viewModel.remove(element);
         } else {
-          item.reset();
+          element.reset();
         }
       });
     }
   }
 
-  public void save(BiConsumer<E, Consumer<E>> save) {
+  public void update(BiConsumer<E, Consumer<E>> updateAction) {
     if (isSaveEnabled()) {
-      selectedElement.ifPresent(item -> save.accept(item, savedItem -> {
-        if (item.isTransient()) {
-          item.setId(savedItem.getId());
+      selectedElement.ifPresent(element -> updateAction.accept(element, updatedElement -> {
+        if (element.isTransient()) {
+          element.setId(updatedElement.getId());
         }
-        item.rebaseline();
+        element.rebaseline();
       }));
     }
   }
 
-  public void delete(BiConsumer<E, Runnable> delete) {
+  public void remove(BiConsumer<E, Runnable> removeAction) {
     if (isDeleteEnabled()) {
-      selectedElement.ifPresent(item -> delete.accept(item, () -> viewModel.remove(item)));
+      selectedElement.ifPresent(element -> removeAction.accept(element, () -> viewModel.remove(element)));
     }
   }
 

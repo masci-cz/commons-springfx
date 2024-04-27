@@ -19,26 +19,25 @@
 
 package cz.masci.springfx.demo.view;
 
-import static cz.masci.springfx.mvci.util.reactfx.ReactFxUtils.selectVarOrElseConst;
 import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
 
+import cz.masci.springfx.demo.model.BookDetailModel;
+import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.util.BuilderUtils;
 import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
-import cz.masci.springfx.demo.model.BookDetailModel;
-import cz.masci.springfx.demo.model.BookListModel;
-import cz.masci.springfx.mvci.util.BuilderUtils;
+import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import lombok.RequiredArgsConstructor;
 import org.reactfx.value.Var;
 
-@RequiredArgsConstructor
-public class BookDetailViewBuilder implements Builder<Region> {
+public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> implements Builder<Region> {
 
-  private final BookListModel viewModel;
+  public BookDetailViewBuilder(ListModel<BookDetailModel> viewModel) {
+    super(viewModel);
+  }
 
   @Override
   public Region build() {
@@ -52,19 +51,9 @@ public class BookDetailViewBuilder implements Builder<Region> {
 
     var authorTextField = createTextField("Author", Double.MAX_VALUE);
 
-    // prepare nullable properties from the selected property
-    Var<String> titleProperty = selectVarOrElseConst(selectedProperty, BookDetailModel::titleProperty, "");
-    Var<String> authorProperty = selectVarOrElseConst(selectedProperty, BookDetailModel::authorProperty, "");
-    // bind nullable properties to text fields
-    titleTextField.textProperty()
-                  .bindBidirectional(titleProperty);
-    authorTextField.textProperty()
-                   .bindBidirectional(authorProperty);
-
-    // listen to changes and update source properties in the list view model
-    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.update();
-    titleProperty.observeChanges(changeListener);
-    authorProperty.observeChanges(changeListener);
+    // bind text fields bidirectional with detail model properties
+    bindBidirectional(titleTextField.textProperty(), BookDetailModel::titleProperty);
+    bindBidirectional(authorTextField.textProperty(), BookDetailModel::authorProperty);
 
     // which node should be selected when list view model focus is called
     viewModel.setOnFocusView(titleTextField::requestFocus);

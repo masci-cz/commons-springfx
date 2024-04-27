@@ -19,5 +19,5 @@
 
 package cz.masci.springfx.mvci.model.detail;
 
-public interface DetailModel<E> extends DirtyModel, ValidModel, IdentifiableModel<E> {
+public interface DetailModel<T> extends DirtyModel, ValidModel, IdentifiableModel<T> {
 }

@@ -23,30 +23,28 @@ import cz.masci.springfx.demo.interactor.BookInteractor;
 import cz.masci.springfx.demo.model.BookDetailModel;
 import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import cz.masci.springfx.mvci.model.detail.DirtyModel;
+import cz.masci.springfx.mvci.controller.impl.OperableListController;
 import cz.masci.springfx.mvci.util.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.util.ConcurrentUtils;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class BookManagerController implements ViewProvider<Region> {
 
-  private final BookListModel viewModel;
   private final BookInteractor interactor;
 
+  private final OperableListController<Long, BookDetailModel, BookListModel> operableListController;
   private final CommandsViewBuilder builder;
 
   public BookManagerController(BookListModel viewModel, BookInteractor interactor) {
-    this.viewModel = viewModel;
     this.interactor = interactor;
+    operableListController = new OperableListController<>(viewModel);
 
     builder = new CommandsViewBuilder(
         List.of(
@@ -66,18 +64,14 @@ public class BookManagerController implements ViewProvider<Region> {
   private void newBook() {
       var element = new BookDetailModel();
       element.setTitle("New Book");
-      viewModel.getElements().add(element);
-      viewModel.select(element);
-      viewModel.focus();
+      operableListController.add(element);
   }
 
   private void load(Runnable postGuiStuff) {
-    viewModel.select(null);
-    viewModel.getElements().clear();
     BackgroundTaskBuilder
         .task(interactor::list)
         .postGuiCall(postGuiStuff)
-        .onSucceeded(viewModel.getElements()::setAll)
+        .onSucceeded(operableListController::addAll)
         .start();
   }
 
@@ -85,15 +79,10 @@ public class BookManagerController implements ViewProvider<Region> {
     AtomicInteger savedCount = new AtomicInteger(0);
     BackgroundTaskBuilder
         .task(() -> {
-          getDirtyElements().forEach(item -> {
+          operableListController.update((element, updateElement) -> {
             try {
-              var savedItem = interactor.save(item);
-              ConcurrentUtils.runInFXThread(() -> {
-                if (item.isTransient()) {
-                  item.setId(savedItem.getId());
-                }
-                item.rebaseline();
-              });
+              var savedElement = interactor.save(element);
+              ConcurrentUtils.runInFXThread(() -> updateElement.accept(savedElement));
               savedCount.incrementAndGet();
             } catch (Exception e) {
               log.error("Something went wrong when saving", e);
@@ -107,19 +96,7 @@ public class BookManagerController implements ViewProvider<Region> {
   }
 
   private void discard() {
-    var elementsToRemove = new ArrayList<BookDetailModel>();
-    getDirtyElements().forEach(element -> {
-      if (element.isTransient()) {
-        elementsToRemove.add(element);
-      } else {
-        element.reset();
-      }
-    });
-    elementsToRemove.forEach(viewModel::remove);
+    operableListController.discard();
     log.info("Changes were discarded");
-  }
-
-  private Stream<BookDetailModel> getDirtyElements() {
-    return viewModel.getElements().stream().filter(DirtyModel::isDirty);
   }
 }
