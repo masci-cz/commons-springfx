@@ -22,10 +22,7 @@ package cz.masci.springfx.mvci.controller.impl;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
 import cz.masci.springfx.mvci.model.list.Elements;
-import cz.masci.springfx.mvci.model.list.Focusable;
-import cz.masci.springfx.mvci.model.list.Removable;
-import cz.masci.springfx.mvci.model.list.Selectable;
-import cz.masci.springfx.mvci.model.list.Updatable;
+import cz.masci.springfx.mvci.model.list.ListModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -34,7 +31,7 @@ import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class OperableListController<I, E extends DetailModel<I>, T extends Elements<E> & Selectable<E> & Updatable & Removable<E> & Focusable> {
+public class OperableManagerController<I, E extends DetailModel<I>, T extends ListModel<E> & Elements<E>> {
   private final T viewModel;
 
   public void add(E element) {
@@ -50,7 +47,7 @@ public class OperableListController<I, E extends DetailModel<I>, T extends Eleme
   }
 
   public void update(BiConsumer<E, Consumer<E>> updateAction) {
-    viewModel.getElements().forEach(element -> updateAction.accept(element, updatedElement -> {
+   getDirtyElements().forEach(element -> updateAction.accept(element, updatedElement -> {
       if (element.isTransient()) {
         element.setId(updatedElement.getId());
       }

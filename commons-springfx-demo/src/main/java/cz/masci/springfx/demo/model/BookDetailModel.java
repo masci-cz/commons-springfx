@@ -38,7 +38,7 @@ public class BookDetailModel extends BaseDetailModel<Long> {
 
   @Override
   public boolean isTransient() {
-    return false;
+    return getId() == null;
   }
 
   // region setters and getters

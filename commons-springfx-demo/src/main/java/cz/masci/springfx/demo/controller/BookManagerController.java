@@ -23,7 +23,7 @@ import cz.masci.springfx.demo.interactor.BookInteractor;
 import cz.masci.springfx.demo.model.BookDetailModel;
 import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import cz.masci.springfx.mvci.controller.impl.OperableListController;
+import cz.masci.springfx.mvci.controller.impl.OperableManagerController;
 import cz.masci.springfx.mvci.util.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.util.ConcurrentUtils;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
@@ -39,12 +39,12 @@ public class BookManagerController implements ViewProvider<Region> {
 
   private final BookInteractor interactor;
 
-  private final OperableListController<Long, BookDetailModel, BookListModel> operableListController;
+  private final OperableManagerController<Long, BookDetailModel, BookListModel> operableManagerController;
   private final CommandsViewBuilder builder;
 
   public BookManagerController(BookListModel viewModel, BookInteractor interactor) {
     this.interactor = interactor;
-    operableListController = new OperableListController<>(viewModel);
+    operableManagerController = new OperableManagerController<>(viewModel);
 
     builder = new CommandsViewBuilder(
         List.of(
@@ -64,14 +64,14 @@ public class BookManagerController implements ViewProvider<Region> {
   private void newBook() {
       var element = new BookDetailModel();
       element.setTitle("New Book");
-      operableListController.add(element);
+      operableManagerController.add(element);
   }
 
   private void load(Runnable postGuiStuff) {
     BackgroundTaskBuilder
         .task(interactor::list)
         .postGuiCall(postGuiStuff)
-        .onSucceeded(operableListController::addAll)
+        .onSucceeded(operableManagerController::addAll)
         .start();
   }
 
@@ -79,7 +79,7 @@ public class BookManagerController implements ViewProvider<Region> {
     AtomicInteger savedCount = new AtomicInteger(0);
     BackgroundTaskBuilder
         .task(() -> {
-          operableListController.update((element, updateElement) -> {
+          operableManagerController.update((element, updateElement) -> {
             try {
               var savedElement = interactor.save(element);
               ConcurrentUtils.runInFXThread(() -> updateElement.accept(savedElement));
@@ -96,7 +96,7 @@ public class BookManagerController implements ViewProvider<Region> {
   }
 
   private void discard() {
-    operableListController.discard();
+    operableManagerController.discard();
     log.info("Changes were discarded");
   }
 }

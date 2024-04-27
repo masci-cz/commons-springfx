@@ -20,6 +20,7 @@
 package cz.masci.springfx.demo;
 
 import cz.masci.springfx.demo.controller.MainController;
+import cz.masci.springfx.demo.theme.AppTheme;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import io.github.palexdev.materialfx.theming.JavaFXThemes;
 import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
@@ -47,6 +48,7 @@ public class JavaFXApp extends Application {
     UserAgentBuilder.builder()
                     .themes(JavaFXThemes.MODENA)
                     .themes(MaterialFXStylesheets.forAssemble(false))
+                    .themes(AppTheme.TABLE_VIEW)
                     .setDeploy(true)
                     .setDebug(true)
                     .setResolveAssets(true)

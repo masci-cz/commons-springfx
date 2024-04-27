@@ -45,11 +45,13 @@ public class BookInteractorImpl implements BookInteractor {
 
   @Override
   public BookDetailModel save(BookDetailModel book) {
-    if (book.getId() == null) {
-      book.setId(faker.random().nextLong());
-    }
-    book.rebaseline();
-    return book;
+    // mimic database save creating new model
+    var savedBook = new BookDetailModel();
+    savedBook.setId(book.isTransient() ? faker.random().nextLong() : book.getId());
+    savedBook.setAuthor(book.getAuthor());
+    savedBook.setTitle(book.getTitle());
+    savedBook.rebaseline();
+    return savedBook;
   }
 
   @Override
