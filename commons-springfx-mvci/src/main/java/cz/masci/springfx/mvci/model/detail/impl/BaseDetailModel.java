@@ -20,18 +20,21 @@
 package cz.masci.springfx.mvci.model.detail.impl;
 
 import cz.masci.springfx.mvci.model.detail.DetailModel;
+import io.github.palexdev.materialfx.validation.Constraint;
 import io.github.palexdev.materialfx.validation.MFXValidator;
+import java.util.Arrays;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
+import org.nield.dirtyfx.tracking.DirtyProperty;
 
 public abstract class BaseDetailModel<T> implements DetailModel<T> {
-  protected ObjectProperty<T> id = new SimpleObjectProperty<>();
+  private final ObjectProperty<T> id = new SimpleObjectProperty<>();
   @Getter
-  protected final CompositeDirtyProperty composite = new CompositeDirtyProperty();
+  private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
   @Getter
-  protected final MFXValidator validator = new MFXValidator();
+  private final MFXValidator validator = new MFXValidator();
 
   public T getId() {
     return id.get();
@@ -39,5 +42,13 @@ public abstract class BaseDetailModel<T> implements DetailModel<T> {
 
   public void setId(T id) {
     this.id.set(id);
+  }
+
+  protected void addComposites(DirtyProperty ...properties) {
+    composite.addAll(properties);
+  }
+
+  protected void addConstraints(Constraint ...constraints) {
+    Arrays.stream(constraints).forEach(validator::constraint);
   }
 }

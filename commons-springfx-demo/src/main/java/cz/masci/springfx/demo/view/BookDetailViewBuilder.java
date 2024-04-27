@@ -22,7 +22,7 @@ package cz.masci.springfx.demo.view;
 import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
 
 import cz.masci.springfx.demo.model.BookDetailModel;
-import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.mvci.util.BuilderUtils;
 import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
@@ -35,7 +35,7 @@ import org.reactfx.value.Var;
 
 public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> implements Builder<Region> {
 
-  public BookDetailViewBuilder(ListModel<BookDetailModel> viewModel) {
+  public BookDetailViewBuilder(BookListModel viewModel) {
     super(viewModel);
   }
 

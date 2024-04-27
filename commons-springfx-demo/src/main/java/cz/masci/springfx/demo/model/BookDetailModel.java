@@ -32,8 +32,8 @@ public class BookDetailModel extends BaseDetailModel<Long> {
   private DirtyStringProperty author = new DirtyStringProperty("");
 
   public BookDetailModel() {
-    composite.addAll(title, author);
-    validator.constraint(ConstraintUtils.isNotEmpty(title, "Title"));
+    addComposites(title, author);
+    addConstraints(ConstraintUtils.isNotEmpty(title, "Title"));
   }
 
   @Override
