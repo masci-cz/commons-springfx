@@ -29,7 +29,7 @@ import lombok.Setter;
 import org.reactfx.value.Var;
 
 /**
- * BaseListModel is a generic implementation of the ListModel interface.
+ * BaseListModel is a generic implementation of the {@link ListModel} and {@link Elements} interfaces.
  * It provides basic functionality for managing a list of elements and interacting with them.
  *
  * @param <I> The type of the element id identifier.
@@ -60,8 +60,7 @@ public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>,
   @Override
   public void remove(E element) {
     selectedElement.setValue(null);
-    elements.remove(element);
-    if (onRemoveElement != null) {
+    if (elements.remove(element) && onRemoveElement != null) {
       onRemoveElement.accept(element);
     }
   }
