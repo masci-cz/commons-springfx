@@ -19,22 +19,18 @@
 
 package cz.masci.springfx.mvci.model.detail.impl;
 
+import static cz.masci.springfx.mvci.TestConstants.DETAIL_MODEL_ID;
+import static cz.masci.springfx.mvci.TestConstants.INITIAL_TEXT;
+import static cz.masci.springfx.mvci.TestConstants.UPDATED_TEXT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import io.github.palexdev.materialfx.validation.Constraint;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import cz.masci.springfx.mvci.TestDetailModel;
 import org.junit.jupiter.api.Test;
 
 public class BaseDetailModelTest {
-
-  private final static String INITIAL_TEXT = "initial text";
-  private final static String UPDATED_TEXT = "updated text";
-  private final static Integer ID = 1;
 
   private final TestDetailModel baseDetailModel = new TestDetailModel();
 
@@ -46,9 +42,9 @@ public class BaseDetailModelTest {
 
   @Test
   public void setId() {
-    baseDetailModel.setId(ID);
+    baseDetailModel.setId(DETAIL_MODEL_ID);
     Integer resultId = baseDetailModel.getId();
-    assertEquals(ID, resultId);
+    assertEquals(DETAIL_MODEL_ID, resultId);
   }
 
   @Test
@@ -95,30 +91,5 @@ public class BaseDetailModelTest {
     assertTrue(baseDetailModel.isValid());
   }
 
-  // region TestDetailModel
-  @Data
-  @EqualsAndHashCode(callSuper = true)
-  private static class TestDetailModel extends BaseDetailModel<Integer> {
-    private Integer id;
-    private DirtyStringProperty text = new DirtyStringProperty(INITIAL_TEXT);
-
-    public TestDetailModel() {
-      addComposites(text);
-      addConstraints(Constraint.of("Text should be not empty", text.isNotEmpty()));
-    }
-
-    @Override
-    public boolean isTransient() {
-      return false;
-    }
-
-    public String getText() {
-      return text.get();
-    }
-
-    public void setText(String text) {
-      this.text.set(text);
-    }
-  }
   // endregion
 }

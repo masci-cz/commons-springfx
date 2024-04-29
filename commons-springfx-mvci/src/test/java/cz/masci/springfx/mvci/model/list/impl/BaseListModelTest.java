@@ -25,14 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import cz.masci.springfx.mvci.model.detail.DetailModel;
-import io.github.palexdev.materialfx.validation.MFXValidator;
+import cz.masci.springfx.mvci.TestDetailModel;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import lombok.Data;
 import org.junit.jupiter.api.Test;
-import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
 public class BaseListModelTest {
 
@@ -157,25 +154,5 @@ public class BaseListModelTest {
   }
   // endregion
 
-  // region TestDetailModel
-  @Data
-  private static class TestDetailModel implements DetailModel<Integer> {
-    private Integer id;
-
-    @Override
-    public CompositeDirtyProperty getComposite() {
-      return new CompositeDirtyProperty();
-    }
-
-    @Override
-    public boolean isTransient() {
-      return false;
-    }
-
-    @Override
-    public MFXValidator getValidator() {
-      return null;
-    }
-  }
   // endregion
 }
