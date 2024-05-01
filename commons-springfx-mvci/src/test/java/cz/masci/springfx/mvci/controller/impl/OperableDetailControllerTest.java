@@ -36,7 +36,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import cz.masci.springfx.mvci.TestDetailModel;
-import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.model.list.Removable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,14 +51,13 @@ class OperableDetailControllerTest {
 
   private final Var<TestDetailModel> selectedElement = Var.newSimpleVar(null);
   @Mock
-  private ListModel<TestDetailModel> viewModel;
+  private Removable<TestDetailModel> removable;
 
-  private OperableDetailController<Integer, TestDetailModel, ListModel<TestDetailModel>> operableDetailController;
+  private OperableDetailController<Integer, TestDetailModel> operableDetailController;
 
   @BeforeEach
   void setUp() {
-    when(viewModel.selectedElementProperty()).thenReturn(selectedElement);
-    operableDetailController = new OperableDetailController<>(viewModel);
+    operableDetailController = new OperableDetailController<>(selectedElement, removable);
   }
 
   @Test
@@ -139,7 +138,7 @@ class OperableDetailControllerTest {
     operableDetailController.discard();
 
     assertNull(selectedElement.getValue());
-    verify(viewModel, never()).remove(any());
+    verify(removable, never()).remove(any());
   }
 
   @Test
@@ -153,7 +152,7 @@ class OperableDetailControllerTest {
     selectedElement.setValue(element);
     operableDetailController.discard();
 
-    verify(viewModel).remove(eq(element));
+    verify(removable).remove(eq(element));
     verify(element, never()).reset();
   }
 
@@ -168,7 +167,7 @@ class OperableDetailControllerTest {
     selectedElement.setValue(element);
     operableDetailController.discard();
 
-    verify(viewModel, never()).remove(eq(element));
+    verify(removable, never()).remove(eq(element));
     verify(element).reset();
   }
   // endregion
@@ -232,7 +231,7 @@ class OperableDetailControllerTest {
     operableDetailController.remove((item, removeAction) -> fail("Update action is called when shouldn't"));
 
     assertNull(selectedElement.getValue());
-    verify(viewModel, never()).remove(any());
+    verify(removable, never()).remove(any());
   }
 
   @Test
@@ -242,7 +241,7 @@ class OperableDetailControllerTest {
     selectedElement.setValue(element);
     operableDetailController.remove((item, removeAction) -> removeAction.run());
 
-    verify(viewModel).remove(element);
+    verify(removable).remove(element);
   }
   // endregion
 

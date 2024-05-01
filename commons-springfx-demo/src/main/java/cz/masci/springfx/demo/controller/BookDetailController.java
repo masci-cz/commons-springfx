@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BookDetailController implements ViewProvider<Region> {
 
-  private final OperableDetailController<Long, BookDetailModel, BookListModel> operableDetailController;
+  private final OperableDetailController<Long, BookDetailModel> operableDetailController;
 
   private final BookInteractor interactor;
 
@@ -50,7 +50,7 @@ public class BookDetailController implements ViewProvider<Region> {
 
   public BookDetailController(BookListModel viewModel, BookInteractor interactor) {
     this.interactor = interactor;
-    operableDetailController = new OperableDetailController<>(viewModel);
+    operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
 
     var detailViewBuilder = new BookDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);

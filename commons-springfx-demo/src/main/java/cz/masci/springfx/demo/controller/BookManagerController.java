@@ -39,13 +39,12 @@ public class BookManagerController implements ViewProvider<Region> {
 
   private final BookInteractor interactor;
 
-  private final OperableManagerController<Long, BookDetailModel, BookListModel> operableManagerController;
+  private final OperableManagerController<Long, BookDetailModel> operableManagerController;
   private final CommandsViewBuilder builder;
 
   public BookManagerController(BookListModel viewModel, BookInteractor interactor) {
     this.interactor = interactor;
-    operableManagerController = new OperableManagerController<>(viewModel);
-
+    operableManagerController = new OperableManagerController<>(viewModel, viewModel.getElements());
     builder = new CommandsViewBuilder(
         List.of(
             ButtonBuilder.builder().text("New").command(this::newBook).styleClass("outlined").build(MFXButton::new),

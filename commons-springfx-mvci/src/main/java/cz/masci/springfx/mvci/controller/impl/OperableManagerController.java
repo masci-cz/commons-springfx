@@ -21,31 +21,42 @@ package cz.masci.springfx.mvci.controller.impl;
 
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
-import cz.masci.springfx.mvci.model.list.Elements;
-import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.model.list.Focusable;
+import cz.masci.springfx.mvci.model.list.Removable;
+import cz.masci.springfx.mvci.model.list.Selectable;
 import io.github.palexdev.materialfx.validation.Validated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class OperableManagerController<I, E extends DetailModel<I>, T extends ListModel<E> & Elements<E>> {
-  // TODO put properties for each called method select(), focus(), getElements(), remove()
-  private final T viewModel;
+public class OperableManagerController<I, E extends DetailModel<I>> {
+  private final Selectable<E> selectable;
+  private final Focusable focusable;
+  private final Removable<E> removable;
+  private final ObservableList<E> elements;
 
-  public void add(E element) {
-    viewModel.getElements().add(element);
-    viewModel.select(element);
-    viewModel.focus();
+  public <T extends Selectable<E> & Focusable & Removable<E>> OperableManagerController(T model, ObservableList<E> elements) {
+    this.elements = elements;
+    this.selectable = model;
+    this.focusable = model;
+    this.removable = model;
   }
 
-  public void addAll(List<E> elements) {
-    viewModel.select(null);
-    viewModel.getElements().clear();
-    viewModel.getElements().addAll(elements);
+  public void add(E element) {
+    elements.add(element);
+    selectable.select(element);
+    focusable.focus();
+  }
+
+  public void addAll(List<E> newElements) {
+    selectable.select(null);
+    elements.clear();
+    elements.addAll(newElements);
   }
 
   public void update(BiConsumer<E, Consumer<E>> updateAction) {
@@ -68,10 +79,10 @@ public class OperableManagerController<I, E extends DetailModel<I>, T extends Li
         element.reset();
       }
     });
-    elementsToRemove.forEach(viewModel::remove);
+    elementsToRemove.forEach(removable::remove);
   }
 
   protected Stream<E> getDirtyElements() {
-    return viewModel.getElements().stream().filter(DirtyModel::isDirty);
+    return elements.stream().filter(DirtyModel::isDirty);
   }
 }

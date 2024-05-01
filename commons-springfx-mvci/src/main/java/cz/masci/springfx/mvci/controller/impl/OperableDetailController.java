@@ -23,27 +23,28 @@ import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
 import cz.masci.springfx.mvci.model.detail.ValidModel;
 import cz.masci.springfx.mvci.model.list.Removable;
-import cz.masci.springfx.mvci.model.list.Selectable;
+import jakarta.annotation.Nonnull;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.reactfx.value.Val;
+import org.reactfx.value.Var;
 
-public class OperableDetailController<I, E extends DetailModel<I>, T extends Removable<E> & Selectable<E>> {
+public class OperableDetailController<I, E extends DetailModel<I>> {
 
   private final Val<E> selectedElement;
-  private final T viewModel;
+  private final Removable<E> removable;
 
   private final BooleanProperty saveDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty discardDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty deleteDisabled = new SimpleBooleanProperty(true);
 
   // TODO use as input parameters only selectedElementProperty <E> and remove consumer<E>
-  public OperableDetailController(T viewModel) {
-    this.selectedElement = Val.wrap(viewModel.selectedElementProperty());
-    this.viewModel = viewModel;
+  public OperableDetailController(Var<E> selectedElement, @Nonnull Removable<E> removable) {
+    this.selectedElement = Val.wrap(selectedElement);
+    this.removable = removable;
 
     initDisableProperties();
   }
@@ -64,7 +65,7 @@ public class OperableDetailController<I, E extends DetailModel<I>, T extends Rem
     if (isDiscardEnabled()) {
       selectedElement.ifPresent(element -> {
         if (element.isTransient()) {
-          viewModel.remove(element);
+          removable.remove(element);
         } else {
           element.reset();
         }
@@ -85,7 +86,7 @@ public class OperableDetailController<I, E extends DetailModel<I>, T extends Rem
 
   public void remove(BiConsumer<E, Runnable> removeAction) {
     if (isDeleteEnabled()) {
-      selectedElement.ifPresent(element -> removeAction.accept(element, () -> viewModel.remove(element)));
+      selectedElement.ifPresent(element -> removeAction.accept(element, () -> removable.remove(element)));
     }
   }
 

@@ -20,6 +20,7 @@
 package cz.masci.springfx.mvci.controller.impl;
 
 import static cz.masci.springfx.mvci.TestConstants.DETAIL_MODEL_ID;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -28,9 +29,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import cz.masci.springfx.mvci.TestDetailModel;
+import cz.masci.springfx.mvci.model.list.Focusable;
+import cz.masci.springfx.mvci.model.list.Removable;
+import cz.masci.springfx.mvci.model.list.Selectable;
 import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
 import java.util.List;
-import javafx.collections.FXCollections;
+import java.util.stream.Stream;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,24 +46,35 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class OperableManagerControllerTest {
 
   @Mock
-  private TestListModel viewModel;
+  private Selectable<TestDetailModel> selectable;
+  @Mock
+  private Focusable focusable;
+  @Mock
+  private Removable<TestDetailModel> removable;
   @Mock
   private ObservableList<TestDetailModel> modelElements;
 
   @InjectMocks
-  private OperableManagerController<Integer, TestDetailModel, TestListModel> controller;
+  private OperableManagerController<Integer, TestDetailModel> controller;
+
+  @Test
+  void constructor() {
+    BaseListModel<Integer, TestDetailModel> listModel = new BaseListModel<>();
+
+    OperableManagerController<Integer, TestDetailModel> localController = new OperableManagerController<>(listModel, listModel.getElements());
+
+    assertNotNull(localController);
+  }
 
   // region add
   @Test
   void add() {
     var element = new TestDetailModel();
 
-    when(viewModel.getElements()).thenReturn(modelElements);
-
     controller.add(element);
 
-    verify(viewModel).select(element);
-    verify(viewModel).focus();
+    verify(selectable).select(element);
+    verify(focusable).focus();
     verify(modelElements).add(element);
   }
   // endregion
@@ -69,11 +84,9 @@ class OperableManagerControllerTest {
   void addAll() {
     var newElements = List.of(new TestDetailModel(), new TestDetailModel());
 
-    when(viewModel.getElements()).thenReturn(modelElements);
-
     controller.addAll(newElements);
 
-    verify(viewModel).select(eq(null));
+    verify(selectable).select(eq(null));
     verify(modelElements).clear();
     verify(modelElements).addAll(newElements);
   }
@@ -87,7 +100,7 @@ class OperableManagerControllerTest {
     var transientElement = createTestDetailModel(true, true, true);
     var notTransientElement = createTestDetailModel(true, true, false);
 
-    when(viewModel.getElements()).thenReturn(FXCollections.observableArrayList(notDirtyElement, notValidElement, transientElement, notTransientElement));
+    when(modelElements.stream()).thenReturn(Stream.of(notDirtyElement, notValidElement, transientElement, notTransientElement));
 
     controller.update((element, updateAction) -> {
       var updatedElement = new TestDetailModel();
@@ -119,7 +132,7 @@ class OperableManagerControllerTest {
     var transientElement = createTestDetailModel(true, null, true);
     var notTransientElement = createTestDetailModel(true, null, false);
 
-    when(viewModel.getElements()).thenReturn(FXCollections.observableArrayList(notDirtyElement, transientElement, notTransientElement));
+    when(modelElements.stream()).thenReturn(Stream.of(notDirtyElement, transientElement, notTransientElement));
 
     controller.discard();
 
@@ -130,7 +143,7 @@ class OperableManagerControllerTest {
 
     verify(notTransientElement).reset();
 
-    verify(viewModel).remove(transientElement);
+    verify(removable).remove(transientElement);
   }
   // endregion
 
@@ -150,6 +163,4 @@ class OperableManagerControllerTest {
     return testDetailModel;
   }
 
-  private static class TestListModel extends BaseListModel<Integer, TestDetailModel> {
-  }
 }
