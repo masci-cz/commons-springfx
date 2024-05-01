@@ -24,18 +24,18 @@ import static cz.masci.springfx.mvci.TestConstants.INITIAL_TEXT;
 import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
 import io.github.palexdev.materialfx.validation.Constraint;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TestDetailModel extends BaseDetailModel<Integer> {
   private final DirtyStringProperty text = new DirtyStringProperty(INITIAL_TEXT);
+  @Setter
+  @Getter
+  private boolean isTransient;
 
   public TestDetailModel() {
     addComposites(text);
     addConstraints(Constraint.of("Text should be not empty", text.isNotEmpty()));
-  }
-
-  @Override
-  public boolean isTransient() {
-    return false;
   }
 
   public String getText() {

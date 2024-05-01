@@ -40,6 +40,7 @@ public class OperableDetailController<I, E extends DetailModel<I>, T extends Rem
   private final BooleanProperty discardDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty deleteDisabled = new SimpleBooleanProperty(true);
 
+  // TODO use as input parameters only selectedElementProperty <E> and remove consumer<E>
   public OperableDetailController(T viewModel) {
     this.selectedElement = Val.wrap(viewModel.selectedElementProperty());
     this.viewModel = viewModel;

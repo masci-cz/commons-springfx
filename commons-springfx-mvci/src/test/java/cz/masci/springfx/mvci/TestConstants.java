@@ -22,6 +22,7 @@ package cz.masci.springfx.mvci;
 public class TestConstants {
   public static final String INITIAL_TEXT = "initial text";
   public static final String UPDATED_TEXT = "updated text";
+  public static final String EMPTY_TEXT = "";
   public final static Integer DETAIL_MODEL_ID = 1;
 
 }
