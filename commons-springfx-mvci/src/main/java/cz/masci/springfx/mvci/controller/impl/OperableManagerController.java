@@ -23,6 +23,7 @@ import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
 import cz.masci.springfx.mvci.model.list.Elements;
 import cz.masci.springfx.mvci.model.list.ListModel;
+import io.github.palexdev.materialfx.validation.Validated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class OperableManagerController<I, E extends DetailModel<I>, T extends ListModel<E> & Elements<E>> {
+  // TODO put properties for each called method select(), focus(), getElements(), remove()
   private final T viewModel;
 
   public void add(E element) {
@@ -47,7 +49,9 @@ public class OperableManagerController<I, E extends DetailModel<I>, T extends Li
   }
 
   public void update(BiConsumer<E, Consumer<E>> updateAction) {
-   getDirtyElements().forEach(element -> updateAction.accept(element, updatedElement -> {
+   getDirtyElements()
+       .filter(Validated::isValid)
+       .forEach(element -> updateAction.accept(element, updatedElement -> {
       if (element.isTransient()) {
         element.setId(updatedElement.getId());
       }
