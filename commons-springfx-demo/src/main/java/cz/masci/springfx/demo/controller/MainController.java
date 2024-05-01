@@ -22,7 +22,7 @@ package cz.masci.springfx.demo.controller;
 import cz.masci.springfx.demo.interactor.BookInteractor;
 import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import cz.masci.springfx.mvci.util.BackgroundTaskBuilder;
+import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;

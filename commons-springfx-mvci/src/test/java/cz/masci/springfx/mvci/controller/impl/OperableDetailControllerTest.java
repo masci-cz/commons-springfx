@@ -227,7 +227,7 @@ class OperableDetailControllerTest {
 
   // region remove
   @Test
-  void remove_notEnabled() {
+  void remove_notSelected() {
     operableDetailController.remove((item, removeAction) -> fail("Update action is called when shouldn't"));
 
     assertNull(selectedElement.getValue());
@@ -235,13 +235,26 @@ class OperableDetailControllerTest {
   }
 
   @Test
-  void remove_enabled() {
+  void remove_notTransient() {
     TestDetailModel element = new TestDetailModel();
+    element.setTransient(false);
 
     selectedElement.setValue(element);
     operableDetailController.remove((item, removeAction) -> removeAction.run());
 
     verify(removable).remove(element);
+  }
+
+  @Test
+  void remove_transient() {
+    TestDetailModel element = new TestDetailModel();
+    element.setTransient(true);
+
+    selectedElement.setValue(element);
+    operableDetailController.remove((item, removeAction) -> fail("Update action is called when shouldn't"));
+
+    assertNotNull(selectedElement.getValue());
+    verify(removable, never()).remove(any());
   }
   // endregion
 

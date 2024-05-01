@@ -30,4 +30,5 @@ import cz.masci.commons.springfx.data.Identifiable;
 public interface IdentifiableModel<T> extends Identifiable<T> {
   /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persisted it returns {@code false}. */
   boolean isTransient();
+  // TODO make isTransient as a property
 }

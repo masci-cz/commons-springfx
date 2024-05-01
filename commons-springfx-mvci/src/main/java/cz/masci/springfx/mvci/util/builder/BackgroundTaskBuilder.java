@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2024
  *
- * This file is part of DrD.
+ * This file is part of commons-springfx library.
  *
- * DrD is free software: you can redistribute it and/or modify it under the
+ * commons-springfx library is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free
  *  Software Foundation, either version 3 of the License, or (at your option)
  *   any later version.
  *
- * DrD is distributed in the hope that it will be useful, but WITHOUT ANY
+ * commons-springfx library is distributed in the hope that it will be useful, but WITHOUT ANY
  *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
  *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
  *    License for more details.
@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.util;
+package cz.masci.springfx.mvci.util.builder;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;

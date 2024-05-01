@@ -19,14 +19,9 @@
 
 package cz.masci.springfx.demo.view;
 
-import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTableColumn;
-import static cz.masci.springfx.mvci.util.MFXBuilderUtils.initSelectionModel;
-
 import cz.masci.springfx.demo.model.BookDetailModel;
 import cz.masci.springfx.demo.model.BookListModel;
-import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
-import io.github.palexdev.materialfx.controls.MFXTableView;
-import java.util.List;
+import cz.masci.springfx.mvci.util.builder.MFXTableViewBuilder;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
@@ -38,28 +33,13 @@ public class BookListViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    // create table view
-    var result = new MFXTableView<>(viewModel.getElements());
-    result.setMaxHeight(Double.MAX_VALUE);
-    result.setMaxWidth(Double.MAX_VALUE);
+    MFXTableViewBuilder<Long, BookDetailModel> builder = MFXTableViewBuilder.builder(viewModel);
+    builder.maxHeight(Double.MAX_VALUE);
+    builder.maxWidth(Double.MAX_VALUE);
+    builder.column("Title", BookDetailModel::getTitle, 300);
+    builder.column("Author", BookDetailModel::getAuthor);
+    builder.allowsMultipleSelection(false);
 
-    // create columns with row cell factory
-    var titleColumn = createTableColumn("Title", BookDetailModel::getTitle);
-    titleColumn.setPrefWidth(300);
-    var authorColumn = createTableColumn("Author", BookDetailModel::getAuthor);
-
-    // add columns to the table
-    result.getTableColumns().addAll(List.of(titleColumn, authorColumn));
-    // set table row factory to change row style class when the row becomes dirty
-    result.setTableRowFactory(data -> new DirtyMFXTableRow<>(result, data, "dirty-row"));
-    result.getSelectionModel().setAllowsMultipleSelection(false);
-
-    // set what should be done when an item in the table is selected
-    // whenever the selection is made it feeds the list view model selected property,
-    // what should happen when any selected property attribute changes
-    // what should happen when list view model selectItem() is called
-    initSelectionModel(result.getSelectionModel(), result::update, viewModel);
-
-    return result;
+    return builder.build();
   }
 }

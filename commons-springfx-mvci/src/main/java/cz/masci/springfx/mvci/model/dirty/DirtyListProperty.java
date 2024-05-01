@@ -19,7 +19,7 @@
 
 package cz.masci.springfx.mvci.model.dirty;
 
-import cz.masci.springfx.mvci.util.ListChangeListenerBuilder;
+import cz.masci.springfx.mvci.util.builder.ListChangeListenerBuilder;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;

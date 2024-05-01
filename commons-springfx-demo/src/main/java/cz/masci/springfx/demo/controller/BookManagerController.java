@@ -24,7 +24,7 @@ import cz.masci.springfx.demo.model.BookDetailModel;
 import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.OperableManagerController;
-import cz.masci.springfx.mvci.util.BackgroundTaskBuilder;
+import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.util.ConcurrentUtils;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;

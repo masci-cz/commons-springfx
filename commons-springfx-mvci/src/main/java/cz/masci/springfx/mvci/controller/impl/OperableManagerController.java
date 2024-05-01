@@ -33,6 +33,14 @@ import java.util.stream.Stream;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 
+
+/**
+ * The OperableManagerController class is a generic class that provides operations for managing objects in a list.
+ * It supports adding and removing elements, selecting and focusing elements, updating dirty elements, and discarding changes.
+ *
+ * @param <I> the type of the id of the elements
+ * @param <E> the type of the elements that can be managed
+ */
 @RequiredArgsConstructor
 public class OperableManagerController<I, E extends DetailModel<I>> {
   private final Selectable<E> selectable;
@@ -47,29 +55,64 @@ public class OperableManagerController<I, E extends DetailModel<I>> {
     this.removable = model;
   }
 
+  /**
+   * Adds an element to the list of elements managed by the OperableManagerController.
+   * Does the following:
+   * 1. Adds the element to the elements list.
+   * 2. Selects the element using the Selectable interface.
+   * 3. Focuses on the element using the Focusable interface.
+   *
+   * @param element the element to be added
+   */
   public void add(E element) {
     elements.add(element);
     selectable.select(element);
     focusable.focus();
   }
 
+  /**
+   * Adds all elements from the given list to the elements managed by the OperableManagerController.
+   * This method performs the following operations:
+   *
+   * 1. Unselects the currently selected element by calling the select() method of the Selectable interface with a null argument.
+   * 2. Clears the elements list.
+   * 3. Adds all elements from the given list to the elements list.
+   *
+   * @param newElements the list of new elements to be added
+   */
   public void addAll(List<E> newElements) {
     selectable.select(null);
     elements.clear();
     elements.addAll(newElements);
   }
 
+  /**
+   * Updates the elements in the list of elements managed by the OperableManagerController.
+   *
+   * 1. Filters the dirty elements that are valid.
+   * 2. For each valid dirty element, the updateAction is executed by accepting the element and the updatedElement consumer.
+   * 3. If the element is transient, the id of the element is set to the id of the updatedElement.
+   * 4. The element is rebaselined.
+   *
+   * @param updateAction the action to update the element
+   *                    Accepts the element to be updated and the consumer to accept the updated element
+   *                    The consumer is responsible for updating the element and can provide the updated element
+   */
   public void update(BiConsumer<E, Consumer<E>> updateAction) {
-   getDirtyElements()
-       .filter(Validated::isValid)
-       .forEach(element -> updateAction.accept(element, updatedElement -> {
-      if (element.isTransient()) {
-        element.setId(updatedElement.getId());
-      }
-      element.rebaseline();
-    }));
+    getDirtyElements().filter(Validated::isValid)
+                      .forEach(element -> updateAction.accept(element, updatedElement -> {
+                        if (element.isTransient()) {
+                          element.setId(updatedElement.getId());
+                        }
+                        element.rebaseline();
+                      }));
   }
 
+  /**
+   * Discards changes made to the dirty elements in the list of elements managed by the OperableManagerController.
+   * If an element is transient, it is removed from the list.
+   * If an element is not transient, it is reset to its original state.
+   */
   public void discard() {
     var elementsToRemove = new ArrayList<E>();
     getDirtyElements().forEach(element -> {

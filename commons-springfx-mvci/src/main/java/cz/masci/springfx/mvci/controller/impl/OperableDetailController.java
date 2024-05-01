@@ -19,8 +19,10 @@
 
 package cz.masci.springfx.mvci.controller.impl;
 
+import cz.masci.commons.springfx.data.Identifiable;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
+import cz.masci.springfx.mvci.model.detail.IdentifiableModel;
 import cz.masci.springfx.mvci.model.detail.ValidModel;
 import cz.masci.springfx.mvci.model.list.Removable;
 import jakarta.annotation.Nonnull;
@@ -32,6 +34,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 import org.reactfx.value.Val;
 import org.reactfx.value.Var;
 
+/**
+ * The OperableDetailController class is responsible for controlling the operations and state of a detail view.
+ * It handles actions such as saving, discarding, and deleting detail elements.
+ *
+ * @param <I> The type of the identifier for the detail element.
+ * @param <E> The type of the detail element.
+ */
 public class OperableDetailController<I, E extends DetailModel<I>> {
 
   private final Val<E> selectedElement;
@@ -41,7 +50,6 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
   private final BooleanProperty discardDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty deleteDisabled = new SimpleBooleanProperty(true);
 
-  // TODO use as input parameters only selectedElementProperty <E> and remove consumer<E>
   public OperableDetailController(Var<E> selectedElement, @Nonnull Removable<E> removable) {
     this.selectedElement = Val.wrap(selectedElement);
     this.removable = removable;
@@ -61,6 +69,10 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     return deleteDisabled;
   }
 
+  /**
+   * Discards the selected element. If discard is enabled, the method checks if the selected element is transient. If it is, the element is removed from the removable collection.
+   *  If it is not transient, the element is reset to its initial state.
+   */
   public void discard() {
     if (isDiscardEnabled()) {
       selectedElement.ifPresent(element -> {
@@ -73,6 +85,14 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     }
   }
 
+  /**
+   * Updates the selected element with the given update action if save is enabled.
+   *
+   * @param updateAction the update action to perform on the selected element
+   *                    The action takes two parameters:
+   *                    - the selected element
+   *                    - a consumer to accept the updated element, means to run in FX thread
+   */
   public void update(BiConsumer<E, Consumer<E>> updateAction) {
     if (isSaveEnabled()) {
       selectedElement.ifPresent(element -> updateAction.accept(element, updatedElement -> {
@@ -84,6 +104,15 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     }
   }
 
+  /**
+   * Removes the selected element if delete is enabled. The method executes the given remove action on the selected element and provides a runnable to remove the element from the
+   *  removable collection.
+   *
+   * @param removeAction the remove action to perform on the selected element
+   *                    The action takes two parameters:
+   *                    - the selected element
+   *                    - a runnable to remove the element, means to run in FX thread
+   */
   public void remove(BiConsumer<E, Runnable> removeAction) {
     if (isDeleteEnabled()) {
       selectedElement.ifPresent(element -> removeAction.accept(element, () -> removable.remove(element)));
@@ -95,7 +124,7 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     Val<Boolean> dirtyProperty = selectedElement.flatMap(DirtyModel::isDirtyProperty);
     Val<Boolean> validProperty = selectedElement.flatMap(ValidModel::validProperty);
     Val<Boolean> saveDisable = Val.combine(dirtyProperty, validProperty, (dirty, valid) -> !dirty || !valid);
-    deleteDisabled.bind(Bindings.createBooleanBinding(selectedElement::isEmpty, selectedElement));
+    deleteDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.getOpt().map(IdentifiableModel::isTransient).orElse(true), selectedElement));
     saveDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.isEmpty() || saveDisable.getOrElse(true), selectedElement, saveDisable));
     discardDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.isEmpty() || !dirtyProperty.getOrElse(true), selectedElement, dirtyProperty));
   }
