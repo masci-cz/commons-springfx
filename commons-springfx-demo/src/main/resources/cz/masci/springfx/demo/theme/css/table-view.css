@@ -1,0 +1,19 @@
+* {
+    -dirty-row-color: RED;
+}
+
+.dirty-row:even {
+    -fx-background-color: -dirty-row-color;
+}
+
+.dirty-row:odd {
+    -fx-background-color: -dirty-row-color;
+}
+
+.dirty-row:selected {
+    -fx-background-color: -dirty-row-color;
+}
+
+.dirty-row {
+    -fx-background-color: -dirty-row-color;
+}

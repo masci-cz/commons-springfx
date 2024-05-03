@@ -44,6 +44,7 @@
         <module>commons-springfx-data</module>
         <module>commons-springfx-mve</module>
         <module>commons-springfx-mvci</module>
+        <module>commons-springfx-demo</module>
     </modules>
 
     <dependencyManagement>

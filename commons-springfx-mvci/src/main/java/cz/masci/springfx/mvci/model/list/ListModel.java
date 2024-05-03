@@ -19,9 +19,30 @@
 
 package cz.masci.springfx.mvci.model.list;
 
+import java.util.function.Consumer;
+
 /**
- * This list interface groups {@code Selectable}, {@code Updatable} and {@code Removable} interfaces
- *
- * @param <E>
+ * This list interface groups {@link Selectable}, {@link Updatable}, {@link  Removable} and {@link Focusable} interfaces. Adding methods to externally define
+ * commands for {@link Focusable#focus}, {@link Removable#remove}, {@link Selectable#select} and {@link Updatable#update}
  */
-public interface ListModel<E> extends Selectable<E>, Updatable, Removable<E> {}
+public interface ListModel<E> extends Selectable<E>, Updatable, Removable<E>, Focusable {
+  /**
+   * Sets the command which is executed in {@link Focusable#focus}.
+   */
+  void setOnFocusView(Runnable command);
+
+  /**
+   * Sets the command which is executed in {@link Removable#remove}
+   */
+  void setOnRemoveElement(Consumer<E> command);
+
+  /**
+   * Sets the command which is executed in {@link Selectable#select}
+   */
+  void setOnSelectElement(Consumer<E> command);
+
+  /**
+   * Sets the command which is executed in {@link Updatable#update}
+   */
+  void setOnUpdateElementsProperty(Runnable command);
+}

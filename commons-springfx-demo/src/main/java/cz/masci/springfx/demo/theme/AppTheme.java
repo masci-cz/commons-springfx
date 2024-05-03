@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024
+ * Copyright (c) 2023
  *
  * This file is part of DrD.
  *
@@ -17,24 +17,32 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.model.list;
+package cz.masci.springfx.demo.theme;
 
-import org.reactfx.value.Var;
+import io.github.palexdev.materialfx.theming.base.Theme;
+import java.net.URL;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Ability to select element in elements observable list. Mostly used to explicitly {@code select} an element in the list view from list-detail view pattern.
- * Also provides selected element property
- */
-public interface Selectable<E> {
+@RequiredArgsConstructor
+public enum AppTheme implements Theme {
 
-  void select(E element);
+  TABLE_VIEW("css/table-view.css");
 
-  /**
-   * Returns selected element property
-   */
-  Var<E> selectedElementProperty();
+  private final String path;
 
-  default E getSelectedElement() {
-    return selectedElementProperty().getValue();
+  @Override
+  public String path() {
+    return path;
+  }
+
+  @Override
+  public URL get() {
+    return Optional.ofNullable(AppTheme.class.getResource(path)).orElseThrow();
+  }
+
+  @Override
+  public String deployName() {
+    return "app";
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2023-2024
  *
  * This file is part of commons-springfx library.
  *
@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.util;
+package cz.masci.springfx.mvci.util.builder;
 
 import java.util.function.Consumer;
 import javafx.collections.ListChangeListener;

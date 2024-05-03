@@ -17,19 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.model.detail;
+package cz.masci.springfx.mvci.util;
 
-/**
- * The Identifiable interface defines a contract for objects that have an identifier and
- * can be identified as transient.
- *
- * @param <T> The type of the identifier
- */
-public interface Identifiable<T> {
-  /** Returns the id */
-  T getId();
-  /** Set the id */
-  void setId(T id);
-  /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persistent it returns {@code false}. */
-  boolean isTransient();
+import javafx.application.Platform;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class ConcurrentUtils {
+
+  /**
+   * Runs the given GUI-related code in the JavaFX Application Thread.
+   *
+   * @param guiStuff the runnable representing the GUI-related code to be executed
+   */
+  public static void runInFXThread(Runnable guiStuff) {
+    Platform.runLater(guiStuff);
+  }
 }

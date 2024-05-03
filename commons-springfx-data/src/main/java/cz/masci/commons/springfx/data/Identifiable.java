@@ -17,24 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.model.list;
+package cz.masci.commons.springfx.data;
 
-import org.reactfx.value.Var;
+import javafx.beans.property.ObjectProperty;
 
 /**
- * Ability to select element in elements observable list. Mostly used to explicitly {@code select} an element in the list view from list-detail view pattern.
- * Also provides selected element property
+ * The Identifiable interface defines a contract for objects that have an identifier.
+ *
+ * @param <T> The type of the identifier
  */
-public interface Selectable<E> {
+public interface Identifiable<T> {
 
-  void select(E element);
-
-  /**
-   * Returns selected element property
-   */
-  Var<E> selectedElementProperty();
-
-  default E getSelectedElement() {
-    return selectedElementProperty().getValue();
+  ObjectProperty<T> idProperty();
+  /** Returns the id */
+  default T getId() {
+    return idProperty().getValue();
+  }
+  /** Set the id */
+  default void setId(T id) {
+    idProperty().setValue(id);
   }
 }

@@ -29,11 +29,11 @@ There are two interface types.
 
 ### Detail
 
-* `Identifiable` used for object with id or without when it is in transient (not saved yet) state.
+* `IdentifiableModel` used for object with id or without when it is in transient (not saved yet) state.
 * `ValidModel` extends [validated](https://github.com/palexdev/MaterialFX/blob/main/materialfx/src/main/java/io/github/palexdev/materialfx/validation/Validated.java) to simplify get the valid property.
 * `DirtyModel` wraps the dirty property for composite object. Change in any property in the object will update the dirty property.
   
-* `DetailModel` combines `Identifiable`, `ValidModel` and `DirtyModel` interfaces used as view model for detail in the mvci pattern.
+* `DetailModel` combines `IdentifiableModel`, `ValidModel` and `DirtyModel` interfaces used as view model for detail in the mvci pattern.
 
 ## Package VIEW
 

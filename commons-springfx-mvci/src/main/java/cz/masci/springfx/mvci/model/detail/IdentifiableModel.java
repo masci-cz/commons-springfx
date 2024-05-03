@@ -17,24 +17,23 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.springfx.mvci.model.list;
+package cz.masci.springfx.mvci.model.detail;
 
-import org.reactfx.value.Var;
+import cz.masci.commons.springfx.data.Identifiable;
+import javafx.beans.binding.BooleanExpression;
 
 /**
- * Ability to select element in elements observable list. Mostly used to explicitly {@code select} an element in the list view from list-detail view pattern.
- * Also provides selected element property
+ * The IdentifiableModel interface defines a contract for objects that have an identifier and
+ * can be identified as a transient.
+ *
+ * @param <T> The type of the identifier
  */
-public interface Selectable<E> {
+public interface IdentifiableModel<T> extends Identifiable<T> {
 
-  void select(E element);
+  BooleanExpression transientProperty();
 
-  /**
-   * Returns selected element property
-   */
-  Var<E> selectedElementProperty();
-
-  default E getSelectedElement() {
-    return selectedElementProperty().getValue();
+  /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persisted it returns {@code false}. */
+  default boolean isTransient() {
+    return transientProperty().get();
   }
 }
