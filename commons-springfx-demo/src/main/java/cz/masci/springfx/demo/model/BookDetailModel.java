@@ -36,11 +36,6 @@ public class BookDetailModel extends BaseDetailModel<Long> {
     addConstraints(ConstraintUtils.isNotEmpty(title, "Title"));
   }
 
-  @Override
-  public boolean isTransient() {
-    return getId() == null;
-  }
-
   // region setters and getters
   public String getTitle() {
     return title.get();

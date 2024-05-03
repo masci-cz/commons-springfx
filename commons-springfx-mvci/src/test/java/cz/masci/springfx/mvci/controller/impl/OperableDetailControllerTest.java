@@ -117,6 +117,7 @@ class OperableDetailControllerTest {
     // select element
     var model = new TestDetailModel();
     selectedElement.setValue(model);
+    model.setId(DETAIL_MODEL_ID);
     assertFalse(property.get());
     // update element value -> not valid dirty
     model.setText(EMPTY_TEXT);
@@ -127,6 +128,9 @@ class OperableDetailControllerTest {
     // reset/rebase element
     model.reset();
     assertFalse(property.get());
+    // set model id to null
+    model.setId(null);
+    assertTrue(property.get());
     // deselect element
     selectedElement.setValue(null);
     assertTrue(property.get());
@@ -237,7 +241,7 @@ class OperableDetailControllerTest {
   @Test
   void remove_notTransient() {
     TestDetailModel element = new TestDetailModel();
-    element.setTransient(false);
+    element.setId(DETAIL_MODEL_ID);
 
     selectedElement.setValue(element);
     operableDetailController.remove((item, removeAction) -> removeAction.run());
@@ -248,7 +252,7 @@ class OperableDetailControllerTest {
   @Test
   void remove_transient() {
     TestDetailModel element = new TestDetailModel();
-    element.setTransient(true);
+    element.setId(null);
 
     selectedElement.setValue(element);
     operableDetailController.remove((item, removeAction) -> fail("Update action is called when shouldn't"));

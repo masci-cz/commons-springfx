@@ -20,6 +20,7 @@
 package cz.masci.springfx.mvci.model.detail;
 
 import cz.masci.commons.springfx.data.Identifiable;
+import javafx.beans.binding.BooleanExpression;
 
 /**
  * The IdentifiableModel interface defines a contract for objects that have an identifier and
@@ -28,7 +29,11 @@ import cz.masci.commons.springfx.data.Identifiable;
  * @param <T> The type of the identifier
  */
 public interface IdentifiableModel<T> extends Identifiable<T> {
+
+  BooleanExpression transientProperty();
+
   /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persisted it returns {@code false}. */
-  boolean isTransient();
-  // TODO make isTransient as a property
+  default boolean isTransient() {
+    return transientProperty().get();
+  }
 }

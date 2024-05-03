@@ -19,14 +19,22 @@
 
 package cz.masci.commons.springfx.data;
 
+import javafx.beans.property.ObjectProperty;
+
 /**
  * The Identifiable interface defines a contract for objects that have an identifier.
  *
  * @param <T> The type of the identifier
  */
 public interface Identifiable<T> {
+
+  ObjectProperty<T> idProperty();
   /** Returns the id */
-  T getId();
+  default T getId() {
+    return idProperty().getValue();
+  }
   /** Set the id */
-  void setId(T id);
+  default void setId(T id) {
+    idProperty().setValue(id);
+  }
 }

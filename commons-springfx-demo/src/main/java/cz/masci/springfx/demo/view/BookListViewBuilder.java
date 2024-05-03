@@ -36,7 +36,7 @@ public class BookListViewBuilder implements Builder<Region> {
     MFXTableViewBuilder<Long, BookDetailModel> builder = MFXTableViewBuilder.builder(viewModel);
     builder.maxHeight(Double.MAX_VALUE);
     builder.maxWidth(Double.MAX_VALUE);
-    builder.column("Title", BookDetailModel::getTitle, 300);
+    builder.column("Title", BookDetailModel::getTitle, 300.0);
     builder.column("Author", BookDetailModel::getAuthor);
     builder.allowsMultipleSelection(false);
 

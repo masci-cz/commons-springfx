@@ -19,7 +19,6 @@
 
 package cz.masci.springfx.mvci.controller.impl;
 
-import cz.masci.commons.springfx.data.Identifiable;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
 import cz.masci.springfx.mvci.model.detail.IdentifiableModel;
@@ -123,8 +122,9 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     // delete disabled => not selected
     Val<Boolean> dirtyProperty = selectedElement.flatMap(DirtyModel::isDirtyProperty);
     Val<Boolean> validProperty = selectedElement.flatMap(ValidModel::validProperty);
+    Val<Boolean> transientProperty = selectedElement.flatMap(IdentifiableModel::transientProperty);
     Val<Boolean> saveDisable = Val.combine(dirtyProperty, validProperty, (dirty, valid) -> !dirty || !valid);
-    deleteDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.getOpt().map(IdentifiableModel::isTransient).orElse(true), selectedElement));
+    deleteDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.isEmpty() || transientProperty.getOrElse(true), selectedElement, transientProperty));
     saveDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.isEmpty() || saveDisable.getOrElse(true), selectedElement, saveDisable));
     discardDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.isEmpty() || !dirtyProperty.getOrElse(true), selectedElement, dirtyProperty));
   }

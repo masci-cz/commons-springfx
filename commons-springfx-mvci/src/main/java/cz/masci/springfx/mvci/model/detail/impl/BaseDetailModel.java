@@ -23,6 +23,7 @@ import cz.masci.springfx.mvci.model.detail.DetailModel;
 import io.github.palexdev.materialfx.validation.Constraint;
 import io.github.palexdev.materialfx.validation.MFXValidator;
 import java.util.Arrays;
+import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
@@ -36,12 +37,14 @@ public abstract class BaseDetailModel<T> implements DetailModel<T> {
   @Getter
   private final MFXValidator validator = new MFXValidator();
 
-  public T getId() {
-    return id.get();
+  @Override
+  public ObjectProperty<T> idProperty() {
+    return id;
   }
 
-  public void setId(T id) {
-    this.id.set(id);
+  @Override
+  public BooleanExpression transientProperty() {
+    return idProperty().isNull();
   }
 
   protected void addComposites(DirtyProperty ...properties) {

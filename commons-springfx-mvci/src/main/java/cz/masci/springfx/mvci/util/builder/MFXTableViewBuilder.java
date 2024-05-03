@@ -27,9 +27,8 @@ import cz.masci.springfx.mvci.util.MFXBuilderUtils;
 import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -41,7 +40,7 @@ public class MFXTableViewBuilder<I, E extends DetailModel<I>> {
   private final BaseListModel<I, E> viewModel;
   private double maxHeight = Double.MAX_VALUE;
   private double maxWidth = Double.MAX_VALUE;
-  private final Set<ColumnData<I, E>> tableColumnsData = new HashSet<>();
+  private final List<ColumnData<I, E>> tableColumnsData = new ArrayList<>();
   private boolean allowsMultipleSelection = false;
 
   public static <I, E extends DetailModel<I>> MFXTableViewBuilder<I, E> builder(BaseListModel<I, E> viewModel) {
@@ -59,11 +58,10 @@ public class MFXTableViewBuilder<I, E extends DetailModel<I>> {
   }
 
   public MFXTableViewBuilder<I, E> column(String title, Function<E, String> property) {
-    tableColumnsData.add(new ColumnData<>(title, property, null));
-    return this;
+    return column(title, property, null);
   }
 
-  public MFXTableViewBuilder<I, E> column(String title, Function<E, String> property, double prefWidth) {
+  public MFXTableViewBuilder<I, E> column(String title, Function<E, String> property, Double prefWidth) {
     tableColumnsData.add(new ColumnData<>(title, property, prefWidth));
     return this;
   }
