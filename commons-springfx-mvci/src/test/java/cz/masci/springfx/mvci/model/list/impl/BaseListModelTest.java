@@ -19,6 +19,7 @@
 
 package cz.masci.springfx.mvci.model.list.impl;
 
+import static cz.masci.springfx.mvci.TestConstants.UPDATED_TEXT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,13 +28,35 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import cz.masci.springfx.mvci.TestDetailModel;
 import java.util.Random;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 
 public class BaseListModelTest {
 
   private final BaseListModel<Integer, TestDetailModel> baseListModel = new BaseListModel<>();
+
+  @Test
+  void constructor() {
+    BaseListModel<Integer, TestDetailModel> baseListModel = new BaseListModel<>(model -> new Observable[]{model.validProperty()});
+
+    TestDetailModel testDetailModel = new TestDetailModel();
+
+    baseListModel.getElements().addListener((ListChangeListener<? super TestDetailModel>) c -> {
+      while (c.next()) {
+        if (c.wasUpdated()) {
+          TestDetailModel updatedModel = c.getList().get(c.getFrom());
+          assertEquals(UPDATED_TEXT, updatedModel.getText());
+        }
+      }
+    });
+
+    baseListModel.getElements().add(testDetailModel);
+
+    testDetailModel.setText(UPDATED_TEXT);
+  }
 
   // region getElements
   @Test

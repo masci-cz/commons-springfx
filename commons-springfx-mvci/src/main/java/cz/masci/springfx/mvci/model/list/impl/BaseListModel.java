@@ -20,11 +20,13 @@
 package cz.masci.springfx.mvci.model.list.impl;
 
 import cz.masci.springfx.mvci.model.detail.DetailModel;
-import cz.masci.springfx.mvci.model.dirty.DirtyListProperty;
 import cz.masci.springfx.mvci.model.list.Elements;
 import cz.masci.springfx.mvci.model.list.ListModel;
 import java.util.function.Consumer;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Callback;
 import lombok.Setter;
 import org.reactfx.value.Var;
 
@@ -36,7 +38,7 @@ import org.reactfx.value.Var;
  * @param <E> The type of the elements in the list extending {@link DetailModel<I>}.
  */
 public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>, Elements<E> {
-  protected final DirtyListProperty<E> elements = new DirtyListProperty<>();
+  protected final ObservableList<E> elements;
   protected final Var<E> selectedElement = Var.newSimpleVar(null);
   @Setter
   protected Consumer<E> onSelectElement;
@@ -47,9 +49,17 @@ public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>,
   @Setter
   protected Runnable onFocusView;
 
+  public BaseListModel() {
+    elements = FXCollections.observableArrayList();
+  }
+
+  public BaseListModel(Callback<E, Observable[]> extractor) {
+    elements = FXCollections.observableArrayList(extractor);
+  }
+
   @Override
   public ObservableList<E> getElements() {
-    return elements.get();
+    return elements;
   }
 
   @Override
