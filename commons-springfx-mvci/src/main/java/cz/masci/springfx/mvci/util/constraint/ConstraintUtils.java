@@ -24,18 +24,20 @@ import static java.util.Objects.requireNonNull;
 import io.github.palexdev.materialfx.validation.Constraint;
 import io.github.palexdev.materialfx.validation.Constraint.Builder;
 import io.github.palexdev.materialfx.validation.Severity;
+import io.github.palexdev.materialfx.validation.Validated;
+import java.util.function.Function;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
+import org.reactfx.value.Val;
 import org.reactfx.value.Var;
 
 @UtilityClass
 public class ConstraintUtils {
 
-  public final static int ABILITY_SCORE_MIN = 0;
-  public final static int ABILITY_SCORE_MAX = 21;
   private final static String NUMBER_REGEX = "[-+]?\\d+";
 
   /**
@@ -49,21 +51,10 @@ public class ConstraintUtils {
     requireNonNull(stringProperty);
 
     return Constraint.Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s je povinné", fieldName))
-        .setCondition(stringProperty.isNotEmpty())
-        .get();
-  }
-
-  /**
-   * Returns a constraint that validates whether the given IntegerProperty is within the range of 1 to 10 (inclusive).
-   *
-   * @param property the IntegerProperty to validate
-   * @param fieldName the field name used in error message for the constraint
-   * @return a constraint that validates whether the given IntegerProperty is within the range of 1 to 10 (inclusive)
-   */
-  public static Constraint isInAbilityScoresRange(IntegerProperty property, String fieldName) {
-    return isInRange(property, fieldName, ABILITY_SCORE_MIN, ABILITY_SCORE_MAX);
+                             .setSeverity(Severity.ERROR)
+                             .setMessage(String.format("Pole %s je povinné", fieldName))
+                             .setCondition(stringProperty.isNotEmpty())
+                             .get();
   }
 
   /**
@@ -79,10 +70,11 @@ public class ConstraintUtils {
     requireNonNull(integerProperty);
 
     return Constraint.Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s musí být v rozmezí %d až %d", fieldName, min, max))
-        .setCondition(integerProperty.greaterThanOrEqualTo(min).and(integerProperty.lessThanOrEqualTo(max)))
-        .get();
+                             .setSeverity(Severity.ERROR)
+                             .setMessage(String.format("Pole %s musí být v rozmezí %d až %d", fieldName, min, max))
+                             .setCondition(integerProperty.greaterThanOrEqualTo(min)
+                                                          .and(integerProperty.lessThanOrEqualTo(max)))
+                             .get();
   }
 
   /**
@@ -96,10 +88,11 @@ public class ConstraintUtils {
     requireNonNull(stringProperty);
 
     return Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s musí být číslo", fieldName))
-        .setCondition(Bindings.createBooleanBinding(() -> stringProperty.get() != null && stringProperty.get().matches(NUMBER_REGEX), stringProperty))
-        .get();
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setCondition(Bindings.createBooleanBinding(() -> stringProperty.get() != null && stringProperty.get()
+                                                                                                                  .matches(NUMBER_REGEX), stringProperty))
+                  .get();
   }
 
   /**
@@ -113,10 +106,12 @@ public class ConstraintUtils {
     requireNonNull(stringProperty);
 
     return Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s musí být číslo", fieldName))
-        .setCondition(Bindings.createBooleanBinding(() -> StringUtils.isBlank(stringProperty.get()) || stringProperty.get().matches(NUMBER_REGEX), stringProperty))
-        .get();
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setCondition(Bindings.createBooleanBinding(() -> StringUtils.isBlank(stringProperty.get()) || stringProperty.get()
+                                                                                                                               .matches(NUMBER_REGEX),
+                      stringProperty))
+                  .get();
   }
 
   /**
@@ -132,12 +127,11 @@ public class ConstraintUtils {
     requireNonNull(stringProperty);
 
     return Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s je povinné", fieldName))
-        .setCondition(Bindings.createBooleanBinding(() ->
-            nullableProperty.isEmpty() || StringUtils.isNotBlank(stringProperty.getValue()), nullableProperty, stringProperty)
-        )
-        .get();
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(String.format("Pole %s je povinné", fieldName))
+                  .setCondition(Bindings.createBooleanBinding(() -> nullableProperty.isEmpty() || StringUtils.isNotBlank(stringProperty.getValue()),
+                      nullableProperty, stringProperty))
+                  .get();
   }
 
   /**
@@ -153,12 +147,11 @@ public class ConstraintUtils {
     requireNonNull(stringProperty);
 
     return Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s musí být číslo", fieldName))
-        .setCondition(Bindings.createBooleanBinding(() ->
-            nullableProperty.isEmpty() || (stringProperty.get() != null && stringProperty.get().matches(NUMBER_REGEX)), nullableProperty, stringProperty)
-        )
-        .get();
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setCondition(Bindings.createBooleanBinding(() -> nullableProperty.isEmpty() || (stringProperty.get() != null && stringProperty.get()
+                                                                                                                                                 .matches(NUMBER_REGEX)), nullableProperty, stringProperty))
+                  .get();
   }
 
   /**
@@ -174,12 +167,29 @@ public class ConstraintUtils {
     requireNonNull(stringProperty);
 
     return Builder.build()
-        .setSeverity(Severity.ERROR)
-        .setMessage(String.format("Pole %s musí být číslo", fieldName))
-        .setCondition(Bindings.createBooleanBinding(() ->
-            nullableProperty.isEmpty() || StringUtils.isBlank(stringProperty.get()) || stringProperty.get().matches(NUMBER_REGEX), nullableProperty, stringProperty)
-        )
-        .get();
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setCondition(Bindings.createBooleanBinding(() -> nullableProperty.isEmpty() || StringUtils.isBlank(stringProperty.get()) || stringProperty.get()
+                                                                                                                                                             .matches(NUMBER_REGEX), nullableProperty, stringProperty))
+                  .get();
   }
 
+  /**
+   * Returns a constraint that validates whether the child property is valid when the parent is set.
+   *
+   * @param message error message for the constraint
+   * @param parent the parent object from which the child property is taken
+   * @param childMap the child object mapper
+   * @return a constraint that validates whether the child property satisfies to the test
+   */
+  public static <T, U extends Validated> Constraint createConstraint(String message, ObservableValue<T> parent, Function<T, ObservableValue<U>> childMap) {
+    Val<Boolean> validProperty = Val.flatMap(parent, childMap)
+                                    .flatMap(property -> property.getValidator()
+                                                                 .validProperty());
+    return Builder.build()
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(message)
+                  .setCondition(Bindings.createBooleanBinding(() -> validProperty.getOrElse(false), validProperty))
+                  .get();
+  }
 }
