@@ -35,42 +35,106 @@ public class ConditionUtils {
 
   private final static String NUMBER_REGEX = "[-+]?\\d+";
 
+  /**
+   * Checks whether the given observable string value is empty.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isEmpty(ObservableStringValue value) {
     return Bindings.isEmpty(value);
   }
 
+  /**
+   * Checks whether the given Val<T> value is empty. It means the value is not set.
+   *
+   * @param value the Val<T> value to check
+   * @param <T> Type of Val value
+   * @return a BooleanExpression representing the result of the check
+   */
   public static <T> BooleanExpression isEmpty(Val<T> value) {
-    return Bindings.createBooleanBinding(value::isEmpty);
+    return Bindings.createBooleanBinding(value::isEmpty, value);
   }
 
+  /**
+   * Checks whether the given observable string value is not empty.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isNotEmpty(ObservableStringValue value) {
     return Bindings.isNotEmpty(value);
   }
 
+  /**
+   * Checks whether the given Val<T> value is not empty. It means the value is set.
+   *
+   * @param value the Val<T> value to check
+   * @param <T> Type of Val value
+   * @return a BooleanExpression representing the result of the check
+   */
   public static <T> BooleanExpression isNotEmpty(Val<T> value) {
-    return Bindings.createBooleanBinding(() -> !value.isEmpty());
+    return Bindings.createBooleanBinding(() -> !value.isEmpty(), value);
   }
 
+  /**
+   * Checks whether the given observable string value is blank.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isBlank(ObservableStringValue value) {
     return Bindings.createBooleanBinding(() -> StringUtils.isBlank(value.getValue()), value);
   }
 
+  /**
+   * Checks whether the given observable string value is not blank.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isNotBlank(ObservableStringValue value) {
     return Bindings.createBooleanBinding(() -> StringUtils.isNotBlank(value.getValue()), value);
   }
 
+  /**
+   * Checks whether the given observable number value is in provided range {@code <min, max>}
+   *
+   * @param value the observable number value to check
+   * @param min range lower value
+   * @param max range top value
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isInRange(NumberExpression value, int min, int max) {
     return Bindings.and(value.greaterThanOrEqualTo(min), value.lessThanOrEqualTo(max));
   }
 
+  /**
+   * Checks whether the given observable string value is an integer.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isNumber(ObservableStringValue value) {
     return Bindings.createBooleanBinding(() -> value.getValue() != null && value.getValue().matches(NUMBER_REGEX), value);
   }
 
+  /**
+   * Checks whether the given observable string value is an integer or is empty.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isNumberOrEmpty(ObservableStringValue value) {
     return Bindings.or(Bindings.isEmpty(value), isNumber(value));
   }
 
+  /**
+   * Checks whether the given observable string value is an integer or is blank.
+   *
+   * @param value the observable string value to check
+   * @return a BooleanExpression representing the result of the check
+   */
   public static BooleanExpression isNumberOrBlank(ObservableStringValue value) {
     return Bindings.or(isBlank(value), isNumber(value));
   }
