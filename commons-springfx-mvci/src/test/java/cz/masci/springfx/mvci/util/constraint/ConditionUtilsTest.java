@@ -20,10 +20,10 @@
 package cz.masci.springfx.mvci.util.constraint;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import cz.masci.springfx.mvci.TestDetailModel;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.IntegerProperty;
@@ -254,7 +254,6 @@ class ConditionUtilsTest {
 
     var expression = ConditionUtils.isNumberWhenPropertyIsNotEmpty(property, nullableProperty);
 
-
     assertExpressions(
         Stream.of(
             TupleArgument.of(null, null, false),
@@ -326,40 +325,42 @@ class ConditionUtilsTest {
   void isValid() {
     ObjectProperty<TestParentModel> parentProperty = new SimpleObjectProperty<>();
     var parentObject = new TestParentModel();
-    ObjectProperty<TestDetailModel> detailPropertyOfParentObject = parentObject.getDetail();
     var detailObject = new TestDetailModel();
 
     var expression = ConditionUtils.isValid(parentProperty, TestParentModel::getDetail);
 
-    // null, null
-    assertFalse(expression.getValue());
+    assertExpressions(
+        Stream.of(
+            TripleArgument.of(null, null, null, false),
+            TripleArgument.of(parentObject, null, null, false),
+            TripleArgument.of(parentObject, null, "Name", false),
+            TripleArgument.of(parentObject, detailObject, "Name", true),
+            TripleArgument.of(parentObject, detailObject, null, false),
+            TripleArgument.of(null, detailObject, "Name", false)
+        ), parentProperty, TestParentModel::getDetail, detail -> detail::setText, expression
+    );
+  }
 
-    // parentObject, null
-    parentProperty.set(parentObject);
-    assertFalse(expression.getValue());
+  private <T, U, V> void assertExpressions(Stream<TripleArgument<T, U, V>> arguments,
+                                 ObjectProperty<T> parentProperty,
+                                 Function<T, ObjectProperty<U>> detailFromParent,
+                                 Function<U, Consumer<V>> detailValueSetter,
+                                 BooleanExpression expression
+                                 ) {
+    arguments.forEach(argument -> {
+      ObjectProperty<U> detailPropertyOfParentObject = argument.val1() != null ? detailFromParent.apply(argument.val1()) : null;
 
-    // parentObject, "Name"
-    parentProperty.set(parentObject);
-    detailObject.setText("Name");
-    assertFalse(expression.getValue());
+      parentProperty.setValue(argument.val1());
+      if (detailPropertyOfParentObject != null) {
+        detailPropertyOfParentObject.setValue(argument.val2());
+      }
+      if (argument.val2() != null) {
+        detailValueSetter.apply(argument.val2())
+                         .accept(argument.val3());
+      }
 
-    // parentObject, detailObject
-    parentProperty.set(parentObject);
-    detailObject.setText("Name");
-    detailPropertyOfParentObject.set(detailObject);
-    assertTrue(expression.getValue());
-
-    // parentObject, detailObject
-    parentProperty.set(parentObject);
-    detailObject.setText(null);
-    detailPropertyOfParentObject.set(detailObject);
-    assertFalse(expression.getValue());
-
-    // null, detailObject
-    parentProperty.set(null);
-    detailObject.setText("Name");
-    detailPropertyOfParentObject.set(detailObject);
-    assertFalse(expression.getValue());
+      assertEquals(argument.result(), expression.getValue());
+    });
   }
 
   private <T, U extends Property<T>> void assertExpressions(Stream<Argument<T>> arguments, U property, BooleanExpression expression) {
@@ -369,7 +370,8 @@ class ConditionUtilsTest {
     });
   }
 
-  private <T, U, V extends Property<T>, W extends Property<U>> void assertExpressions(Stream<TupleArgument<T, U>> arguments, V property, W nullableProperty, BooleanExpression expression) {
+  private <T, U, V extends Property<T>, W extends Property<U>> void assertExpressions(Stream<TupleArgument<T, U>> arguments, V property, W nullableProperty,
+                                                                                      BooleanExpression expression) {
     arguments.forEach(argument -> {
       property.setValue(argument.val1());
       nullableProperty.setValue(argument.val2());
@@ -386,6 +388,12 @@ class ConditionUtilsTest {
   private record TupleArgument<T, U>(T val1, U val2, boolean result) {
     public static <T, U> TupleArgument<T, U> of(T val1, U val2, boolean result) {
       return new TupleArgument<>(val1, val2, result);
+    }
+  }
+
+  private record TripleArgument<T, U, V>(T val1, U val2, V val3, boolean result) {
+    public static <T, U, V> TripleArgument<T, U, V> of(T val1, U val2, V val3, boolean result) {
+      return new TripleArgument<>(val1, val2, val3, result);
     }
   }
 

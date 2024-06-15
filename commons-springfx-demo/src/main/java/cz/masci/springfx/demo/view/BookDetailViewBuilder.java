@@ -24,13 +24,21 @@ import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
 import cz.masci.springfx.demo.model.BookDetailModel;
 import cz.masci.springfx.demo.model.BookListModel;
 import cz.masci.springfx.mvci.util.BuilderUtils;
+import cz.masci.springfx.mvci.util.constraint.ConditionUtils;
 import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import io.github.palexdev.materialfx.validation.Constraint;
+import io.github.palexdev.materialfx.validation.Severity;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
+import org.apache.commons.lang3.StringUtils;
 import org.reactfx.value.Var;
 
 public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> implements Builder<Region> {
@@ -45,7 +53,7 @@ public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> im
 
     // create nodes to show
     var titleTextField = createTextField("Title", Double.MAX_VALUE);
-    var titleIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(titleTextField.textProperty(), selectedProperty, "Title");
+    var titleIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(titleTextField.textProperty(), selectedProperty, "Title");
     var titleTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(titleTextField,
         PropertyUtils.not(titleTextField.delegateFocusedProperty())::addListener, titleIsNotEmptyConstraint);
 
@@ -66,4 +74,11 @@ public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> im
                       .getNode();
   }
 
+  private Constraint isNotEmptyWhenPropertyIsNotEmpty(StringProperty value, Var<BookDetailModel> nullableProperty, String name) {
+    return Constraint.Builder.build()
+                             .setSeverity(Severity.ERROR)
+                             .setMessage(String.format("Field %s is required", name))
+                             .setCondition(ConditionUtils.isNotBlankWhenPropertyIsNotEmpty(value, nullableProperty))
+                             .get();
+  }
 }

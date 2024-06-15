@@ -154,7 +154,7 @@ public class ConditionUtils {
     return Bindings.and(isNotEmpty(val), isNumberOrBlank(value));
   }
 
-  public static <T, U extends Validated> BooleanExpression isValid(ObservableValue<T> parent, Function<T, ObservableValue<U>> value) {
+  public static <T, U extends Validated> BooleanExpression isValid(ObservableValue<T> parent, Function<T, ? extends ObservableValue<U>> value) {
     Val<Boolean> valid = Val.flatMap(parent, value)
         .flatMap(child -> child.getValidator()
                                .validProperty());
