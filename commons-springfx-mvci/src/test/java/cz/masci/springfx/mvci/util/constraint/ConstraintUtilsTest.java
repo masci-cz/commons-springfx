@@ -38,12 +38,12 @@ class ConstraintUtilsTest {
   private static final String MESSAGE = "message";
 
   @Test
-  void createConstraint() {
+  void isValid() {
     ObjectProperty<ParentObject> parent = new SimpleObjectProperty<>();
     ParentObject parentObject = new ParentObject();
     TestObject testObject = new TestObject();
 
-    var result = ConstraintUtils.createConstraint(MESSAGE, parent, ParentObject::childProperty);
+    var result = ConstraintUtils.isValid(MESSAGE, parent, ParentObject::childProperty);
 
     System.out.println("Initialization");
     assertNotNull(result);

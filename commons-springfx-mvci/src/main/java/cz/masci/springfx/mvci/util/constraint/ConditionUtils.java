@@ -116,7 +116,8 @@ public class ConditionUtils {
    * @return a BooleanExpression representing the result of the check
    */
   public static BooleanExpression isNumber(ObservableStringValue value) {
-    return Bindings.createBooleanBinding(() -> value.getValue() != null && value.getValue().matches(NUMBER_REGEX), value);
+    return Bindings.createBooleanBinding(() -> value.getValue() != null && value.getValue()
+                                                                                .matches(NUMBER_REGEX), value);
   }
 
   /**
@@ -156,8 +157,8 @@ public class ConditionUtils {
 
   public static <T, U extends Validated> BooleanExpression isValid(ObservableValue<T> parent, Function<T, ? extends ObservableValue<U>> value) {
     Val<Boolean> valid = Val.flatMap(parent, value)
-        .flatMap(child -> child.getValidator()
-                               .validProperty());
+                            .flatMap(child -> child.getValidator()
+                                                   .validProperty());
     return Bindings.createBooleanBinding(() -> valid.getOrElse(false), valid);
   }
 }
