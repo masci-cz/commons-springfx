@@ -23,7 +23,7 @@
     <parent>
         <groupId>cz.masci.commons</groupId>
         <artifactId>commons-springfx</artifactId>
-        <version>0.0.27</version>
+        <version>0.0.28-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-springfx-demo</artifactId>
