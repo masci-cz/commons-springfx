@@ -39,15 +39,15 @@ public class ConstraintUtils {
    * Returns a constraint that validates whether the given string property is not empty.
    *
    * @param stringProperty the string property to validate
-   * @param fieldName the field name used in error message for the constraint
+   * @param message the field name used in error message for the constraint
    * @return a constraint that validates whether the given string property is not empty
    */
-  public static Constraint isNotEmpty(StringProperty stringProperty, String fieldName) {
+  public static Constraint isNotEmpty(StringProperty stringProperty, String message) {
     requireNonNull(stringProperty);
 
     return Constraint.Builder.build()
                              .setSeverity(Severity.ERROR)
-                             .setMessage(String.format("Pole %s je povinné", fieldName))
+                             .setMessage(message)
                              .setCondition(ConditionUtils.isNotEmpty(stringProperty))
                              .get();
   }
@@ -56,17 +56,17 @@ public class ConstraintUtils {
    * Returns a constraint that validates whether the given integer property is within the specified range.
    *
    * @param integerProperty the integer property to validate
-   * @param fieldName the field name used in the error message for the constraint
+   * @param message the field name used in the error message for the constraint
    * @param min the minimum value of the range (inclusive)
    * @param max the maximum value of the range (inclusive)
    * @return a constraint that validates whether the given integer property is within the specified range
    */
-  public static Constraint isInRange(IntegerProperty integerProperty, String fieldName, int min, int max) {
+  public static Constraint isInRange(IntegerProperty integerProperty, String message, int min, int max) {
     requireNonNull(integerProperty);
 
     return Constraint.Builder.build()
                              .setSeverity(Severity.ERROR)
-                             .setMessage(String.format("Pole %s musí být v rozmezí %d až %d", fieldName, min, max))
+                             .setMessage(message)
                              .setCondition(ConditionUtils.isInRange(integerProperty, min, max))
                              .get();
   }
@@ -75,15 +75,15 @@ public class ConstraintUtils {
    * Returns a constraint that validates whether the given string property contains only a number.
    *
    * @param stringProperty the string property to validate
-   * @param fieldName the field name used in the error message for the constraint
+   * @param message the field name used in the error message for the constraint
    * @return a constraint that validates whether the given string property contains only a number
    */
-  public static Constraint isNumber(StringProperty stringProperty, String fieldName) {
+  public static Constraint isNumber(StringProperty stringProperty, String message) {
     requireNonNull(stringProperty);
 
     return Builder.build()
                   .setSeverity(Severity.ERROR)
-                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setMessage(message)
                   .setCondition(ConditionUtils.isNumber(stringProperty))
                   .get();
   }
@@ -92,15 +92,15 @@ public class ConstraintUtils {
    * Returns a constraint that validates whether the given string property contains a number or is empty.
    *
    * @param stringProperty the string property to validate
-   * @param fieldName the field name used in the error message for the constraint
+   * @param message the field name used in the error message for the constraint
    * @return a constraint that validates whether the given string property contains only a number
    */
-  public static Constraint isNumberOrEmpty(StringProperty stringProperty, String fieldName) {
+  public static Constraint isNumberOrEmpty(StringProperty stringProperty, String message) {
     requireNonNull(stringProperty);
 
     return Builder.build()
                   .setSeverity(Severity.ERROR)
-                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setMessage(message)
                   .setCondition(ConditionUtils.isNumberOrEmpty(stringProperty))
                   .get();
   }
@@ -110,16 +110,16 @@ public class ConstraintUtils {
    *
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
-   * @param fieldName the field name used in error message for the constraint
+   * @param message the field name used in error message for the constraint
    * @return a constraint that validates whether the given string property is not empty
    */
-  public static <T> Constraint isNotEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String fieldName) {
+  public static <T> Constraint isNotEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String message) {
     requireNonNull(nullableProperty);
     requireNonNull(stringProperty);
 
     return Builder.build()
                   .setSeverity(Severity.ERROR)
-                  .setMessage(String.format("Pole %s je povinné", fieldName))
+                  .setMessage(message)
                   .setCondition(ConditionUtils.isNotBlankWhenPropertyIsNotEmpty(stringProperty, nullableProperty))
                   .get();
   }
@@ -129,16 +129,16 @@ public class ConstraintUtils {
    *
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
-   * @param fieldName the field name used in the error message for the constraint
+   * @param message the field name used in the error message for the constraint
    * @return a constraint that validates whether the given string property contains only a number
    */
-  public static <T> Constraint isNumberWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String fieldName) {
+  public static <T> Constraint isNumberWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String message) {
     requireNonNull(nullableProperty);
     requireNonNull(stringProperty);
 
     return Builder.build()
                   .setSeverity(Severity.ERROR)
-                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setMessage(message)
                   .setCondition(ConditionUtils.isNumberWhenPropertyIsNotEmpty(stringProperty, nullableProperty))
                   .get();
   }
@@ -148,16 +148,16 @@ public class ConstraintUtils {
    *
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
-   * @param fieldName the field name used in the error message for the constraint
+   * @param message the field name used in the error message for the constraint
    * @return a constraint that validates whether the given string property contains only a number
    */
-  public static <T> Constraint isNumberOrEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String fieldName) {
+  public static <T> Constraint isNumberOrEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String message) {
     requireNonNull(nullableProperty);
     requireNonNull(stringProperty);
 
     return Builder.build()
                   .setSeverity(Severity.ERROR)
-                  .setMessage(String.format("Pole %s musí být číslo", fieldName))
+                  .setMessage(message)
                   .setCondition(ConditionUtils.isNumberOrBlankWhenPropertyIsNotEmpty(stringProperty, nullableProperty))
                   .get();
   }

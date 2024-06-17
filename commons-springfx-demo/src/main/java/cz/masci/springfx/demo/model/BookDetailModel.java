@@ -21,10 +21,7 @@ package cz.masci.springfx.demo.model;
 
 import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import cz.masci.springfx.mvci.util.constraint.ConditionUtils;
-import io.github.palexdev.materialfx.validation.Constraint;
-import io.github.palexdev.materialfx.validation.Severity;
-import javafx.beans.property.StringProperty;
+import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -36,7 +33,7 @@ public class BookDetailModel extends BaseDetailModel<Long> {
 
   public BookDetailModel() {
     addComposites(title, author);
-    addConstraints(isNotEmpty(title, "Title"));
+    addConstraints(ConstraintUtils.isNotEmpty(title, "Field Title is required"));
   }
 
   // region setters and getters
@@ -64,12 +61,4 @@ public class BookDetailModel extends BaseDetailModel<Long> {
     this.author.set(author);
   }
   // endregion
-
-  private Constraint isNotEmpty(StringProperty property, String name) {
-    return Constraint.Builder.build()
-                             .setSeverity(Severity.ERROR)
-                             .setMessage(String.format("Field %s is required", name))
-                             .setCondition(ConditionUtils.isNotEmpty(property))
-                             .get();
-  }
 }
