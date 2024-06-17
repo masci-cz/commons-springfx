@@ -24,7 +24,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <spring.version>3.3.0</spring.version>
-        <testfx.version>4.0.16-alpha</testfx.version>
+        <testfx.version>4.0.17</testfx.version>
 
         <!-- maven plugin versions -->
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
