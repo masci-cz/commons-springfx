@@ -33,7 +33,7 @@ public class BookDetailModel extends BaseDetailModel<Long> {
 
   public BookDetailModel() {
     addComposites(title, author);
-    addConstraints(ConstraintUtils.isNotEmpty(title, "Title"));
+    addConstraints(ConstraintUtils.isNotEmpty(title, "Field Title is required"));
   }
 
   // region setters and getters

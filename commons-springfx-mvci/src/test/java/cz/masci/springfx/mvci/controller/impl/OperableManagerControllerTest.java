@@ -28,7 +28,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import cz.masci.springfx.mvci.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import cz.masci.springfx.mvci.model.list.Focusable;
 import cz.masci.springfx.mvci.model.list.Removable;
 import cz.masci.springfx.mvci.model.list.Selectable;

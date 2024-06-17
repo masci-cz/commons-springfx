@@ -22,15 +22,17 @@ package cz.masci.springfx.mvci.util.reactfx;
 import java.util.function.Function;
 import javafx.beans.property.Property;
 import lombok.experimental.UtilityClass;
+import org.reactfx.value.Val;
 import org.reactfx.value.Var;
 
 @UtilityClass
 public class ReactFxUtils {
 
-  public static  <T, U> Var<U> selectVarOrElseConst(Var<T> src, Function<T, Property<U>> property, U constValue) {
-    return src.flatMap(property)
-        .orElseConst(constValue)
-        .asVar(newValue -> src.ifPresent(srcProperty -> property.apply(srcProperty).setValue(newValue)));
+  public static <T, U> Var<U> selectVarOrElseConst(Property<T> src, Function<T, Property<U>> property, U constValue) {
+    Val<T> srcVal = Val.wrap(src);
+    return srcVal.flatMap(property)
+                 .orElseConst(constValue)
+                 .asVar(newValue -> srcVal.ifPresent(srcProperty -> property.apply(srcProperty)
+                                                                            .setValue(newValue)));
   }
-
 }

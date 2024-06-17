@@ -28,10 +28,10 @@ import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import javafx.beans.property.Property;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import org.reactfx.value.Var;
 
 public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> implements Builder<Region> {
 
@@ -41,11 +41,11 @@ public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> im
 
   @Override
   public Region build() {
-    Var<BookDetailModel> selectedProperty = viewModel.selectedElementProperty();
+    Property<BookDetailModel> selectedProperty = viewModel.selectedElementProperty();
 
     // create nodes to show
     var titleTextField = createTextField("Title", Double.MAX_VALUE);
-    var titleIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(titleTextField.textProperty(), selectedProperty, "Title");
+    var titleIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(titleTextField.textProperty(), selectedProperty, "Field Title is required");
     var titleTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(titleTextField,
         PropertyUtils.not(titleTextField.delegateFocusedProperty())::addListener, titleIsNotEmptyConstraint);
 

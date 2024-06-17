@@ -19,7 +19,7 @@
 
 package cz.masci.springfx.mvci.model.list;
 
-import org.reactfx.value.Var;
+import javafx.beans.property.Property;
 
 /**
  * Ability to select element in elements observable list. Mostly used to explicitly {@code select} an element in the list view from list-detail view pattern.
@@ -32,7 +32,7 @@ public interface Selectable<E> {
   /**
    * Returns selected element property
    */
-  Var<E> selectedElementProperty();
+  Property<E> selectedElementProperty();
 
   default E getSelectedElement() {
     return selectedElementProperty().getValue();

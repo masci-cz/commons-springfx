@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import cz.masci.springfx.mvci.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
