@@ -11,7 +11,7 @@ BOM package contains all needed package versions for commons-springfx-* packages
         <dependency>
             <groupId>cz.masci.commons</groupId>
             <artifactId>commons-springfx-bom</artifactId>
-            <version>0.0.12</version>
+            <version>0.0.27</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
