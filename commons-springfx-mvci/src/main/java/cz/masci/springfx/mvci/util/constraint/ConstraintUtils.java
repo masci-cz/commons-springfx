@@ -111,6 +111,7 @@ public class ConstraintUtils {
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
    * @param message the field name used in error message for the constraint
+   * @param <T> Type of the nullable property
    * @return a constraint that validates whether the given string property is not empty
    */
   public static <T> Constraint isNotEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String message) {
@@ -130,6 +131,7 @@ public class ConstraintUtils {
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
    * @param message the field name used in the error message for the constraint
+   * @param <T> Type of the nullable property
    * @return a constraint that validates whether the given string property contains only a number
    */
   public static <T> Constraint isNumberWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String message) {
@@ -149,6 +151,7 @@ public class ConstraintUtils {
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
    * @param message the field name used in the error message for the constraint
+   * @param <T> Type of the nullable property
    * @return a constraint that validates whether the given string property contains only a number
    */
   public static <T> Constraint isNumberOrEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Property<T> nullableProperty, String message) {
@@ -168,6 +171,8 @@ public class ConstraintUtils {
    * @param message error message for the constraint
    * @param parent the parent object from which the child property is taken
    * @param childMap the child object mapper
+   * @param <T> Type of the parent observable value
+   * @param <U> Type of the child observable value
    * @return a constraint that validates whether the child property satisfies to the test
    */
   public static <T, U extends Validated> Constraint isValid(String message, ObservableValue<T> parent, Function<T, ObservableValue<U>> childMap) {

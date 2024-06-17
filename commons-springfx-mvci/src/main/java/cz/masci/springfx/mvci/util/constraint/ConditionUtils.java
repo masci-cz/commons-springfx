@@ -49,9 +49,9 @@ public class ConditionUtils {
   }
 
   /**
-   * Checks whether the given Val<T> value is empty. It means the value is not set.
+   * Checks whether the given {@code Val<T>} value is empty. It means the value is not set.
    *
-   * @param value the Val<T> value to check
+   * @param value the {@code Val<T>} value to check
    * @param <T> Type of Val value
    * @return a BooleanExpression representing the result of the check
    */
@@ -70,9 +70,9 @@ public class ConditionUtils {
   }
 
   /**
-   * Checks whether the given Val<T> value is not empty. It means the value is set.
+   * Checks whether the given {@code Val<T>} value is not empty. It means the value is set.
    *
-   * @param value the Val<T> value to check
+   * @param value the {@code Val<T>} value to check
    * @param <T> Type of Val value
    * @return a BooleanExpression representing the result of the check
    */
