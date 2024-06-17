@@ -19,21 +19,20 @@
 
 package cz.masci.springfx.mvci.util.constraint;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static cz.masci.springfx.mvci.TestUtils.assertExpressions;
 
-import cz.masci.springfx.mvci.TestDetailModel;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import cz.masci.springfx.mvci.TestUtils.Argument;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestParentModel;
+import cz.masci.springfx.mvci.TestUtils.TripleArgument;
+import cz.masci.springfx.mvci.TestUtils.TupleArgument;
 import java.util.stream.Stream;
-import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import lombok.Value;
 import org.junit.jupiter.api.Test;
 import org.reactfx.value.Val;
 
@@ -341,64 +340,4 @@ class ConditionUtilsTest {
     );
   }
 
-  private <T, U, V> void assertExpressions(Stream<TripleArgument<T, U, V>> arguments,
-                                 ObjectProperty<T> parentProperty,
-                                 Function<T, ObjectProperty<U>> detailFromParent,
-                                 Function<U, Consumer<V>> detailValueSetter,
-                                 BooleanExpression expression
-                                 ) {
-    arguments.forEach(argument -> {
-      ObjectProperty<U> detailPropertyOfParentObject = argument.val1() != null ? detailFromParent.apply(argument.val1()) : null;
-
-      parentProperty.setValue(argument.val1());
-      if (detailPropertyOfParentObject != null) {
-        detailPropertyOfParentObject.setValue(argument.val2());
-      }
-      if (argument.val2() != null) {
-        detailValueSetter.apply(argument.val2())
-                         .accept(argument.val3());
-      }
-
-      assertEquals(argument.result(), expression.getValue());
-    });
-  }
-
-  private <T, U extends Property<T>> void assertExpressions(Stream<Argument<T>> arguments, U property, BooleanExpression expression) {
-    arguments.forEach(argument -> {
-      property.setValue(argument.value());
-      assertEquals(argument.result(), expression.getValue(), String.format("Check of %s failed", argument.value()));
-    });
-  }
-
-  private <T, U, V extends Property<T>, W extends Property<U>> void assertExpressions(Stream<TupleArgument<T, U>> arguments, V property, W nullableProperty,
-                                                                                      BooleanExpression expression) {
-    arguments.forEach(argument -> {
-      property.setValue(argument.val1());
-      nullableProperty.setValue(argument.val2());
-      assertEquals(argument.result(), expression.getValue(), String.format("Check of v1=%s failed when v2=%s", argument.val1(), argument.val2()));
-    });
-  }
-
-  private record Argument<T>(T value, boolean result) {
-    public static <T> Argument<T> of(T value, boolean result) {
-      return new Argument<>(value, result);
-    }
-  }
-
-  private record TupleArgument<T, U>(T val1, U val2, boolean result) {
-    public static <T, U> TupleArgument<T, U> of(T val1, U val2, boolean result) {
-      return new TupleArgument<>(val1, val2, result);
-    }
-  }
-
-  private record TripleArgument<T, U, V>(T val1, U val2, V val3, boolean result) {
-    public static <T, U, V> TripleArgument<T, U, V> of(T val1, U val2, V val3, boolean result) {
-      return new TripleArgument<>(val1, val2, val3, result);
-    }
-  }
-
-  @Value
-  private static class TestParentModel {
-    ObjectProperty<TestDetailModel> detail = new SimpleObjectProperty<>();
-  }
 }

@@ -19,18 +19,20 @@
 
 package cz.masci.springfx.mvci.util.constraint;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static cz.masci.springfx.mvci.TestUtils.assertExpressions;
 
-import cz.masci.springfx.mvci.model.detail.ValidModel;
-import io.github.palexdev.materialfx.validation.Constraint;
-import io.github.palexdev.materialfx.validation.MFXValidator;
+import cz.masci.springfx.mvci.TestUtils.Argument;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestParentModel;
+import cz.masci.springfx.mvci.TestUtils.TripleArgument;
+import cz.masci.springfx.mvci.TestUtils.TupleArgument;
+import java.util.stream.Stream;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import lombok.Data;
 import org.junit.jupiter.api.Test;
 
 class ConstraintUtilsTest {
@@ -38,98 +40,192 @@ class ConstraintUtilsTest {
   private static final String MESSAGE = "message";
 
   @Test
+  void isNotEmpty_string() {
+    StringProperty property = new SimpleStringProperty();
+
+    var result = ConstraintUtils.isNotEmpty(property, MESSAGE);
+
+    assertExpressions(
+        Stream.of(
+            Argument.of(null, false),
+            Argument.of("test", true),
+            Argument.of("", false),
+            Argument.of("  ", true)
+        ), property, result.getCondition());
+  }
+
+  @Test
+  void isInRange() {
+    IntegerProperty property = new SimpleIntegerProperty();
+
+    var result = ConstraintUtils.isInRange(property, MESSAGE, 0, 10);
+
+    assertExpressions(
+        Stream.of(
+            Argument.of(-5, false),
+            Argument.of(5, true),
+            Argument.of(15, false)
+        ), property, result.getCondition()
+    );
+  }
+
+  @Test
+  void isNumber() {
+    StringProperty property = new SimpleStringProperty();
+
+    var result = ConstraintUtils.isNumber(property, MESSAGE);
+
+    assertExpressions(
+        Stream.of(
+            Argument.of(null, false),
+            Argument.of("", false),
+            Argument.of("  ", false),
+            Argument.of("5", true),
+            Argument.of("5.9", false),
+            Argument.of("-5", true),
+            Argument.of("5+5", false),
+            Argument.of("+5", true)
+        ), property, result.getCondition()
+    );
+  }
+
+  @Test
+  void isNumberOrEmpty() {
+    StringProperty property = new SimpleStringProperty();
+
+    var result = ConstraintUtils.isNumberOrEmpty(property, MESSAGE);
+
+    assertExpressions(
+        Stream.of(
+            Argument.of(null, true),
+            Argument.of("  ", false),
+            Argument.of("", true),
+            Argument.of("5.9", false),
+            Argument.of("5", true),
+            Argument.of("5+5", false),
+            Argument.of("-5", true),
+            Argument.of("+5", true)
+        ), property, result.getCondition()
+    );
+  }
+
+  @Test
+  void isNotEmptyWhenPropertyIsNotEmpty() {
+    StringProperty property = new SimpleStringProperty();
+    StringProperty nullableProperty = new SimpleStringProperty();
+
+    var result = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(property, nullableProperty, MESSAGE);
+
+    assertExpressions(
+        Stream.of(
+            TupleArgument.of(null, null, false),
+            TupleArgument.of("", null, false),
+            TupleArgument.of("  ", null, false),
+            TupleArgument.of("test", null, false),
+            TupleArgument.of(null, "test", false),
+            TupleArgument.of("", "test", false),
+            TupleArgument.of("  ", "test", false),
+            TupleArgument.of("test", "test", true),
+            TupleArgument.of(null, "", false),
+            TupleArgument.of("", "", false),
+            TupleArgument.of("  ", "", false),
+            TupleArgument.of("test", "", true)
+
+        ), property, nullableProperty, result.getCondition()
+    );
+  }
+
+  @Test
+  void isNumberWhenPropertyIsNotEmpty() {
+    StringProperty property = new SimpleStringProperty();
+    StringProperty nullableProperty = new SimpleStringProperty();
+
+    var result = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(property, nullableProperty, MESSAGE);
+
+    assertExpressions(
+        Stream.of(
+            TupleArgument.of(null, null, false),
+            TupleArgument.of("", null, false),
+            TupleArgument.of("  ", null, false),
+            TupleArgument.of("5", null, false),
+            TupleArgument.of("5.9", null, false),
+            TupleArgument.of("-5", null, false),
+            TupleArgument.of("5+5", null, false),
+            TupleArgument.of("+5", null, false),
+            TupleArgument.of(null, "test", false),
+            TupleArgument.of("", "test", false),
+            TupleArgument.of("  ", "test", false),
+            TupleArgument.of("5", "test", true),
+            TupleArgument.of("5.9", "test", false),
+            TupleArgument.of("-5", "test", true),
+            TupleArgument.of("5+5", "test", false),
+            TupleArgument.of("+5", "test", true),
+            TupleArgument.of(null, "", false),
+            TupleArgument.of("", "", false),
+            TupleArgument.of("  ", "", false),
+            TupleArgument.of("5", "", true),
+            TupleArgument.of("5.9", "", false),
+            TupleArgument.of("-5", "", true),
+            TupleArgument.of("5+5", "", false),
+            TupleArgument.of("+5", "", true)
+        ), property, nullableProperty, result.getCondition()
+    );
+  }
+
+  @Test
+  void isNumberOrEmptyWhenPropertyIsNotEmpty() {
+    StringProperty property = new SimpleStringProperty();
+    StringProperty nullableProperty = new SimpleStringProperty();
+
+    var result = ConstraintUtils.isNumberOrEmptyWhenPropertyIsNotEmpty(property, nullableProperty, MESSAGE);
+
+    assertExpressions(
+        Stream.of(
+            TupleArgument.of(null, null, false),
+            TupleArgument.of("", null, false),
+            TupleArgument.of("  ", null, false),
+            TupleArgument.of("5", null, false),
+            TupleArgument.of("5.9", null, false),
+            TupleArgument.of("-5", null, false),
+            TupleArgument.of("5+5", null, false),
+            TupleArgument.of("+5", null, false),
+            TupleArgument.of(null, "test", true),
+            TupleArgument.of("", "test", true),
+            TupleArgument.of("  ", "test", true),
+            TupleArgument.of("5", "test", true),
+            TupleArgument.of("5.9", "test", false),
+            TupleArgument.of("-5", "test", true),
+            TupleArgument.of("5+5", "test", false),
+            TupleArgument.of("+5", "test", true),
+            TupleArgument.of(null, "", true),
+            TupleArgument.of("", "", true),
+            TupleArgument.of("  ", "", true),
+            TupleArgument.of("5", "", true),
+            TupleArgument.of("5.9", "", false),
+            TupleArgument.of("-5", "", true),
+            TupleArgument.of("5+5", "", false),
+            TupleArgument.of("+5", "", true)
+        ), property, nullableProperty, result.getCondition()
+    );
+  }
+
+  @Test
   void isValid() {
-    ObjectProperty<ParentObject> parent = new SimpleObjectProperty<>();
-    ParentObject parentObject = new ParentObject();
-    TestObject testObject = new TestObject();
+    ObjectProperty<TestParentModel> parentProperty = new SimpleObjectProperty<>();
+    var parentObject = new TestParentModel();
+    var detailObject = new TestDetailModel();
 
-    var result = ConstraintUtils.isValid(MESSAGE, parent, ParentObject::childProperty);
+    var result = ConstraintUtils.isValid(MESSAGE, parentProperty, TestParentModel::getDetail);
 
-    System.out.println("Initialization");
-    assertNotNull(result);
-    assertFalse(result.isValid());
-
-    System.out.println("Set test object");
-    parent.set(parentObject);
-    assertFalse(result.isValid());
-
-    System.out.println("Set name");
-    testObject.setName("Name");
-    assertFalse(result.isValid());
-
-    System.out.println("Set age low");
-    testObject.setAge(4);
-    assertFalse(result.isValid());
-
-    System.out.println("Set age high");
-    testObject.setAge(16);
-    assertFalse(result.isValid());
-
-    System.out.println("Set child");
-    parentObject.setChild(testObject);
-    assertTrue(result.isValid());
-
-    System.out.println("Set age low again");
-    testObject.setAge(4);
-    assertFalse(result.isValid());
-  }
-
-  @Data
-  private static class ParentObject {
-    private String name;
-    private final ObjectProperty<TestObject> child = new SimpleObjectProperty<>();
-
-    public TestObject getChild() {
-      return child.get();
-    }
-
-    public ObjectProperty<TestObject> childProperty() {
-      return child;
-    }
-
-    public void setChild(TestObject child) {
-      this.child.set(child);
-    }
-  }
-
-  private static class TestObject implements ValidModel {
-    private final StringProperty name = new SimpleStringProperty();
-    private final IntegerProperty age = new SimpleIntegerProperty();
-    private final MFXValidator validator = new MFXValidator();
-
-    public TestObject() {
-      validator.constraint(Constraint.of(MESSAGE, name.isNotEmpty()));
-      validator.constraint(Constraint.of(MESSAGE, age.greaterThan(15)));
-      validator.validProperty().addListener(observable -> System.out.println("valid property was invalidated"));
-    }
-
-    public String getName() {
-      return name.get();
-    }
-
-    public StringProperty nameProperty() {
-      return name;
-    }
-
-    public void setName(String name) {
-      this.name.set(name);
-    }
-
-    public int getAge() {
-      return age.get();
-    }
-
-    public IntegerProperty ageProperty() {
-      return age;
-    }
-
-    public void setAge(int age) {
-      this.age.set(age);
-    }
-
-    @Override
-    public MFXValidator getValidator() {
-      return validator;
-    }
+    assertExpressions(
+        Stream.of(
+            TripleArgument.of(null, null, null, false),
+            TripleArgument.of(parentObject, null, null, false),
+            TripleArgument.of(parentObject, null, "Name", false),
+            TripleArgument.of(parentObject, detailObject, "Name", true),
+            TripleArgument.of(parentObject, detailObject, null, false),
+            TripleArgument.of(null, detailObject, "Name", false)
+        ), parentProperty, TestParentModel::getDetail, detail -> detail::setText, result.getCondition()
+    );
   }
 }

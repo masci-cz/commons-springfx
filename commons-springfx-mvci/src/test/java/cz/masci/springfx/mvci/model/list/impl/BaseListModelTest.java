@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import cz.masci.springfx.mvci.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import java.util.Random;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;

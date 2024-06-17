@@ -28,7 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import cz.masci.springfx.mvci.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import cz.masci.springfx.mvci.model.list.ListModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import cz.masci.springfx.mvci.TestDetailModel;
+import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import org.junit.jupiter.api.Test;
 
 public class BaseDetailModelTest {

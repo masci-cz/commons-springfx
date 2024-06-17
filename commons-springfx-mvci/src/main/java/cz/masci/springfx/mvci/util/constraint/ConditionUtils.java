@@ -30,6 +30,9 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.reactfx.value.Val;
 
+/**
+ * Utility class that provides methods for checking various conditions.
+ */
 @UtilityClass
 public class ConditionUtils {
 
@@ -140,21 +143,54 @@ public class ConditionUtils {
     return Bindings.or(isBlank(value), isNumber(value));
   }
 
+  /**
+   * Checks whether the given observable string value is not blank when the property is not empty.
+   *
+   * @param value    the observable string value to check
+   * @param property the observable property to check
+   * @param <T>      the type of the property value
+   * @return a BooleanExpression representing the result of the check
+   */
   public static <T> BooleanExpression isNotBlankWhenPropertyIsNotEmpty(ObservableStringValue value, ObservableValue<T> property) {
     Val<T> val = Val.wrap(property);
     return Bindings.and(isNotEmpty(val), isNotBlank(value));
   }
 
+  /**
+   * Checks whether the given observable string value is an integer when the property is not empty.
+   *
+   * @param value    the observable string value to check
+   * @param property the observable property to check
+   * @param <T>      the type of the property value
+   * @return a BooleanExpression representing the result of the check
+   */
   public static <T> BooleanExpression isNumberWhenPropertyIsNotEmpty(ObservableStringValue value, ObservableValue<T> property) {
     Val<T> val = Val.wrap(property);
     return Bindings.and(isNotEmpty(val), isNumber(value));
   }
 
+  /**
+   * Checks whether the given observable string value is a number or blank when the property is not empty.
+   *
+   * @param value    the observable string value to check
+   * @param property the observable property to check
+   * @param <T>      the type of the property value
+   * @return a BooleanExpression representing the result of the check
+   */
   public static <T> BooleanExpression isNumberOrBlankWhenPropertyIsNotEmpty(ObservableStringValue value, ObservableValue<T> property) {
     Val<T> val = Val.wrap(property);
     return Bindings.and(isNotEmpty(val), isNumberOrBlank(value));
   }
 
+  /**
+   * Determines whether the child property is valid when the parent property is set.
+   *
+   * @param parent the observable value of the parent property
+   * @param value the function that maps the parent property value to the child property
+   * @param <T> the type of the parent property value
+   * @param <U> the type of the child property value
+   * @return a BooleanExpression representing the validity of the child property
+   */
   public static <T, U extends Validated> BooleanExpression isValid(ObservableValue<T> parent, Function<T, ? extends ObservableValue<U>> value) {
     Val<Boolean> valid = Val.flatMap(parent, value)
                             .flatMap(child -> child.getValidator()
