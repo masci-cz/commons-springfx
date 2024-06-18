@@ -38,18 +38,19 @@ import static org.mockito.Mockito.when;
 import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import cz.masci.springfx.mvci.model.list.Removable;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.reactfx.value.Var;
 
 @ExtendWith(MockitoExtension.class)
 class OperableDetailControllerTest {
 
-  private final Var<TestDetailModel> selectedElement = Var.newSimpleVar(null);
+  private final ObjectProperty<TestDetailModel> selectedElement = new SimpleObjectProperty<>();
   @Mock
   private Removable<TestDetailModel> removable;
 

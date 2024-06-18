@@ -30,6 +30,8 @@ import static org.mockito.Mockito.when;
 
 import cz.masci.springfx.mvci.TestUtils.TestDetailModel;
 import cz.masci.springfx.mvci.model.list.ListModel;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.junit.jupiter.api.Test;
@@ -37,7 +39,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.reactfx.value.Var;
 
 @ExtendWith(MockitoExtension.class)
 public class DetailViewBuilderTest {
@@ -52,7 +53,7 @@ public class DetailViewBuilderTest {
   void bindBidirectional_isBind() {
     // Arrange
     StringProperty textFieldProperty = mock(StringProperty.class);
-    Var<TestDetailModel> selectedElementProperty = Var.newSimpleVar(null);
+    ObjectProperty<TestDetailModel> selectedElementProperty = new SimpleObjectProperty<>();
 
     when(viewModel.selectedElementProperty()).thenReturn(selectedElementProperty);
 
@@ -69,7 +70,7 @@ public class DetailViewBuilderTest {
     // Arrange
     StringProperty textFieldProperty = new SimpleStringProperty();
     TestDetailModel model = new TestDetailModel();
-    Var<TestDetailModel> selectedElementProperty = Var.newSimpleVar(null);
+    ObjectProperty<TestDetailModel> selectedElementProperty = new SimpleObjectProperty<>();
 
     when(viewModel.selectedElementProperty()).thenReturn(selectedElementProperty);
 
@@ -91,7 +92,7 @@ public class DetailViewBuilderTest {
     // Arrange
     StringProperty textFieldProperty = new SimpleStringProperty();
     TestDetailModel model = new TestDetailModel();
-    Var<TestDetailModel> selectedElementProperty = Var.newSimpleVar(model);
+    ObjectProperty<TestDetailModel> selectedElementProperty = new SimpleObjectProperty<>(model);
 
     when(viewModel.selectedElementProperty()).thenReturn(selectedElementProperty);
 
