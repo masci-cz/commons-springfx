@@ -29,9 +29,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.reactfx.value.Val;
-import org.reactfx.value.Var;
 
 /**
  * The OperableDetailController class is responsible for controlling the operations and state of a detail view.
@@ -49,7 +49,7 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
   private final BooleanProperty discardDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty deleteDisabled = new SimpleBooleanProperty(true);
 
-  public OperableDetailController(Var<E> selectedElement, @Nonnull Removable<E> removable) {
+  public OperableDetailController(Property<E> selectedElement, @Nonnull Removable<E> removable) {
     this.selectedElement = Val.wrap(selectedElement);
     this.removable = removable;
 

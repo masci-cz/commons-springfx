@@ -24,11 +24,13 @@ import cz.masci.springfx.mvci.model.list.Elements;
 import cz.masci.springfx.mvci.model.list.ListModel;
 import java.util.function.Consumer;
 import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Callback;
 import lombok.Setter;
-import org.reactfx.value.Var;
 
 /**
  * BaseListModel is a generic implementation of the {@link ListModel} and {@link Elements} interfaces.
@@ -39,7 +41,7 @@ import org.reactfx.value.Var;
  */
 public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>, Elements<E> {
   protected final ObservableList<E> elements;
-  protected final Var<E> selectedElement = Var.newSimpleVar(null);
+  protected final ObjectProperty<E> selectedElement = new SimpleObjectProperty<>();
   @Setter
   protected Consumer<E> onSelectElement;
   @Setter
@@ -63,7 +65,7 @@ public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>,
   }
 
   @Override
-  public Var<E> selectedElementProperty() {
+  public Property<E> selectedElementProperty() {
     return selectedElement;
   }
 
