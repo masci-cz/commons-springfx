@@ -45,7 +45,7 @@ public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> im
 
     // create nodes to show
     var titleTextField = createTextField("Title", Double.MAX_VALUE);
-    var titleIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(titleTextField.textProperty(), selectedProperty, "Field Title is required");
+    var titleIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(titleTextField.textProperty(), selectedProperty, "Title");
     var titleTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(titleTextField,
         PropertyUtils.not(titleTextField.delegateFocusedProperty())::addListener, titleIsNotEmptyConstraint);
 
