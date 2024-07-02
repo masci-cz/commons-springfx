@@ -19,7 +19,8 @@
 
 package cz.masci.springfx.demo.interactor;
 
+import cz.masci.springfx.demo.model.PotterDetailModel;
+
 public interface PotterInteractor {
-  void addCharacter();
-  void updateViewModel();
+  PotterDetailModel addCharacter();
 }

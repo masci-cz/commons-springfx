@@ -26,7 +26,9 @@ import cz.masci.springfx.demo.model.LOTRDetailModel;
 import java.util.List;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class LOTRInteractorImpl implements LOTRInteractor {
 

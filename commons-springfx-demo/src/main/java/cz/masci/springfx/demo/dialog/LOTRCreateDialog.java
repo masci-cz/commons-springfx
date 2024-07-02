@@ -1,6 +1,7 @@
 package cz.masci.springfx.demo.dialog;
 
 import cz.masci.springfx.demo.model.LOTRDetailModel;
+import cz.masci.springfx.demo.view.LOTRCreateViewBuilder;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 

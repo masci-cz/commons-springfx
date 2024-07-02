@@ -21,9 +21,10 @@ package cz.masci.springfx.demo.controller;
 
 import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
 
-import cz.masci.springfx.demo.model.LOTRDetailModel;
-import cz.masci.springfx.demo.model.LOTRListModel;
-import cz.masci.springfx.demo.view.LOTREditViewBuilder;
+import cz.masci.springfx.demo.interactor.PotterInteractor;
+import cz.masci.springfx.demo.model.PotterDetailModel;
+import cz.masci.springfx.demo.model.PotterListModel;
+import cz.masci.springfx.demo.view.PotterDetailViewBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.OperableDetailController;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
@@ -39,16 +40,19 @@ import javafx.util.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class LOTRDetailController implements ViewProvider<Region> {
+public class PotterDetailController implements ViewProvider<Region> {
 
-  private final OperableDetailController<Long, LOTRDetailModel> operableDetailController;
+  private final OperableDetailController<Long, PotterDetailModel> operableDetailController;
+
+  private final PotterInteractor interactor;
 
   private final Builder<Region> builder;
 
-  public LOTRDetailController(LOTRListModel viewModel) {
+  public PotterDetailController(PotterListModel viewModel, PotterInteractor interactor) {
+    this.interactor = interactor;
     operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
 
-    var detailViewBuilder = new LOTREditViewBuilder(viewModel);
+    var detailViewBuilder = new PotterDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);
     var commandViewBuilder = new CommandsViewBuilder(
         List.of(
@@ -76,9 +80,9 @@ public class LOTRDetailController implements ViewProvider<Region> {
             })
             .onFailed(task -> {
               var e = task.getException();
-              log.error("Error saving LOTR character", e);
+              log.error("Error saving Potter character", e);
             })
-            .onSucceeded(savedItem -> log.info("LOTR character was saved"))
+            .onSucceeded(savedItem -> log.info("Potter character was saved"))
             .postGuiCall(postGuiStuff)
             .start());
   }
@@ -95,8 +99,8 @@ public class LOTRDetailController implements ViewProvider<Region> {
               ConcurrentUtils.runInFXThread(afterDelete);
               return item;
             })
-            .onFailed(task -> log.error("Something happen when saving LOTR character", task.getException()))
-            .onSucceeded(deletedItem -> log.info("LOTR character was deleted"))
+            .onFailed(task -> log.error("Something happen when saving Potter character", task.getException()))
+            .onSucceeded(deletedItem -> log.info("Potter character was deleted"))
             .postGuiCall(postGuiStuff)
             .start());
   }

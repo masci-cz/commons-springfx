@@ -21,16 +21,22 @@ package cz.masci.springfx.demo.controller;
 
 import cz.masci.springfx.demo.view.HomeScreenViewBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
+import javafx.scene.Scene;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HomeScreenController implements ViewProvider<Region> {
 
   private final HomeScreenViewBuilder viewBuilder;
+  private final LOTRListDetailController lotrListDetailController;
+  private final PotterListDetailController potterListDetailController;
 
-  public HomeScreenController() {
+  public HomeScreenController(LOTRListDetailController lotrListDetailController, PotterListDetailController potterListDetailController) {
     viewBuilder = new HomeScreenViewBuilder(this::openLOTRScene, this::openPotterScene);
+    this.lotrListDetailController = lotrListDetailController;
+    this.potterListDetailController = potterListDetailController;
   }
 
   @Override
@@ -39,10 +45,18 @@ public class HomeScreenController implements ViewProvider<Region> {
   }
 
   private void openLOTRScene() {
-    System.out.println("LOTR");
+    Scene scene = new Scene(lotrListDetailController.getView(), 1000, 800);
+    Stage stage = new Stage();
+    stage.setTitle("Lord of the Rings");
+    stage.setScene(scene);
+    stage.show();
   }
 
   private void openPotterScene() {
-    System.out.println("POTTER");
+    Scene scene = new Scene(potterListDetailController.getView(), 1000, 400);
+    Stage stage = new Stage();
+    stage.setTitle("Harry Potter");
+    stage.setScene(scene);
+    stage.show();
   }
 }

@@ -23,27 +23,24 @@ import com.github.javafaker.Faker;
 import com.github.javafaker.HarryPotter;
 import cz.masci.springfx.demo.interactor.PotterInteractor;
 import cz.masci.springfx.demo.model.PotterDetailModel;
-import cz.masci.springfx.demo.model.PotterListModel;
 import java.util.concurrent.atomic.AtomicLong;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class PotterInteractorImpl implements PotterInteractor {
 
   private final Faker faker;
-  private final PotterListModel viewModel;
 
   private final AtomicLong idGenerator = new AtomicLong(0);
 
-  private HarryPotter harryPotterItem;
-
   @Override
-  public void addCharacter() {
-    harryPotterItem = faker.harryPotter();
+  public PotterDetailModel addCharacter() {
+    return map(faker.harryPotter());
   }
 
-  @Override
-  public void updateViewModel() {
+  private PotterDetailModel map(HarryPotter harryPotterItem) {
     var model = new PotterDetailModel();
     model.setId(idGenerator.getAndIncrement());
     model.setBook(harryPotterItem.book());
@@ -51,6 +48,6 @@ public class PotterInteractorImpl implements PotterInteractor {
     model.setLocation(harryPotterItem.location());
     model.setQuote(harryPotterItem.quote());
     model.rebaseline();
-    viewModel.getElements().add(model);
+    return model;
   }
 }
