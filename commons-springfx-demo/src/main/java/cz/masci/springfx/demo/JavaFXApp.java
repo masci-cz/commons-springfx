@@ -19,7 +19,7 @@
 
 package cz.masci.springfx.demo;
 
-import cz.masci.springfx.demo.controller.MainController;
+import cz.masci.springfx.demo.controller.HomeScreenController;
 import cz.masci.springfx.demo.theme.AppTheme;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import io.github.palexdev.materialfx.theming.JavaFXThemes;
@@ -48,6 +48,8 @@ public class JavaFXApp extends Application {
     UserAgentBuilder.builder()
                     .themes(JavaFXThemes.MODENA)
                     .themes(MaterialFXStylesheets.forAssemble(false))
+                    .themes(AppTheme.TOKENS)
+                    .themes(AppTheme.APP)
                     .themes(AppTheme.TABLE_VIEW)
                     .setDeploy(true)
                     .setDebug(true)
@@ -58,8 +60,8 @@ public class JavaFXApp extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    ViewProvider<Region> viewProvider = applicationContext.getBean(MainController.class);
-    Scene scene = new Scene(viewProvider.getView(), 640, 480);
+    ViewProvider<Region> viewProvider = applicationContext.getBean(HomeScreenController.class);
+    Scene scene = new Scene(viewProvider.getView(), 400, 200);
     primaryStage.setScene(scene);
     primaryStage.setTitle("SpringFX MVCI Demo");
     primaryStage.show();

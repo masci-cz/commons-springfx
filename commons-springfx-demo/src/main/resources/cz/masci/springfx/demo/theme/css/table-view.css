@@ -17,8 +17,3 @@
 .dirty-row {
     -fx-background-color: -dirty-row-color;
 }
-
-.mfx-text-field:invalid {
-    -fx-border-color: RED;
-    -fx-border-width: 4px;
-}
