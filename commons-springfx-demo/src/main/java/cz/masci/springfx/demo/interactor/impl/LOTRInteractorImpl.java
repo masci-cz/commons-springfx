@@ -24,7 +24,7 @@ import com.github.javafaker.LordOfTheRings;
 import cz.masci.springfx.demo.interactor.LOTRInteractor;
 import cz.masci.springfx.demo.model.LOTRDetailModel;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class LOTRInteractorImpl implements LOTRInteractor {
 
   @Override
   public List<LOTRDetailModel> loadCharacters() {
-    return IntStream.range(0, 10)
+    return LongStream.range(0, 10)
         .mapToObj(this::nextCharacter)
         .peek(unused -> {
           try {
@@ -49,12 +49,19 @@ public class LOTRInteractorImpl implements LOTRInteractor {
   }
 
   @Override
-  public LOTRDetailModel nextCharacter(int i) {
-    return map(faker.lordOfTheRings());
+  public LOTRDetailModel saveCharacter(LOTRDetailModel model) {
+    model.setId(model.isTransient() ? faker.random().nextLong() : model.getId());
+
+    return model;
   }
 
-  private LOTRDetailModel map(LordOfTheRings origin) {
+  private LOTRDetailModel nextCharacter(long id) {
+    return map(faker.lordOfTheRings(), id);
+  }
+
+  private LOTRDetailModel map(LordOfTheRings origin, long id) {
     var model = new LOTRDetailModel();
+    model.setId(id);
     model.setCharacter(origin.character());
     model.setLocation(origin.location());
     model.rebaseline();

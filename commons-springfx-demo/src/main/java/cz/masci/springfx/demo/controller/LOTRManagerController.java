@@ -49,11 +49,16 @@ public class LOTRManagerController {
   }
 
   // Run in app thread
-  private void addCharacter(Runnable postFetchGuiStuff) {
+  private void addCharacter(Runnable postGuiStuff) {
     var dialog = new LOTRCreateDialog();
     dialog.showAndWait()
-        .ifPresent(operableManagerController::add);
-    postFetchGuiStuff.run();
+        .ifPresent(model ->
+            BackgroundTaskBuilder
+                .task(() -> interactor.saveCharacter(model))
+                .onSucceeded(operableManagerController::add)
+                .postGuiCall(postGuiStuff)
+                .start()
+        );
   }
 
   // Run in FX thread
@@ -103,5 +108,4 @@ public class LOTRManagerController {
         .postGuiCall(postGuiStuff)
         .start();
   }
-
 }

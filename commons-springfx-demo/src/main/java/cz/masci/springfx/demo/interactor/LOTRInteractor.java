@@ -24,5 +24,5 @@ import java.util.List;
 
 public interface LOTRInteractor {
   List<LOTRDetailModel> loadCharacters();
-  LOTRDetailModel nextCharacter(int i);
+  LOTRDetailModel saveCharacter(LOTRDetailModel model);
 }
