@@ -229,10 +229,10 @@ class ConditionUtilsTest {
 
     assertExpressions(
         Stream.of(
-            TupleArgument.of(null, null, false),
-            TupleArgument.of("", null, false),
-            TupleArgument.of("  ", null, false),
-            TupleArgument.of("test", null, false),
+            TupleArgument.of(null, null, true),
+            TupleArgument.of("", null, true),
+            TupleArgument.of("  ", null, true),
+            TupleArgument.of("test", null, true),
             TupleArgument.of(null, "test", false),
             TupleArgument.of("", "test", false),
             TupleArgument.of("  ", "test", false),
@@ -255,14 +255,14 @@ class ConditionUtilsTest {
 
     assertExpressions(
         Stream.of(
-            TupleArgument.of(null, null, false),
-            TupleArgument.of("", null, false),
-            TupleArgument.of("  ", null, false),
-            TupleArgument.of("5", null, false),
-            TupleArgument.of("5.9", null, false),
-            TupleArgument.of("-5", null, false),
-            TupleArgument.of("5+5", null, false),
-            TupleArgument.of("+5", null, false),
+            TupleArgument.of(null, null, true),
+            TupleArgument.of("", null, true),
+            TupleArgument.of("  ", null, true),
+            TupleArgument.of("5", null, true),
+            TupleArgument.of("5.9", null, true),
+            TupleArgument.of("-5", null, true),
+            TupleArgument.of("5+5", null, true),
+            TupleArgument.of("+5", null, true),
             TupleArgument.of(null, "test", false),
             TupleArgument.of("", "test", false),
             TupleArgument.of("  ", "test", false),
@@ -292,14 +292,14 @@ class ConditionUtilsTest {
 
     assertExpressions(
         Stream.of(
-            TupleArgument.of(null, null, false),
-            TupleArgument.of("", null, false),
-            TupleArgument.of("  ", null, false),
-            TupleArgument.of("5", null, false),
-            TupleArgument.of("5.9", null, false),
-            TupleArgument.of("-5", null, false),
-            TupleArgument.of("5+5", null, false),
-            TupleArgument.of("+5", null, false),
+            TupleArgument.of(null, null, true),
+            TupleArgument.of("", null, true),
+            TupleArgument.of("  ", null, true),
+            TupleArgument.of("5", null, true),
+            TupleArgument.of("5.9", null, true),
+            TupleArgument.of("-5", null, true),
+            TupleArgument.of("5+5", null, true),
+            TupleArgument.of("+5", null, true),
             TupleArgument.of(null, "test", true),
             TupleArgument.of("", "test", true),
             TupleArgument.of("  ", "test", true),

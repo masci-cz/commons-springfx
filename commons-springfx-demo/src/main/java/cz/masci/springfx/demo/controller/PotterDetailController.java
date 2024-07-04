@@ -21,10 +21,10 @@ package cz.masci.springfx.demo.controller;
 
 import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
 
-import cz.masci.springfx.demo.interactor.BookInteractor;
-import cz.masci.springfx.demo.model.BookDetailModel;
-import cz.masci.springfx.demo.model.BookListModel;
-import cz.masci.springfx.demo.view.BookDetailViewBuilder;
+import cz.masci.springfx.demo.interactor.PotterInteractor;
+import cz.masci.springfx.demo.model.PotterDetailModel;
+import cz.masci.springfx.demo.model.PotterListModel;
+import cz.masci.springfx.demo.view.PotterDetailViewBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.OperableDetailController;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
@@ -40,19 +40,19 @@ import javafx.util.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BookDetailController implements ViewProvider<Region> {
+public class PotterDetailController implements ViewProvider<Region> {
 
-  private final OperableDetailController<Long, BookDetailModel> operableDetailController;
+  private final OperableDetailController<Long, PotterDetailModel> operableDetailController;
 
-  private final BookInteractor interactor;
+  private final PotterInteractor interactor;
 
   private final Builder<Region> builder;
 
-  public BookDetailController(BookListModel viewModel, BookInteractor interactor) {
+  public PotterDetailController(PotterListModel viewModel, PotterInteractor interactor) {
     this.interactor = interactor;
     operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
 
-    var detailViewBuilder = new BookDetailViewBuilder(viewModel);
+    var detailViewBuilder = new PotterDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);
     var commandViewBuilder = new CommandsViewBuilder(
         List.of(
@@ -75,15 +75,14 @@ public class BookDetailController implements ViewProvider<Region> {
     operableDetailController.update((item, afterSave) ->
         BackgroundTaskBuilder
             .task(() -> {
-              var savedItem = interactor.save(item);
-              ConcurrentUtils.runInFXThread(() -> afterSave.accept(savedItem));
-              return savedItem;
+              ConcurrentUtils.runInFXThread(() -> afterSave.accept(item));
+              return item;
             })
             .onFailed(task -> {
               var e = task.getException();
-              log.error("Error saving book", e);
+              log.error("Error saving Potter character", e);
             })
-            .onSucceeded(savedItem -> log.info("Book was saved"))
+            .onSucceeded(savedItem -> log.info("Potter character was saved"))
             .postGuiCall(postGuiStuff)
             .start());
   }
@@ -97,12 +96,11 @@ public class BookDetailController implements ViewProvider<Region> {
         BackgroundTaskBuilder
             .task(() -> {
               log.info("Deleting item");
-              interactor.delete(item);
               ConcurrentUtils.runInFXThread(afterDelete);
               return item;
             })
-            .onFailed(task -> log.error("Something happen when saving book", task.getException()))
-            .onSucceeded(deletedItem -> log.info("Book was deleted"))
+            .onFailed(task -> log.error("Something happen when saving Potter character", task.getException()))
+            .onSucceeded(deletedItem -> log.info("Potter character was deleted"))
             .postGuiCall(postGuiStuff)
             .start());
   }

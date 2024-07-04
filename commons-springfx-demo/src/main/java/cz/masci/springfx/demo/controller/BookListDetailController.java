@@ -28,13 +28,13 @@ import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MainController implements ViewProvider<Region> {
+public class BookListDetailController implements ViewProvider<Region> {
 
   private final BorderPaneBuilder builder;
   private final BookListModel viewModel;
   private final BookInteractor interactor;
 
-  public MainController(BookInteractor interactor) {
+  public BookListDetailController(BookInteractor interactor) {
     this.interactor = interactor;
     this.viewModel = new BookListModel();
 

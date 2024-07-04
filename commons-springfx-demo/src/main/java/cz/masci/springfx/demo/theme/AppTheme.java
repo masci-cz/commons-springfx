@@ -27,7 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum AppTheme implements Theme {
 
-  TABLE_VIEW("css/table-view.css");
+  TABLE_VIEW("css/table-view.css"),
+  APP("css/app.css"),
+  TOKENS("css/tokens.css");
 
   private final String path;
 

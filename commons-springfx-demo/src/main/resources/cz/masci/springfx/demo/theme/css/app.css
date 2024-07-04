@@ -1,0 +1,144 @@
+/*@import "tokens.css";*/
+/*@import "table-view.css";*/
+
+/****************************/
+/*      MFX Text Field      */
+/****************************/
+.root {
+    -fx-background-color: -md-sys-color-background-light;
+}
+
+/* base */
+
+.mfx-text-field {
+    -fx-padding: 0 5 0 5;
+    -fx-pref-height: 40px;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+    -fx-font-family: sans-serif;
+    /*-mfx-float-mode: BORDER;*/
+}
+
+/* text field - Enabled */
+.mfx-text-field {
+    -fx-border-color: -md-sys-color-outline-light;
+}
+
+.mfx-text-field .floating-text {
+    -fx-text-fill: -md-sys-color-on-surface-variant-light;
+}
+
+/* text field - Focused */
+.mfx-text-field:floating {
+    -fx-text-fill: -md-sys-color-on-surface-light;
+    -fx-border-color: -md-sys-color-primary-light;
+}
+
+.mfx-text-field:floating .floating-text {
+    -fx-text-fill: -md-sys-color-primary-light;
+}
+
+.mfx-text-field:invalid {
+    -fx-border-color: -md-sys-color-error-light;
+    -fx-border-width: 4px;
+}
+
+/************************/
+/*      MFX Button      */
+/************************/
+
+.mfx-button {
+    -fx-background-radius: 20px;
+    -fx-pref-height: 40px;
+    -fx-padding: 0px 24px 0px 24px;
+    -mfx-button-type: RAISED;
+    -mfx-depth-level: LEVEL0;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-font-family: sans-serif;
+}
+
+.mfx-button:hover,
+.mfx-button:focused {
+    -fx-background-radius: 20px;
+    -mfx-depth-level: LEVEL1;
+}
+
+/* Elevated button */
+.mfx-button.elevated {
+    -fx-background-color: -md-sys-color-surface-variant-light;
+    -fx-text-fill: -md-sys-color-on-surface-variant-light;
+    -mfx-depth-level: LEVEL1;
+}
+
+.mfx-button.elevated:hover,
+.mfx-button.elevated:focused {
+    -fx-background-radius: 20px;
+    -mfx-depth-level: LEVEL2;
+}
+
+/* Filled button */
+.mfx-button.filled {
+    -fx-background-color: -md-sys-color-primary-light;
+    -fx-text-fill: -md-sys-color-on-primary-light;
+}
+
+/* Filled tonal button */
+.mfx-button.filledTonal {
+    -fx-background-color: -md-sys-color-secondary-container-light;
+    -fx-text-fill: -md-sys-color-on-secondary-container-light;
+}
+
+/* Outlined button */
+.mfx-button.outlined {
+    -fx-background-color: -md-sys-color-background-light;
+    -fx-text-fill: -md-sys-color-primary-light;
+    -fx-border-color: -md-sys-color-outline-light;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-border-type: solid;
+}
+
+/* Tile button */
+.mfx-button.tile {
+    -fx-background-color: -md-sys-color-primary-container-light;
+    -fx-text-fill: -md-sys-color-on-primary-container-light;
+    -mfx-depth-level: LEVEL5;
+}
+
+.mfx-button.tile:hover,
+.mfx-button.tile:focused {
+    -fx-background-color: -md-sys-color-primary-light;
+    -fx-text-fill: -md-sys-color-on-primary-light;
+}
+
+/************************/
+/*        Label         */
+/************************/
+
+.label.error {
+    -fx-font-size: 12px;
+    -fx-font-weight: 400;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: -md-sys-color-error-light;
+}
+
+/************************/
+/*      DrD classes     */
+/************************/
+
+.edited-row:odd {
+    -fx-background-color: -md-sys-color-tertiary-light;
+}
+
+.edited-row:even {
+    -fx-background-color: -md-sys-color-tertiary-light;
+}
+
+.edited-row:selected {
+    -fx-background-color: -md-sys-color-tertiary-light;
+}
+
+Label.battleTitle {
+    -fx-text-fill: -md-sys-color-secondary-light;
+}

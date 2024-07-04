@@ -71,6 +71,7 @@ public class MFXTableViewBuilder<I, E extends DetailModel<I>> {
     return this;
   }
 
+  // TODO Add Consumer<MFXTableView<E>> to let in build use the created table for something else
   public MFXTableView<E> build() {
     List<MFXTableColumn<E>> tableColumns = tableColumnsData.stream().map(this::createTableColumn).collect(Collectors.toList());
 
@@ -94,5 +95,6 @@ public class MFXTableViewBuilder<I, E extends DetailModel<I>> {
     return tableColumn;
   }
 
+  // Add Alignment attribute
   private record ColumnData<I, E extends DetailModel<I>>(String title, Function<E, String> property, Double prefWidth) {}
 }
