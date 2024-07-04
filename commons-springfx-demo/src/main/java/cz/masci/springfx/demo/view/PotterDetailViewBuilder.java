@@ -53,6 +53,14 @@ public class PotterDetailViewBuilder extends DetailViewBuilder<PotterDetailModel
     var locationTextField = MFXBuilderUtils.createTextField("Location", Double.MAX_VALUE);
     var quoteTextField = MFXBuilderUtils.createTextField("Quote", Double.MAX_VALUE);
 
+    // bind text fields bidirectional with detail model properties
+    bindBidirectional(bookTextField.textProperty(), PotterDetailModel::bookProperty);
+    bindBidirectional(characterTextField.textProperty(), PotterDetailModel::characterProperty);
+    bindBidirectional(locationTextField.textProperty(), PotterDetailModel::locationProperty);
+    bindBidirectional(quoteTextField.textProperty(), PotterDetailModel::quoteProperty);
+
+    viewModel.setOnFocusView(bookTextField::requestFocus);
+
     return VBoxBuilder.vBox()
         .setSpacing(10.0)
         .setChildren(bookTextFieldWithValidation, characterTextFieldWithValidation, locationTextField, quoteTextField)

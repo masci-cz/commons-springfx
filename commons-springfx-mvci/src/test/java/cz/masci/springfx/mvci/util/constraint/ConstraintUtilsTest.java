@@ -130,7 +130,6 @@ class ConstraintUtilsTest {
             TupleArgument.of("", "", false),
             TupleArgument.of("  ", "", false),
             TupleArgument.of("test", "", true)
-
         ), property, nullableProperty, result.getCondition()
     );
   }

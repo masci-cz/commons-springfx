@@ -77,7 +77,7 @@ public class ConditionUtils {
    * @return a BooleanExpression representing the result of the check
    */
   public static <T> BooleanExpression isNotEmpty(Val<T> value) {
-    return Bindings.createBooleanBinding(() -> !value.isEmpty(), value);
+    return Bindings.createBooleanBinding(value::isPresent, value);
   }
 
   /**

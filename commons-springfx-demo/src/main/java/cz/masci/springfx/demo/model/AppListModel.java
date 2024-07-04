@@ -31,6 +31,7 @@ public class AppListModel<I, E extends DetailModel<I>> extends BaseListModel<I, 
   public void clearSelection() {
     if (onClearSelection != null) {
       onClearSelection.run();
+      select(null);
     }
   }
 }

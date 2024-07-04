@@ -57,7 +57,7 @@ public class PotterListViewBuilder implements Builder<Region> {
         .allowsMultipleSelection(false)
         .build();
 
-    viewModel.setOnClearSelection(() -> tableView.getSelectionModel().clearSelection());
+    viewModel.setOnClearSelection(tableView.getSelectionModel()::clearSelection);
 
     return tableView;
   }

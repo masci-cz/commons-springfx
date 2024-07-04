@@ -41,10 +41,7 @@ public class LOTRListViewBuilder implements Builder<Region> {
         .allowsMultipleSelection(false)
         .build();
 
-    viewModel.setOnClearSelection(() -> {
-      tableView.getSelectionModel().clearSelection();
-      viewModel.select(null);
-    });
+    viewModel.setOnClearSelection(tableView.getSelectionModel()::clearSelection);
 
     return tableView;
   }

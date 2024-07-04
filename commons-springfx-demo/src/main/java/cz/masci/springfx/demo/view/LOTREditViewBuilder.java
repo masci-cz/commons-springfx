@@ -31,6 +31,8 @@ public class LOTREditViewBuilder extends LOTRDetailViewBuilder {
     characterProperty.observeChanges(changeListener);
     locationProperty.observeChanges(changeListener);
 
+    viewModel.setOnFocusView(characterTextField::requestFocus);
+
     return super.build();
   }
 
