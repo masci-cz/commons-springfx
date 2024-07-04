@@ -44,6 +44,7 @@ public class PotterDetailViewBuilder extends DetailViewBuilder<PotterDetailModel
 
     var bookTextField = MFXBuilderUtils.createTextField("Book", Double.MAX_VALUE);
     var bookConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(bookTextField.textProperty(), selectedProperty, "Book");
+    bookConstraint.getCondition().addListener((observableValue, oldValue, newValue) -> System.out.printf("Changed potter book condition: from %s to %s", oldValue, newValue));
     var bookTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(bookTextField, PropertyUtils.not(bookTextField.delegateFocusedProperty())::addListener, bookConstraint);
 
     var characterTextField = MFXBuilderUtils.createTextField("Character", Double.MAX_VALUE);

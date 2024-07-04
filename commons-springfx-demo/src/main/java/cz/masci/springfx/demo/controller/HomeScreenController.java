@@ -32,11 +32,13 @@ public class HomeScreenController implements ViewProvider<Region> {
   private final HomeScreenViewBuilder viewBuilder;
   private final LOTRListDetailController lotrListDetailController;
   private final PotterListDetailController potterListDetailController;
+  private final BookListDetailController bookListDetailController;
 
-  public HomeScreenController(LOTRListDetailController lotrListDetailController, PotterListDetailController potterListDetailController) {
-    viewBuilder = new HomeScreenViewBuilder(this::openLOTRScene, this::openPotterScene);
+  public HomeScreenController(LOTRListDetailController lotrListDetailController, PotterListDetailController potterListDetailController, BookListDetailController bookListDetailController) {
+    viewBuilder = new HomeScreenViewBuilder(this::openLOTRScene, this::openPotterScene, this::openBookScene);
     this.lotrListDetailController = lotrListDetailController;
     this.potterListDetailController = potterListDetailController;
+    this.bookListDetailController = bookListDetailController;
   }
 
   @Override
@@ -56,6 +58,14 @@ public class HomeScreenController implements ViewProvider<Region> {
     Scene scene = new Scene(potterListDetailController.getView(), 1000, 400);
     Stage stage = new Stage();
     stage.setTitle("Harry Potter");
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  private void openBookScene() {
+    Scene scene = new Scene(bookListDetailController.getView(), 1000, 400);
+    Stage stage = new Stage();
+    stage.setTitle("Books");
     stage.setScene(scene);
     stage.show();
   }

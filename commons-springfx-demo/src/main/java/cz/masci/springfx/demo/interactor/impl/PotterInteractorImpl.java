@@ -33,7 +33,7 @@ public class PotterInteractorImpl implements PotterInteractor {
 
   private final Faker faker;
 
-  private final AtomicLong idGenerator = new AtomicLong(0);
+  private final AtomicLong idGenerator = new AtomicLong(1);
 
   @Override
   public PotterDetailModel addCharacter() {

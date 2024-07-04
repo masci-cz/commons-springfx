@@ -83,6 +83,7 @@ public class BuilderUtils {
     validatedNode.getValidator()
                  .validProperty()
                  .addListener((observable, oldValue, newValue) -> {
+                   System.out.printf("Validated node [%s] valid property change: from %s to %s\n", validatedNode, oldValue, newValue);
                    if (newValue) {
                      supportingText.setVisible(false);
                      supportingText.setManaged(false); // disable
@@ -90,12 +91,12 @@ public class BuilderUtils {
                    }
                  });
     revalidateFlagListener.accept((observable, oldValue, newValue) -> {
+      System.out.printf("Revalidating from %s to %s\n", validatedNode, oldValue);
       if (!oldValue && newValue) {
         List<Constraint> constraints = validatedNode.validate();
         if (!constraints.isEmpty()) {
           validatedNode.pseudoClassStateChanged(INVALID_PSEUDO_CLASS, true);
-          supportingText.setText(constraints.get(0)
-                                            .getMessage());
+          supportingText.setText(constraints.getFirst().getMessage());
           supportingText.setVisible(true);
           supportingText.setManaged(true);
         }

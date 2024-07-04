@@ -32,6 +32,7 @@ public class HomeScreenViewBuilder implements Builder<Region> {
 
   private final Runnable openLOTRScene;
   private final Runnable openPotterScene;
+  private final Runnable openBookScene;
 
   @Override
   public Region build() {
@@ -49,6 +50,11 @@ public class HomeScreenViewBuilder implements Builder<Region> {
                               ButtonBuilder.builder()
                                            .text("POTTER")
                                            .command(openPotterScene)
+                                           .styleClass("tile")
+                                           .build(MFXButton::new),
+                              ButtonBuilder.builder()
+                                           .text("BOOK")
+                                           .command(openBookScene)
                                            .styleClass("tile")
                                            .build(MFXButton::new)
                           )

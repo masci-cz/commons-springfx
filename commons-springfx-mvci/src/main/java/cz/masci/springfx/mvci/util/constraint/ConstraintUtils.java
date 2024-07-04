@@ -122,7 +122,7 @@ public class ConstraintUtils {
   }
 
   /**
-   * Returns a constraint that validates whether the given string property is not empty or the nullable property is empty.
+   * Returns a constraint that validates whether the given string property is not empty when the nullable property is not empty. It is {@code TRUE} when nullable property is empty.
    *
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
@@ -142,7 +142,7 @@ public class ConstraintUtils {
   }
 
   /**
-   * Returns a constraint that validates whether the given string property contains only a number or the nullable property is empty.
+   * Returns a constraint that validates whether the given string property contains only a number and the nullable property is not empty. It is {@code TRUE} when nullable property is empty.
    *
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property
@@ -162,7 +162,7 @@ public class ConstraintUtils {
   }
 
   /**
-   * Returns a constraint that validates whether the given string property contains only a number or the nullable property is empty.
+   * Returns a constraint that validates whether the given string property contains only a number and the nullable property is not empty. It is {@code TRUE} when nullable property is empty.
    *
    * @param stringProperty the string property to validate
    * @param nullableProperty the nullable property

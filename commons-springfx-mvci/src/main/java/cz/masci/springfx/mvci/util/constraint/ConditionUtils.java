@@ -144,7 +144,7 @@ public class ConditionUtils {
   }
 
   /**
-   * Checks whether the given observable string value is not blank when the property is not empty.
+   * Checks whether the given observable string value is not blank when the property is not empty. It is {@code TRUE} when property is empty.
    *
    * @param value    the observable string value to check
    * @param property the observable property to check
@@ -153,11 +153,15 @@ public class ConditionUtils {
    */
   public static <T> BooleanExpression isNotBlankWhenPropertyIsNotEmpty(ObservableStringValue value, ObservableValue<T> property) {
     Val<T> val = Val.wrap(property);
-    return Bindings.and(isNotEmpty(val), isNotBlank(value));
+
+    return Bindings.or(
+        isEmpty(val),
+        Bindings.and(isNotEmpty(val), isNotBlank(value))
+    );
   }
 
   /**
-   * Checks whether the given observable string value is an integer when the property is not empty.
+   * Checks whether the given observable string value is an integer when the property is not empty. It is {@code TRUE} when property is empty.
    *
    * @param value    the observable string value to check
    * @param property the observable property to check
@@ -166,11 +170,14 @@ public class ConditionUtils {
    */
   public static <T> BooleanExpression isNumberWhenPropertyIsNotEmpty(ObservableStringValue value, ObservableValue<T> property) {
     Val<T> val = Val.wrap(property);
-    return Bindings.and(isNotEmpty(val), isNumber(value));
+    return Bindings.or(
+        isEmpty(val),
+        Bindings.and(isNotEmpty(val), isNumber(value))
+    );
   }
 
   /**
-   * Checks whether the given observable string value is a number or blank when the property is not empty.
+   * Checks whether the given observable string value is a number or blank when the property is not empty. It is {@code TRUE} when property is empty.
    *
    * @param value    the observable string value to check
    * @param property the observable property to check
@@ -179,7 +186,10 @@ public class ConditionUtils {
    */
   public static <T> BooleanExpression isNumberOrBlankWhenPropertyIsNotEmpty(ObservableStringValue value, ObservableValue<T> property) {
     Val<T> val = Val.wrap(property);
-    return Bindings.and(isNotEmpty(val), isNumberOrBlank(value));
+    return Bindings.or(
+        isEmpty(val),
+        Bindings.and(isNotEmpty(val), isNumberOrBlank(value))
+    );
   }
 
   /**
