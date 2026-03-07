@@ -34,8 +34,7 @@
         <maven.release.plugin.version>3.1.0</maven.release.plugin.version>
 
         <!-- plugin versions -->
-        <nexus.staging.plugin.version>1.6.13</nexus.staging.plugin.version>
-        <staging.timeout.minutes>20</staging.timeout.minutes>
+        <central.publishing.maven.plugin.version>0.9.0</central.publishing.maven.plugin.version>
     </properties>
 
     <modules>
@@ -98,18 +97,19 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
             </plugin>
-            <!-- Deploy components to OSSRH -->
+            <!-- Deploy components to Sonatype Central Portal -->
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus.staging.plugin.version}</version>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central.publishing.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <!-- Automatic release to the Central Repository without manual inspect -->
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                    <stagingProgressTimeoutMinutes>${staging.timeout.minutes}</stagingProgressTimeoutMinutes>
+                    <!-- which server from settings.xml to use -->
+                    <publishingServerId>central</publishingServerId>
+                    <!-- automatically publish after staging repository is closed -->
+                    <autoPublish>true</autoPublish>
+                    <!-- wait until the release is published -->
+                    <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
             <!-- Prepare new release to be deployed (runs nexus-staging maven plugin) -->
@@ -122,8 +122,6 @@
                     <useReleaseProfile>false</useReleaseProfile>
                     <!-- Used build profile -->
                     <releaseProfiles>release</releaseProfiles>
-                    <!-- Tells maven to run deploy with nexus staging plugin -->
-                    <goals>deploy org.sonatype.plugins:nexus-staging-maven-plugin:release</goals>
                 </configuration>
             </plugin>
         </plugins>
