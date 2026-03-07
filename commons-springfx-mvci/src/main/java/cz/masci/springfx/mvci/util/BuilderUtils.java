@@ -50,7 +50,7 @@ public class BuilderUtils {
 
   /**
    * Creates region with node and supporting text which appears when the node is invalid. When the node is invalid the supporting text appears with the text
-   * from the {@link Constraint}. The supporting text disappears when the node is valid again. The constrain is validated based on the change coming from
+   * from the {@link Constraint}. The supporting text disappears when the node is valid again. The constraint is validated based on the change coming from
    * revalidateFlagListener.
    *
    * @param validatedNode Node with validator to be validated
@@ -83,7 +83,6 @@ public class BuilderUtils {
     validatedNode.getValidator()
                  .validProperty()
                  .addListener((observable, oldValue, newValue) -> {
-                   System.out.printf("Validated node [%s] valid property change: from %s to %s\n", validatedNode, oldValue, newValue);
                    if (newValue) {
                      supportingText.setVisible(false);
                      supportingText.setManaged(false); // disable
@@ -91,7 +90,6 @@ public class BuilderUtils {
                    }
                  });
     revalidateFlagListener.accept((observable, oldValue, newValue) -> {
-      System.out.printf("Revalidating from %s to %s\n", validatedNode, oldValue);
       if (!oldValue && newValue) {
         List<Constraint> constraints = validatedNode.validate();
         if (!constraints.isEmpty()) {
