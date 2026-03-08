@@ -24,25 +24,35 @@ import java.util.function.Consumer;
 /**
  * This list interface groups {@link Selectable}, {@link Updatable}, {@link  Removable} and {@link Focusable} interfaces. Adding methods to externally define
  * commands for {@link Focusable#focus}, {@link Removable#remove}, {@link Selectable#select} and {@link Updatable#update}
+ *
+ * @param <E> The type of the elements in the list
  */
 public interface ListModel<E> extends Selectable<E>, Updatable, Removable<E>, Focusable {
   /**
    * Sets the command which is executed in {@link Focusable#focus}.
+   *
+   * @param command the runnable to execute when focusing the view
    */
   void setOnFocusView(Runnable command);
 
   /**
    * Sets the command which is executed in {@link Removable#remove}
+   *
+   * @param command the consumer to execute when removing an element
    */
   void setOnRemoveElement(Consumer<E> command);
 
   /**
    * Sets the command which is executed in {@link Selectable#select}
+   *
+   * @param command the consumer to execute when selecting an element
    */
   void setOnSelectElement(Consumer<E> command);
 
   /**
    * Sets the command which is executed in {@link Updatable#update}
+   *
+   * @param command the runnable to execute when updating the elements property
    */
   void setOnUpdateElementsProperty(Runnable command);
 }

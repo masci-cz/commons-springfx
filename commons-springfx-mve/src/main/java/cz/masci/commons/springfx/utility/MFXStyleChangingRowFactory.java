@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.function.Function;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Row factory for items in observable list. Add style class to the row if
@@ -16,12 +15,27 @@ import lombok.RequiredArgsConstructor;
  * @author Daniel Masek
  * @param <T> Type of table item
  */
-@RequiredArgsConstructor
 public class MFXStyleChangingRowFactory<T extends Modifiable> implements Function<T, MFXTableRow<T>> {
 
+  /** The MFX table view this factory belongs to. */
   private final MFXTableView<T> tableView;
+  /** The observable list used to track items that should be styled. */
   private final ObservableList<T> selectionList;
+  /** The CSS style class to apply to matching rows. */
   private final String styleClass;
+
+  /**
+   * Creates a new {@code MFXStyleChangingRowFactory}.
+   *
+   * @param tableView     the MFX table view this factory belongs to
+   * @param selectionList the observable list of items that should be styled
+   * @param styleClass    the CSS style class to apply to matching rows
+   */
+  public MFXStyleChangingRowFactory(MFXTableView<T> tableView, ObservableList<T> selectionList, String styleClass) {
+    this.tableView = tableView;
+    this.selectionList = selectionList;
+    this.styleClass = styleClass;
+  }
 
   /**
    * Add listener on table item to an observable list to check the item existence

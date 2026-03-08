@@ -21,9 +21,16 @@ package cz.masci.springfx.mvci.model.list;
 
 import javafx.collections.ObservableList;
 
+/**
+ * Provides access to an observable list of elements.
+ *
+ * @param <E> The type of elements in the list
+ */
 public interface Elements<E> {
   /**
-   * Returns elements
+   * Returns the observable list of elements.
+   *
+   * @return the observable list of elements
    */
   ObservableList<E> getElements();
 

@@ -23,6 +23,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class providing helper methods for function composition and null-safe transformations.
+ */
 @UtilityClass
 public class FunctionUtils {
 

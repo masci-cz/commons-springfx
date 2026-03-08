@@ -34,6 +34,10 @@ import javafx.collections.ObservableMap;
 import lombok.experimental.UtilityClass;
 import org.reactfx.EventStreams;
 
+/**
+ * Utility class providing helper methods for building MaterialFX UI components
+ * and initialising MFX selection models.
+ */
 @UtilityClass
 public class MFXBuilderUtils {
 
@@ -52,6 +56,14 @@ public class MFXBuilderUtils {
         .getNode();
   }
 
+  /**
+   * Creates an {@link MFXTableColumn} with the given title and extractor function.
+   *
+   * @param title     the column header text
+   * @param extractor function to extract the string value from a row element
+   * @param <T>       the type of row data
+   * @return a configured {@link MFXTableColumn}
+   */
   public static <T> MFXTableColumn<T> createTableColumn(String title, Function<T, String> extractor) {
     var result = new MFXTableColumn<>(title, Comparator.comparing(extractor));
     result.setRowCellFactory(item -> new MFXTableRowCell<>(extractor));
@@ -59,6 +71,16 @@ public class MFXBuilderUtils {
     return result;
   }
 
+  /**
+   * Initialises the MFX selection model by binding selection changes to the view model's
+   * selected element property and wiring update and select callbacks.
+   *
+   * @param selectionModel the MFX multiple selection model to initialise
+   * @param update         runnable to call when the table should update
+   * @param viewModel      the list view model to wire to the selection model
+   * @param <T>            the type of the element identifier
+   * @param <E>            the type of the detail model elements
+   */
   public static <T, E extends DetailModel<T>> void initSelectionModel(IMultipleSelectionModel<E> selectionModel, Runnable update,
                                                                       BaseListModel<T, E> viewModel) {
     ObservableMap<Integer, E> selectionProperty = selectionModel.selectionProperty();

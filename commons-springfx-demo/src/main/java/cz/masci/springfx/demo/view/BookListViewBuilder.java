@@ -26,9 +26,13 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Builder for the book list table view.
+ */
 @RequiredArgsConstructor
 public class BookListViewBuilder implements Builder<Region> {
 
+  /** The book list model providing data for the table. */
   private final BookListModel viewModel;
 
   @Override

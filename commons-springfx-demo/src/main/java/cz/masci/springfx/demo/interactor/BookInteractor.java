@@ -22,8 +22,29 @@ package cz.masci.springfx.demo.interactor;
 import cz.masci.springfx.demo.model.BookDetailModel;
 import java.util.List;
 
+/**
+ * Interactor interface defining CRUD operations for {@link BookDetailModel}.
+ */
 public interface BookInteractor {
+  /**
+   * Returns all available books.
+   *
+   * @return list of book detail models
+   */
   List<BookDetailModel> list();
+
+  /**
+   * Saves the given book and returns the persisted model.
+   *
+   * @param book the book to save
+   * @return the saved book detail model
+   */
   BookDetailModel save(BookDetailModel book);
+
+  /**
+   * Deletes the given book.
+   *
+   * @param book the book to delete
+   */
   void delete(BookDetailModel book);
 }

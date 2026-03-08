@@ -42,13 +42,21 @@ import org.reactfx.value.Val;
  */
 public class OperableDetailController<I, E extends DetailModel<I>> {
 
+  /** The currently selected detail element. */
   private final Val<E> selectedElement;
+  /** The removable list to which elements can be removed. */
   private final Removable<E> removable;
 
   private final BooleanProperty saveDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty discardDisabled = new SimpleBooleanProperty(true);
   private final BooleanProperty deleteDisabled = new SimpleBooleanProperty(true);
 
+  /**
+   * Creates a new {@code OperableDetailController}.
+   *
+   * @param selectedElement property holding the currently selected element
+   * @param removable       the removable list to delete elements from
+   */
   public OperableDetailController(Property<E> selectedElement, @Nonnull Removable<E> removable) {
     this.selectedElement = Val.wrap(selectedElement);
     this.removable = removable;
@@ -56,14 +64,29 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     initDisableProperties();
   }
 
+  /**
+   * Returns the property indicating whether saving is disabled.
+   *
+   * @return the save-disabled boolean property
+   */
   public BooleanProperty saveDisabledProperty() {
     return saveDisabled;
   }
 
+  /**
+   * Returns the property indicating whether discarding changes is disabled.
+   *
+   * @return the discard-disabled boolean property
+   */
   public BooleanProperty discardDisabledProperty() {
     return discardDisabled;
   }
 
+  /**
+   * Returns the property indicating whether deleting is disabled.
+   *
+   * @return the delete-disabled boolean property
+   */
   public BooleanProperty deleteDisabledProperty() {
     return deleteDisabled;
   }
@@ -118,6 +141,9 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     }
   }
 
+  /**
+   * Initializes bindings for the three disabled properties based on selection, dirty, valid and transient state.
+   */
   private void initDisableProperties() {
     // delete disabled => not selected
     Val<Boolean> dirtyProperty = selectedElement.flatMap(DirtyModel::isDirtyProperty);
@@ -129,14 +155,29 @@ public class OperableDetailController<I, E extends DetailModel<I>> {
     discardDisabled.bind(Bindings.createBooleanBinding(() -> selectedElement.isEmpty() || !dirtyProperty.getOrElse(true), selectedElement, dirtyProperty));
   }
 
+  /**
+   * Returns {@code true} when saving the current element is allowed.
+   *
+   * @return {@code true} if save is enabled
+   */
   private boolean isSaveEnabled() {
     return !saveDisabled.get();
   }
 
+  /**
+   * Returns {@code true} when discarding changes on the current element is allowed.
+   *
+   * @return {@code true} if discard is enabled
+   */
   private boolean isDiscardEnabled() {
     return !discardDisabled.get();
   }
 
+  /**
+   * Returns {@code true} when deleting the current element is allowed.
+   *
+   * @return {@code true} if delete is enabled
+   */
   private boolean isDeleteEnabled() {
     return !deleteDisabled.get();
   }

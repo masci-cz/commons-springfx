@@ -40,21 +40,35 @@ import lombok.Setter;
  * @param <E> The type of the elements in the list extending {@link DetailModel<I>}.
  */
 public class BaseListModel<I, E extends DetailModel<I>> implements ListModel<E>, Elements<E> {
+  /** The observable list of elements. */
   protected final ObservableList<E> elements;
+  /** The property holding the currently selected element. */
   protected final ObjectProperty<E> selectedElement = new SimpleObjectProperty<>();
+  /** Command executed when an element is selected. */
   @Setter
   protected Consumer<E> onSelectElement;
+  /** Command executed when the elements property is updated. */
   @Setter
   protected Runnable onUpdateElementsProperty;
+  /** Command executed when an element is removed. */
   @Setter
   protected Consumer<E> onRemoveElement;
+  /** Command executed when the view should be focused. */
   @Setter
   protected Runnable onFocusView;
 
+  /**
+   * Creates a new {@code BaseListModel} with a plain observable list.
+   */
   public BaseListModel() {
     elements = FXCollections.observableArrayList();
   }
 
+  /**
+   * Creates a new {@code BaseListModel} with an observable list using the given extractor.
+   *
+   * @param extractor callback that returns the observable values for each element to observe for changes
+   */
   public BaseListModel(Callback<E, Observable[]> extractor) {
     elements = FXCollections.observableArrayList(extractor);
   }

@@ -31,13 +31,24 @@ import javafx.util.Builder;
  */
 public class BorderPaneBuilder implements Builder<BorderPane> {
 
+  /** The left region of the border pane. */
   private Region left;
+  /** The right region of the border pane. */
   private Region right;
+  /** The center region of the border pane. */
   private Region center;
+  /** The top region of the border pane. */
   private Region top;
+  /** The bottom region of the border pane. */
   private Region bottom;
+  /** The padding to apply to the border pane. */
   private Insets padding;
 
+  /**
+   * Creates a new instance of BorderPaneBuilder.
+   *
+   * @return a new instance of BorderPaneBuilder
+   */
   public static BorderPaneBuilder builder() {
     return new BorderPaneBuilder();
   }
@@ -56,31 +67,67 @@ public class BorderPaneBuilder implements Builder<BorderPane> {
     return result;
   }
 
+  /**
+   * Sets the left region of the border pane.
+   *
+   * @param view the region to place on the left
+   * @return this builder
+   */
   public BorderPaneBuilder withLeft(Region view) {
     left = view;
     return this;
   }
 
+  /**
+   * Sets the right region of the border pane.
+   *
+   * @param view the region to place on the right
+   * @return this builder
+   */
   public BorderPaneBuilder withRight(Region view) {
     right = view;
     return this;
   }
 
+  /**
+   * Sets the center region of the border pane.
+   *
+   * @param view the region to place in the center
+   * @return this builder
+   */
   public BorderPaneBuilder withCenter(Region view) {
     center = view;
     return this;
   }
 
+  /**
+   * Sets the top region of the border pane.
+   *
+   * @param view the region to place at the top
+   * @return this builder
+   */
   public BorderPaneBuilder withTop(Region view) {
     top = view;
     return this;
   }
 
+  /**
+   * Sets the bottom region of the border pane.
+   *
+   * @param view the region to place at the bottom
+   * @return this builder
+   */
   public BorderPaneBuilder withBottom(Region view) {
     bottom = view;
     return this;
   }
 
+  /**
+   * Sets the padding of the border pane.
+   *
+   * @param padding the insets to use as padding
+   * @return this builder
+   */
   public BorderPaneBuilder withPadding(Insets padding) {
     this.padding = padding;
     return this;

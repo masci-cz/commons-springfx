@@ -28,15 +28,35 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import org.reactfx.value.Var;
 
+/**
+ * Base builder for detail views that binds text field properties bidirectionally to the
+ * selected element's properties in the provided list view model.
+ *
+ * @param <E> the type of the detail model element
+ */
 public class DetailViewBuilder<E> {
+  /** The list view model providing the selected element and update callback. */
   protected final ListModel<E> viewModel;
+  /** Listener that triggers an update on the view model whenever a bound property changes. */
   private final ChangeListener<String> changeListener;
 
+  /**
+   * Creates a new {@code DetailViewBuilder} for the given list view model.
+   *
+   * @param viewModel the list model providing the selected element
+   */
   public DetailViewBuilder(ListModel<E> viewModel) {
     this.viewModel = viewModel;
     changeListener = (observable, oldValue, newValue) -> viewModel.update();
   }
 
+  /**
+   * Binds a text field's string property bidirectionally to the corresponding property
+   * of the currently selected detail model element.
+   *
+   * @param textFieldProperty   the string property of the text field to bind
+   * @param detailModelProperty function extracting the target property from the detail model
+   */
   protected void bindBidirectional(StringProperty textFieldProperty, Function<E, Property<String>> detailModelProperty) {
     Var<String> property = selectVarOrElseConst(viewModel.selectedElementProperty(), detailModelProperty, "");
     textFieldProperty.bindBidirectional(property);

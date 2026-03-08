@@ -35,6 +35,13 @@ import org.reactfx.value.Val;
  */
 public interface DirtyStyleable<T extends DirtyProperty> extends Styleable {
 
+  /**
+   * Initializes a listener on the dirty property of the item to automatically apply or remove
+   * the given CSS style class based on its dirty state.
+   *
+   * @param itemProperty    the observable holding the current dirty-trackable item
+   * @param dirtyClassStyle the CSS style class to add when the item is dirty
+   */
   default void initDirtyPropertyChangeListener(Val<T> itemProperty, String dirtyClassStyle) {
     Val<Boolean> dirtyProperty = itemProperty.flatMap(DirtyProperty::isDirtyProperty);
 
@@ -43,6 +50,12 @@ public interface DirtyStyleable<T extends DirtyProperty> extends Styleable {
     updateDirtyClassStyle(dirtyProperty.getOrElse(false), dirtyClassStyle);
   }
 
+  /**
+   * Adds or removes the dirty CSS style class based on the given dirty state.
+   *
+   * @param dirtyProperty   {@code true} if the item is dirty; {@code false} otherwise
+   * @param dirtyClassStyle the CSS style class to add or remove
+   */
   default void updateDirtyClassStyle(Boolean dirtyProperty, String dirtyClassStyle) {
     if (Boolean.TRUE.equals(dirtyProperty)) {
       getStyleClass().add(dirtyClassStyle);

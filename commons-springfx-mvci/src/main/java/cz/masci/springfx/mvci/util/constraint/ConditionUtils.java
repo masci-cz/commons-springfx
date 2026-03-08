@@ -36,6 +36,7 @@ import org.reactfx.value.Val;
 @UtilityClass
 public class ConditionUtils {
 
+  /** Regular expression matching integer numbers (with optional sign). */
   private final static String NUMBER_REGEX = "[-+]?\\d+";
 
   /**

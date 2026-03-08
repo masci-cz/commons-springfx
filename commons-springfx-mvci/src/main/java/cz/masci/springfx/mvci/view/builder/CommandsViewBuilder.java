@@ -35,8 +35,11 @@ import javafx.util.Builder;
  */
 public class CommandsViewBuilder implements Builder<Region> {
 
+  /** The list of buttons to display in the view. */
   private final List<? extends Button> buttons;
+  /** The alignment of buttons within the container. */
   private final Pos alignment;
+  /** Whether to arrange buttons vertically ({@code true}) or horizontally ({@code false}). */
   private final boolean isVertical;
 
   /**
@@ -82,6 +85,14 @@ public class CommandsViewBuilder implements Builder<Region> {
     return result;
   }
 
+  /**
+   * Creates a horizontal box with the given children.
+   *
+   * @param spacing   spacing between buttons
+   * @param alignment alignment of buttons within the box
+   * @param children  the button nodes to add
+   * @return configured {@link HBox}
+   */
   private HBox createHBox(double spacing, Pos alignment, Node... children) {
     HBox hBox = new HBox(children);
     hBox.setSpacing(spacing);
@@ -90,6 +101,14 @@ public class CommandsViewBuilder implements Builder<Region> {
     return hBox;
   }
 
+  /**
+   * Creates a vertical box with the given children.
+   *
+   * @param spacing   spacing between buttons
+   * @param alignment alignment of buttons within the box
+   * @param children  the button nodes to add
+   * @return configured {@link VBox}
+   */
   private VBox createVBox(double spacing, Pos alignment, Node... children) {
     VBox vBox = new VBox(children);
     vBox.setSpacing(spacing);

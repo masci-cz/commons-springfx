@@ -43,8 +43,11 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  */
 public class DirtyListProperty<E extends DirtyProperty> extends ListProperty<E> implements DirtyProperty {
 
+  /** Tracks whether any element in the list is dirty. */
   private final BooleanProperty isDirty = new SimpleBooleanProperty(false);
+  /** The underlying list property delegate. */
   private final ListProperty<E> delegate = new SimpleListProperty<>(FXCollections.observableArrayList());
+  /** Listener on each element's dirty property to propagate dirty state up. */
   private final ChangeListener<Boolean> dirtyChangeListener = (observable, oldValue, newValue) -> {
     if (!newValue && isDirty.get()) {
       revalidateIsDirty();
@@ -54,6 +57,10 @@ public class DirtyListProperty<E extends DirtyProperty> extends ListProperty<E> 
     }
   };
 
+  /**
+   * Creates a new {@code DirtyListProperty} and attaches a list change listener
+   * to track dirty state of added/removed elements.
+   */
   public DirtyListProperty() {
     ListChangeListenerBuilder<E> listChangeListenerBuilder = new ListChangeListenerBuilder<>();
     listChangeListenerBuilder
@@ -63,11 +70,21 @@ public class DirtyListProperty<E extends DirtyProperty> extends ListProperty<E> 
     addListener(new WeakListChangeListener<>(listChangeListenerBuilder.build()));
   }
 
+  /**
+   * Called when an element is added; attaches the dirty listener and checks initial dirty state.
+   *
+   * @param element the added element
+   */
   private void onAdd(E element) {
     updateDirty(element);
     element.isDirtyProperty().addListener(dirtyChangeListener);
   }
 
+  /**
+   * Called when an element is removed; detaches the dirty listener and revalidates dirty state.
+   *
+   * @param element the removed element
+   */
   private void onRemove(E element) {
     element.isDirtyProperty().removeListener(dirtyChangeListener);
     if (element.isDirty()) {
@@ -75,12 +92,20 @@ public class DirtyListProperty<E extends DirtyProperty> extends ListProperty<E> 
     }
   }
 
+  /**
+   * Sets the list dirty if the given element is dirty.
+   *
+   * @param element the element to check
+   */
   private void updateDirty(E element) {
     if (!isDirty()) {
       isDirty.set(element.isDirty());
     }
   }
 
+  /**
+   * Recalculates the dirty state by checking whether any element in the list is still dirty.
+   */
   private void revalidateIsDirty() {
     var stillDirty = get().stream().anyMatch(DirtyProperty::isDirty);
     if (!stillDirty) {

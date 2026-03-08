@@ -31,6 +31,11 @@ import org.reactfx.value.Val;
  */
 public class DirtyJFXTableRow<T extends DirtyProperty> extends TableRow<T> implements DirtyStyleable<T> {
 
+  /**
+   * Creates a new {@code DirtyJFXTableRow} and initialises dirty style tracking.
+   *
+   * @param dirtyRowStyleClass the CSS style class to apply when the row's item is dirty
+   */
   public DirtyJFXTableRow(String dirtyRowStyleClass) {
     super();
     var itemProperty = Val.wrap(itemProperty());

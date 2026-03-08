@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - master
+    types: [opened, synchronize, reopened]
 
 env:
   MAVEN_OPTS: --add-opens=java.base/java.util=ALL-UNNAMED
@@ -13,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Java for maven
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'

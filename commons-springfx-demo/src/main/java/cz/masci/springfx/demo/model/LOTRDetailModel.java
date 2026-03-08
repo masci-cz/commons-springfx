@@ -24,12 +24,20 @@ import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import lombok.EqualsAndHashCode;
 import org.nield.dirtyfx.beans.DirtyStringProperty;
 
+/**
+ * Detail model representing a Lord of the Rings character with a name and location.
+ */
 @EqualsAndHashCode(callSuper=true)
 public class LOTRDetailModel extends BaseDetailModel<Long> {
 
+  /** The dirty-trackable character name property. */
   private final DirtyStringProperty character = new DirtyStringProperty("");
+  /** The dirty-trackable location property. */
   private final DirtyStringProperty location = new DirtyStringProperty("");
 
+  /**
+   * Creates a new {@code LOTRDetailModel} and registers dirty properties and constraints.
+   */
   public LOTRDetailModel() {
     addComposites(character, location);
     addConstraints(ConstraintUtils.isNotEmpty(character, "Character"));

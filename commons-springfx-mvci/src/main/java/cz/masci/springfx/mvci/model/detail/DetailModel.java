@@ -19,5 +19,10 @@
 
 package cz.masci.springfx.mvci.model.detail;
 
+/**
+ * Composite model interface combining dirty tracking, validation and identifiability for a detail view element.
+ *
+ * @param <T> The type of the identifier
+ */
 public interface DetailModel<T> extends DirtyModel, ValidModel, IdentifiableModel<T> {
 }

@@ -22,7 +22,22 @@ package cz.masci.springfx.demo.interactor;
 import cz.masci.springfx.demo.model.LOTRDetailModel;
 import java.util.List;
 
+/**
+ * Interactor interface defining operations for {@link LOTRDetailModel} LOTR characters.
+ */
 public interface LOTRInteractor {
+  /**
+   * Returns all available LOTR characters.
+   *
+   * @return list of LOTR character detail models
+   */
   List<LOTRDetailModel> loadCharacters();
+
+  /**
+   * Saves the given LOTR character and returns the persisted model.
+   *
+   * @param model the character model to save
+   * @return the saved LOTR character detail model
+   */
   LOTRDetailModel saveCharacter(LOTRDetailModel model);
 }

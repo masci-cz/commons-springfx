@@ -24,13 +24,23 @@ import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import lombok.EqualsAndHashCode;
 import org.nield.dirtyfx.beans.DirtyStringProperty;
 
+/**
+ * Detail model representing a Harry Potter character with book, character name, location, and quote.
+ */
 @EqualsAndHashCode(callSuper = true)
 public class PotterDetailModel extends BaseDetailModel<Long> {
+  /** The dirty-trackable book property. */
   private final DirtyStringProperty book = new DirtyStringProperty("");
+  /** The dirty-trackable character name property. */
   private final DirtyStringProperty character = new DirtyStringProperty("");
+  /** The dirty-trackable location property. */
   private final DirtyStringProperty location = new DirtyStringProperty("");
+  /** The dirty-trackable quote property. */
   private final DirtyStringProperty quote = new DirtyStringProperty("");
 
+  /**
+   * Creates a new {@code PotterDetailModel} and registers dirty properties and constraints.
+   */
   public PotterDetailModel() {
     addComposites(book, character, location, quote);
     addConstraints(

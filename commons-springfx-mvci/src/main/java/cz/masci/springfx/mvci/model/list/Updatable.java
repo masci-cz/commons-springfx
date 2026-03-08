@@ -23,5 +23,8 @@ package cz.masci.springfx.mvci.model.list;
  * Ability to update view. Mostly used to update element in list view in list-detail view pattern.
  */
 public interface Updatable {
+  /**
+   * Triggers an update of the associated view or elements list.
+   */
   void update();
 }

@@ -34,14 +34,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Spring component controller for the book manager toolbar view.
+ * Provides buttons to create, load, save all, and discard all books.
+ */
 @Slf4j
 public class BookManagerController implements ViewProvider<Region> {
 
+  /** Interactor for book persistence operations. */
   private final BookInteractor interactor;
 
+  /** Controller managing bulk operations on the book list. */
   private final OperableManagerController<Long, BookDetailModel> operableManagerController;
+  /** Builder for the commands toolbar view. */
   private final CommandsViewBuilder builder;
 
+  /**
+   * Creates a new {@code BookManagerController}.
+   *
+   * @param viewModel  the list model providing elements and selection callbacks
+   * @param interactor the interactor for book CRUD operations
+   */
   public BookManagerController(BookListModel viewModel, BookInteractor interactor) {
     this.interactor = interactor;
     operableManagerController = new OperableManagerController<>(viewModel, viewModel.getElements());
@@ -60,12 +73,20 @@ public class BookManagerController implements ViewProvider<Region> {
     return builder.build();
   }
 
+  /**
+   * Creates a new blank book and adds it to the list.
+   */
   private void newBook() {
       var element = new BookDetailModel();
       element.setTitle("New Book");
       operableManagerController.add(element);
   }
 
+  /**
+   * Loads books from the interactor in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after loading
+   */
   private void load(Runnable postGuiStuff) {
     BackgroundTaskBuilder
         .task(interactor::list)
@@ -74,6 +95,11 @@ public class BookManagerController implements ViewProvider<Region> {
         .start();
   }
 
+  /**
+   * Saves all dirty valid books in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after saving
+   */
   private void save(Runnable postGuiStuff) {
     AtomicInteger savedCount = new AtomicInteger(0);
     BackgroundTaskBuilder
@@ -94,6 +120,9 @@ public class BookManagerController implements ViewProvider<Region> {
         .start();
   }
 
+  /**
+   * Discards all unsaved changes in the book list.
+   */
   private void discard() {
     operableManagerController.discard();
     log.info("Changes were discarded");

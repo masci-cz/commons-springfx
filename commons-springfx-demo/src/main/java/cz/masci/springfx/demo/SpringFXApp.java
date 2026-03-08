@@ -22,9 +22,18 @@ package cz.masci.springfx.demo;
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Spring Boot entry point for the commons-springfx demo application.
+ * Launches the {@link JavaFXApp} JavaFX application.
+ */
 @SpringBootApplication(scanBasePackages = "cz.masci.springfx.demo")
 public class SpringFXApp {
 
+  /**
+   * Application entry point.
+   *
+   * @param args command-line arguments
+   */
   public static void main(String[] args) {
     Application.launch(JavaFXApp.class, args);
   }

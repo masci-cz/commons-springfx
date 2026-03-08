@@ -38,38 +38,84 @@ import javafx.collections.ListChangeListener;
  * @param <E> The type of elements in the list
  */
 public class ListChangeListenerBuilder<E> {
+  /** Handler called for each element added to the list. */
   private Consumer<E> onAdd;
+  /** Handler called for each element removed from the list. */
   private Consumer<E> onRemove;
+  /** Handler called for each element updated in the list. */
   private Consumer<E> onUpdated;
+  /** Handler called for each element permutated in the list. */
   private Consumer<E> onPermutated;
 
+  /**
+   * Creates a new {@code ListChangeListenerBuilder} with no handlers set.
+   */
   public ListChangeListenerBuilder() {
   }
 
+  /**
+   * Sets the handler to invoke for each element added to the list.
+   *
+   * @param onAdd consumer receiving each added element
+   * @return this builder
+   */
   public ListChangeListenerBuilder<E> onAdd(Consumer<E> onAdd) {
     this.onAdd = onAdd;
     return this;
   }
 
+  /**
+   * Sets the handler to invoke for each element removed from the list.
+   *
+   * @param onRemove consumer receiving each removed element
+   * @return this builder
+   */
   public ListChangeListenerBuilder<E> onRemove(Consumer<E> onRemove) {
     this.onRemove = onRemove;
     return this;
   }
 
+  /**
+   * Sets the handler to invoke for each element updated in the list.
+   *
+   * @param onUpdated consumer receiving each updated element
+   * @return this builder
+   */
   public ListChangeListenerBuilder<E> onUpdated(Consumer<E> onUpdated) {
     this.onUpdated = onUpdated;
     return this;
   }
 
+  /**
+   * Sets the handler to invoke for each element permutated in the list.
+   *
+   * @param onPermutated consumer receiving each permutated element
+   * @return this builder
+   */
   public ListChangeListenerBuilder<E> onPermutated(Consumer<E> onPermutated) {
     this.onPermutated = onPermutated;
     return this;
   }
 
+  /**
+   * Builds and returns the configured {@link ListChangeListener}.
+   *
+   * @return a {@link ListChangeListener} that delegates to the registered handlers
+   */
   public ListChangeListener<E> build() {
     return createListChangeListener(onAdd, onRemove, onUpdated, onPermutated);
   }
 
+  /**
+   * Creates a {@link ListChangeListener} dispatching to the given handler consumers.
+   *
+   * @param onAddItem       handler for added items, may be {@code null}
+   * @param onRemoveItem    handler for removed items, may be {@code null}
+   * @param onUpdatedItem   handler for updated items, may be {@code null}
+   * @param onPermutatedItem handler for permutated items, may be {@code null}
+   * @param <T>             the type of list elements
+   * @return the constructed {@link ListChangeListener}
+   */
   private static <T> ListChangeListener<T> createListChangeListener(Consumer<T> onAddItem, Consumer<T> onRemoveItem, Consumer<T> onUpdatedItem, Consumer<T> onPermutatedItem) {
     return c -> {
       while (c.next()) {

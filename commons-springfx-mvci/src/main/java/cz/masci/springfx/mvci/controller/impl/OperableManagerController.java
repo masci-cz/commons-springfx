@@ -43,11 +43,22 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class OperableManagerController<I, E extends DetailModel<I>> {
+  /** Handles element selection. */
   private final Selectable<E> selectable;
+  /** Handles focus requests. */
   private final Focusable focusable;
+  /** Handles element removal. */
   private final Removable<E> removable;
+  /** The observable list of managed elements. */
   private final ObservableList<E> elements;
 
+  /**
+   * Convenience constructor that accepts a model implementing all three list capabilities.
+   *
+   * @param model    a model implementing {@link Selectable}, {@link Focusable}, and {@link Removable}
+   * @param elements the observable list of managed elements
+   * @param <T>      a type implementing all three interfaces
+   */
   public <T extends Selectable<E> & Focusable & Removable<E>> OperableManagerController(T model, ObservableList<E> elements) {
     this.elements = elements;
     this.selectable = model;
@@ -73,7 +84,6 @@ public class OperableManagerController<I, E extends DetailModel<I>> {
   /**
    * Adds all elements from the given list to the elements managed by the OperableManagerController.
    * This method performs the following operations:
-   *
    * 1. Unselects the currently selected element by calling the select() method of the Selectable interface with a null argument.
    * 2. Clears the elements list.
    * 3. Adds all elements from the given list to the elements list.
@@ -88,7 +98,6 @@ public class OperableManagerController<I, E extends DetailModel<I>> {
 
   /**
    * Updates the elements in the list of elements managed by the OperableManagerController.
-   *
    * 1. Filters the dirty elements that are valid.
    * 2. For each valid dirty element, the updateAction is executed by accepting the element and the updatedElement consumer.
    * 3. If the element is transient, the id of the element is set to the id of the updatedElement.
@@ -125,6 +134,11 @@ public class OperableManagerController<I, E extends DetailModel<I>> {
     elementsToRemove.forEach(removable::remove);
   }
 
+  /**
+   * Returns a stream of elements that currently have unsaved (dirty) changes.
+   *
+   * @return stream of dirty elements
+   */
   protected Stream<E> getDirtyElements() {
     return elements.stream().filter(DirtyModel::isDirty);
   }

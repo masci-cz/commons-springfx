@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,6 +29,7 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   /**
    * Global observable list map
    */
+  @Setter
   private ObservableList<T> changedItemList;
 
   /**
@@ -71,15 +73,6 @@ public abstract class AbstractDetailController<T extends Modifiable> {
    * @param newValue New value
    */
   protected abstract void changed(ObservableValue<? extends String> observable, String oldValue, String newValue);
-
-  /**
-   * Set changed item list. When some observable values change, the values is added to this list.
-   *
-   * @param changedItemList Observable changed item list
-   */
-  public void setChangedItemList(ObservableList<T> changedItemList) {
-    this.changedItemList = changedItemList;
-  }
 
   /**
    * Set item to be controlled
@@ -126,7 +119,7 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   }
 
   /**
-   * Get observable values. If is not set get them from {@link #initObservableValues()
+   * Get observable values. If not set, initialize them from {@link #initObservableValues()}.
    *
    * @return Observable values
    */

@@ -38,14 +38,22 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  */
 public class DirtyIntegerProperty extends IntegerProperty implements DirtyProperty {
 
+  /** Stores the baseline value against which dirty state is compared. */
   private final IntegerProperty originalValue;
+  /** Tracks whether the current value differs from the original. */
   private final BooleanProperty isDirty = new SimpleBooleanProperty(false);
+  /** The underlying integer property delegate. */
   private final IntegerProperty delegate;
-  private final ChangeListener<Number> listener = (observable, oldValue, newValue) -> isDirty.set(!Objects.equals(getOriginalValue(), newValue));
 
+    /**
+   * Creates a new {@code DirtyIntegerProperty} with the given initial value.
+   *
+   * @param initialValue the initial (and baseline) value
+   */
   public DirtyIntegerProperty(@NotNull Integer initialValue) {
     originalValue = new SimpleIntegerProperty(initialValue);
     delegate = new SimpleIntegerProperty(initialValue);
+    ChangeListener<Number> listener = (observable, oldValue, newValue) -> isDirty.set(!Objects.equals(getOriginalValue(), newValue));
     addListener(new WeakChangeListener<>(listener));
   }
 

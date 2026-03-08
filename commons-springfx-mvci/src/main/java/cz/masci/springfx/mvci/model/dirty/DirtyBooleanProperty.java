@@ -35,14 +35,22 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  */
 public class DirtyBooleanProperty extends BooleanProperty implements DirtyProperty {
 
+  /** Stores the baseline value against which dirty state is compared. */
   private final BooleanProperty originalValue;
+  /** Tracks whether the current value differs from the original. */
   private final BooleanProperty isDirty = new SimpleBooleanProperty(false);
+  /** The underlying boolean property delegate. */
   private final BooleanProperty delegate;
-  private final ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> isDirty.set(!Objects.equals(getOriginalValue(), newValue));
 
+    /**
+   * Creates a new {@code DirtyBooleanProperty} with the given initial value.
+   *
+   * @param initialValue the initial (and baseline) value
+   */
   public DirtyBooleanProperty(@NotNull Boolean initialValue) {
     originalValue = new SimpleBooleanProperty(initialValue);
     delegate = new SimpleBooleanProperty(initialValue);
+    ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> isDirty.set(!Objects.equals(getOriginalValue(), newValue));
     addListener(new WeakChangeListener<>(listener));
   }
 
