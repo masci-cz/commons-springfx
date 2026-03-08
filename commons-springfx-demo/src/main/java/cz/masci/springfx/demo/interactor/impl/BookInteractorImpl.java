@@ -27,10 +27,14 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Spring service implementation of {@link BookInteractor} using {@link Faker} to generate demo data.
+ */
 @Service
 @RequiredArgsConstructor
 public class BookInteractorImpl implements BookInteractor {
 
+  /** Faker instance used to generate fake book data. */
   private final Faker faker;
 
   @Override

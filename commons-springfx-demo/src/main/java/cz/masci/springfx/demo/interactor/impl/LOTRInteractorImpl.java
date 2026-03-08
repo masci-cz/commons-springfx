@@ -28,10 +28,14 @@ import java.util.stream.LongStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Spring service implementation of {@link LOTRInteractor} using {@link Faker} to generate demo data.
+ */
 @Service
 @RequiredArgsConstructor
 public class LOTRInteractorImpl implements LOTRInteractor {
 
+  /** Faker instance used to generate fake LOTR character data. */
   private final Faker faker;
 
   @Override
@@ -55,10 +59,23 @@ public class LOTRInteractorImpl implements LOTRInteractor {
     return model;
   }
 
+  /**
+   * Creates a new {@link LOTRDetailModel} for the given numeric id using fake data.
+   *
+   * @param id the numeric identifier to assign to the character
+   * @return a new {@link LOTRDetailModel} populated with fake data
+   */
   private LOTRDetailModel nextCharacter(long id) {
     return map(faker.lordOfTheRings(), id);
   }
 
+  /**
+   * Maps a {@link LordOfTheRings} faker instance to a {@link LOTRDetailModel}.
+   *
+   * @param origin the faker providing character and location data
+   * @param id     the identifier to assign to the model
+   * @return a baselined {@link LOTRDetailModel}
+   */
   private LOTRDetailModel map(LordOfTheRings origin, long id) {
     var model = new LOTRDetailModel();
     model.setId(id);

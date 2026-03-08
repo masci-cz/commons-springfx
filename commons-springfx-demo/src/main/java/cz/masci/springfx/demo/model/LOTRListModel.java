@@ -19,5 +19,13 @@
 
 package cz.masci.springfx.demo.model;
 
+/**
+ * List model for the LOTR demo, holding {@link LOTRDetailModel} elements identified by {@code Long}.
+ */
 public class LOTRListModel extends AppListModel<Long, LOTRDetailModel> {
+  /**
+   * Creates a new {@code LOTRListModel}.
+   */
+  public LOTRListModel() {
+  }
 }

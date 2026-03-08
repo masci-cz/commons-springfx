@@ -8,14 +8,28 @@ import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller for potter character list view.
+ *
+ * @author Daniel Mašek
+ */
 @Slf4j
 public class PotterListController implements ViewProvider<Region> {
 
+  /** The interactor for handling potter character operations. */
   private final PotterInteractor interactor;
+  /** The view model for the potter character list. */
   private final PotterListModel viewModel;
 
+  /** The view builder for constructing the potter character list view. */
   private final PotterListViewBuilder viewBuilder;
 
+  /**
+   * Creates a new instance of PotterListController with the given list model and interactor.
+    *
+   * @param listModel the view model for the potter character list
+   * @param interactor the interactor for handling potter character operations
+   */
   public PotterListController(PotterListModel listModel, PotterInteractor interactor) {
     this.viewModel = listModel;
     this.interactor = interactor;

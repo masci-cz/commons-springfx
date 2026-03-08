@@ -67,15 +67,25 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   @Getter
   private final ObservableList<T> changedItemList;
 
+  /** The root border pane of the master view. */
   @FXML
   protected BorderPane borderPane;
 
+  /** The table view displaying the list of items. */
   @FXML
   protected TableView<T> tableView;
 
+  /** The VBox container holding additional UI items. */
   @FXML
   protected VBox items;
 
+  /**
+   * Creates a new {@code AbstractMasterController} instance.
+   *
+   * @param fxWeaver            the {@link FxWeaver} used to load FXML views
+   * @param itemService         the {@link CrudService} responsible for CRUD operations on items
+   * @param editControllerClass the class of the edit dialog controller service
+   */
   public AbstractMasterController(FxWeaver fxWeaver, CrudService<T> itemService, Class<? extends EditDialogControllerService<T>> editControllerClass) {
     this.fxWeaver = fxWeaver;
     this.itemService = itemService;

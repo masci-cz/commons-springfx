@@ -28,7 +28,11 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
  * Simplify get valid property for {@link Validated} interface.
  */
 public interface ValidModel extends Validated {
-  /** Returns valid property of the object */
+  /**
+   * Returns the read-only valid property of the object.
+   *
+   * @return a {@link ReadOnlyBooleanProperty} that is {@code true} when the model is valid
+   */
   default ReadOnlyBooleanProperty validProperty() {
     return getValidator().validProperty();
   }

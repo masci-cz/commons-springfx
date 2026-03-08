@@ -25,12 +25,20 @@ import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Detail model representing a book with a title and author.
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BookDetailModel extends BaseDetailModel<Long> {
+  /** The dirty-trackable title property. */
   private DirtyStringProperty title = new DirtyStringProperty("");
+  /** The dirty-trackable author property. */
   private DirtyStringProperty author = new DirtyStringProperty("");
 
+  /**
+   * Creates a new {@code BookDetailModel} and registers dirty properties and constraints.
+   */
   public BookDetailModel() {
     addComposites(title, author);
     addConstraints(ConstraintUtils.isNotEmpty(title, "Title"));

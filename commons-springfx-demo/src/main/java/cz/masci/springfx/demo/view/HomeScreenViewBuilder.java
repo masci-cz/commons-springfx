@@ -27,11 +27,17 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Builder for the home screen view, providing tile buttons to open each demo scene.
+ */
 @RequiredArgsConstructor
 public class HomeScreenViewBuilder implements Builder<Region> {
 
+  /** Runnable invoked when the LOTR tile button is pressed. */
   private final Runnable openLOTRScene;
+  /** Runnable invoked when the Potter tile button is pressed. */
   private final Runnable openPotterScene;
+  /** Runnable invoked when the Book tile button is pressed. */
   private final Runnable openBookScene;
 
   @Override

@@ -30,7 +30,13 @@ import lombok.Getter;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 import org.nield.dirtyfx.tracking.DirtyProperty;
 
+/**
+ * Abstract base implementation of {@link DetailModel} providing common id, dirty tracking and validation support.
+ *
+ * @param <T> The type of the identifier
+ */
 public abstract class BaseDetailModel<T> implements DetailModel<T> {
+  /** The property holding the identifier of this model. */
   private final ObjectProperty<T> id = new SimpleObjectProperty<>();
   @Getter
   private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
@@ -47,10 +53,20 @@ public abstract class BaseDetailModel<T> implements DetailModel<T> {
     return idProperty().isNull();
   }
 
+  /**
+   * Registers the given dirty properties with the composite dirty tracker.
+   *
+   * @param properties the dirty properties to add
+   */
   protected void addComposites(DirtyProperty ...properties) {
     composite.addAll(properties);
   }
 
+  /**
+   * Registers the given constraints with the validator.
+   *
+   * @param constraints the constraints to add
+   */
   protected void addConstraints(Constraint ...constraints) {
     Arrays.stream(constraints).forEach(validator::constraint);
   }

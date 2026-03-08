@@ -5,8 +5,15 @@ import cz.masci.springfx.demo.view.LOTRCreateViewBuilder;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 
+/**
+ * Dialog for creating a new LOTR character, showing a form and returning
+ * the populated {@link LOTRDetailModel} on confirmation.
+ */
 public class LOTRCreateDialog extends Dialog<LOTRDetailModel> {
 
+  /**
+   * Creates a new {@code LOTRCreateDialog}, setting up the form and result converter.
+   */
   public LOTRCreateDialog() {
     super();
     var character = new LOTRDetailModel();

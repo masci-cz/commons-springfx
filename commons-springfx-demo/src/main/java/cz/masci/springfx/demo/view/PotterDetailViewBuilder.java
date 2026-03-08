@@ -32,8 +32,17 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
+/**
+ * Builder for the Harry Potter character detail view, containing validated text fields
+ * for book, character, location, and quote.
+ */
 public class PotterDetailViewBuilder extends DetailViewBuilder<PotterDetailModel> implements Builder<Region> {
 
+  /**
+   * Creates a new {@code PotterDetailViewBuilder} for the given list view model.
+   *
+   * @param viewModel the list model providing the selected Potter character
+   */
   public PotterDetailViewBuilder(PotterListModel viewModel) {
     super(viewModel);
   }

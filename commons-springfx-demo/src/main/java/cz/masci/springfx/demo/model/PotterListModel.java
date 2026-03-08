@@ -19,5 +19,13 @@
 
 package cz.masci.springfx.demo.model;
 
+/**
+ * List model for the Harry Potter demo, holding {@link PotterDetailModel} elements identified by {@code Long}.
+ */
 public class PotterListModel extends AppListModel<Long, PotterDetailModel> {
+  /**
+   * Creates a new {@code PotterListModel}.
+   */
+  public PotterListModel() {
+  }
 }

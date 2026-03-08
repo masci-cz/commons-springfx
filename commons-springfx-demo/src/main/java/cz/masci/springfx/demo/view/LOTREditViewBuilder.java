@@ -10,9 +10,14 @@ import javafx.scene.layout.Region;
 import lombok.RequiredArgsConstructor;
 import org.reactfx.value.Var;
 
+/**
+ * Builder for the LOTR character edit view, binding text fields bidirectionally
+ * to the currently selected character in the list model.
+ */
 @RequiredArgsConstructor
 public class LOTREditViewBuilder extends LOTRDetailViewBuilder {
 
+  /** The LOTR list model providing the selected character element. */
   private final LOTRListModel viewModel;
 
   @Override

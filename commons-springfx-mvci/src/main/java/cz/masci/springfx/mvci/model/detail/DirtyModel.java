@@ -35,6 +35,11 @@ import org.nield.dirtyfx.tracking.DirtyProperty;
  */
 public interface DirtyModel extends DirtyProperty {
 
+  /**
+   * Returns the composite dirty property aggregating all tracked dirty properties.
+   *
+   * @return the {@link CompositeDirtyProperty} for this model
+   */
   CompositeDirtyProperty getComposite();
 
   @Override

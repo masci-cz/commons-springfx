@@ -39,17 +39,25 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller for the Harry Potter character detail view. Manages save, discard and delete operations.
+ */
 @Slf4j
 public class PotterDetailController implements ViewProvider<Region> {
 
+  /** Controller managing operable detail actions (save, discard, delete). */
   private final OperableDetailController<Long, PotterDetailModel> operableDetailController;
 
-  private final PotterInteractor interactor;
-
+    /** Builder for the combined detail and command view. */
   private final Builder<Region> builder;
 
+  /**
+   * Creates a new {@code PotterDetailController}.
+   *
+   * @param viewModel  the list model providing the selected character and callbacks
+   * @param interactor the interactor used for character CRUD operations
+   */
   public PotterDetailController(PotterListModel viewModel, PotterInteractor interactor) {
-    this.interactor = interactor;
     operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
 
     var detailViewBuilder = new PotterDetailViewBuilder(viewModel);
@@ -71,6 +79,11 @@ public class PotterDetailController implements ViewProvider<Region> {
     return builder.build();
   }
 
+  /**
+   * Saves the currently selected Potter character in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after saving
+   */
   private void saveItem(Runnable postGuiStuff) {
     operableDetailController.update((item, afterSave) ->
         BackgroundTaskBuilder
@@ -87,10 +100,18 @@ public class PotterDetailController implements ViewProvider<Region> {
             .start());
   }
 
+  /**
+   * Discards unsaved changes on the currently selected Potter character.
+   */
   private void discardDirtyItem() {
     operableDetailController.discard();
   }
 
+  /**
+   * Deletes the currently selected Potter character in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after deletion
+   */
   private void deleteItem(Runnable postGuiStuff) {
     operableDetailController.remove((item, afterDelete) ->
         BackgroundTaskBuilder

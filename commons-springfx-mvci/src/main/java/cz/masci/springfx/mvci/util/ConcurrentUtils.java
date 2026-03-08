@@ -22,6 +22,9 @@ package cz.masci.springfx.mvci.util;
 import javafx.application.Platform;
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class providing helper methods for running code on the JavaFX Application Thread.
+ */
 @UtilityClass
 public class ConcurrentUtils {
 

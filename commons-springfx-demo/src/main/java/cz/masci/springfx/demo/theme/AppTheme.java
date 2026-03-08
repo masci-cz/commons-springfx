@@ -24,13 +24,21 @@ import java.net.URL;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enumeration of CSS themes available in the demo application.
+ * Each constant references a stylesheet resource path.
+ */
 @RequiredArgsConstructor
 public enum AppTheme implements Theme {
 
+  /** Theme for table view styling. */
   TABLE_VIEW("css/table-view.css"),
+  /** General application theme. */
   APP("css/app.css"),
+  /** Design tokens theme. */
   TOKENS("css/tokens.css");
 
+  /** The classpath-relative path to the CSS stylesheet. */
   private final String path;
 
   @Override

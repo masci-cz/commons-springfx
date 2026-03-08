@@ -30,9 +30,18 @@ import javafx.beans.binding.BooleanExpression;
  */
 public interface IdentifiableModel<T> extends Identifiable<T> {
 
+  /**
+   * Returns a boolean expression that is {@code true} when this object is transient (has no id set).
+   *
+   * @return a {@link BooleanExpression} representing the transient state
+   */
   BooleanExpression transientProperty();
 
-  /** Returns {@code true} if this object is transient and doesn't have id set. If this object is persisted it returns {@code false}. */
+  /**
+   * Returns {@code true} if this object is transient and doesn't have id set. If this object is persisted it returns {@code false}.
+   *
+   * @return {@code true} if transient, {@code false} if persisted
+   */
   default boolean isTransient() {
     return transientProperty().get();
   }

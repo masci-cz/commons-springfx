@@ -21,7 +21,14 @@ package cz.masci.springfx.mvci.model.list;
 
 /**
  * Ability to remove element from list. Mostly used to remove element in the list view in list-detail view pattern.
+ *
+ * @param <E> The type of the element to remove
  */
 public interface Removable<E> {
+  /**
+   * Removes the specified element from the list.
+   *
+   * @param element the element to remove
+   */
   void remove(E element);
 }

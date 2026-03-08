@@ -33,9 +33,20 @@ import javafx.stage.Stage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * Main JavaFX application class. Bootstraps the Spring context, configures the UI theme,
+ * and shows the home screen.
+ */
 public class JavaFXApp extends Application {
 
+  /** The Spring application context initialised during {@link #init()}. */
   private ConfigurableApplicationContext applicationContext;
+
+  /**
+   * Creates a new {@code JavaFXApp} instance.
+   */
+  public JavaFXApp() {
+  }
 
   @Override
   public void init() {
@@ -58,6 +69,7 @@ public class JavaFXApp extends Application {
                     .setGlobal();
   }
 
+  /** {@inheritDoc} */
   @Override
   public void start(Stage primaryStage) {
     ViewProvider<Region> viewProvider = applicationContext.getBean(HomeScreenController.class);

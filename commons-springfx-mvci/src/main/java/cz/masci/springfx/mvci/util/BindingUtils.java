@@ -27,6 +27,10 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
+/**
+ * Utility class providing helper methods for creating JavaFX property bindings,
+ * especially for nullable observable values.
+ */
 @UtilityClass
 public class BindingUtils {
 

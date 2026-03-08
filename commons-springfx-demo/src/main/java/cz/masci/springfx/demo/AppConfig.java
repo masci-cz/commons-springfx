@@ -23,9 +23,18 @@ import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Spring configuration class for the demo application.
+ * Defines application-level beans.
+ */
 @Configuration
 public class AppConfig {
 
+  /**
+   * Creates a {@link Faker} bean for generating fake data in the demo.
+   *
+   * @return a new {@link Faker} instance
+   */
   @Bean
   public Faker createFaker() {
     return new Faker();

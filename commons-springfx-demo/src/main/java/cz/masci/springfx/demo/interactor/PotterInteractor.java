@@ -21,6 +21,14 @@ package cz.masci.springfx.demo.interactor;
 
 import cz.masci.springfx.demo.model.PotterDetailModel;
 
+/**
+ * Interactor interface defining operations for creating {@link PotterDetailModel} Harry Potter characters.
+ */
 public interface PotterInteractor {
+  /**
+   * Creates and returns a new Harry Potter character populated with fake data.
+   *
+   * @return a new {@link PotterDetailModel} with fake data
+   */
   PotterDetailModel addCharacter();
 }

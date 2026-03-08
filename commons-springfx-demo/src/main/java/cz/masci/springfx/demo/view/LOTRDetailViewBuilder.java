@@ -9,11 +9,19 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Builder;
 
+/**
+ * Base builder for the LOTR character detail view, containing character and location text fields.
+ */
 public class LOTRDetailViewBuilder implements Builder<Region> {
 
+  /** Text field for the character name. */
   protected final TextField characterTextField;
+  /** Text field for the character location. */
   protected final TextField locationTextField;
 
+  /**
+   * Creates a new {@code LOTRDetailViewBuilder} initialising the text fields.
+   */
   public LOTRDetailViewBuilder() {
     characterTextField = new TextField();
     locationTextField = new TextField();

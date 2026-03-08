@@ -27,13 +27,25 @@ import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
+/**
+ * Spring component controller that combines the book list, detail, and manager views
+ * into a single border-pane layout and loads books on startup.
+ */
 @Component
 public class BookListDetailController implements ViewProvider<Region> {
 
+  /** Builder for the combined border-pane view. */
   private final BorderPaneBuilder builder;
+  /** List view model shared between the list and detail controllers. */
   private final BookListModel viewModel;
+  /** Interactor for book CRUD operations. */
   private final BookInteractor interactor;
 
+  /**
+   * Creates a new {@code BookListDetailController}, wiring up sub-controllers.
+   *
+   * @param interactor the interactor providing book persistence operations
+   */
   public BookListDetailController(BookInteractor interactor) {
     this.interactor = interactor;
     this.viewModel = new BookListModel();
@@ -54,6 +66,9 @@ public class BookListDetailController implements ViewProvider<Region> {
     return builder.build();
   }
 
+  /**
+   * Clears and reloads all books from the interactor in a background task.
+   */
   private void load() {
     viewModel.getElements()
              .clear();

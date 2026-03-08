@@ -24,10 +24,15 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class providing helper methods for working with JavaFX properties.
+ */
 @UtilityClass
 public class PropertyUtils {
+  /** A constant boolean property always holding {@code false}. */
   public static final BooleanProperty FALSE_PROPERTY = new SimpleBooleanProperty(false);
 
+  /** A constant boolean property always holding {@code true}. */
   public static final BooleanProperty TRUE_PROPERTY = new SimpleBooleanProperty(true);
 
   /**

@@ -28,12 +28,27 @@ import javafx.beans.property.ObjectProperty;
  */
 public interface Identifiable<T> {
 
+  /**
+   * Returns the property holding the identifier.
+   *
+   * @return the {@link ObjectProperty} representing the identifier
+   */
   ObjectProperty<T> idProperty();
-  /** Returns the id */
+
+  /**
+   * Returns the identifier value.
+   *
+   * @return the current identifier, or {@code null} if not set
+   */
   default T getId() {
     return idProperty().getValue();
   }
-  /** Set the id */
+
+  /**
+   * Sets the identifier value.
+   *
+   * @param id the new identifier to set
+   */
   default void setId(T id) {
     idProperty().setValue(id);
   }

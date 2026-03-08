@@ -56,7 +56,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ExternalControllerFxWeaver extends FxWeaver {
 
+  /** Factory for creating beans by class type from the Spring application context. */
   private final Callback<Class<?>, Object> beanFactory;
+  /** Factory for creating JavaFX builders, delegates to this weaver for {@link FxmlView}-annotated types. */
   private final BuilderFactory builderFactory;
 
   /**
@@ -117,10 +119,34 @@ public class ExternalControllerFxWeaver extends FxWeaver {
             .orElseGet(() -> SimpleFxControllerAndView.ofController(getBean(controllerClass)));
   }
 
+  /**
+   * Loads the controller and view by creating a fresh {@link FXMLLoader} and delegating
+   * to {@link #loadByViewUsingFxmlLoader(FXMLLoader, Class, URL, ResourceBundle)}.
+   *
+   * @param controllerClass the controller class to load
+   * @param url             the URL of the FXML resource
+   * @param resourceBundle  the optional resource bundle for localisation, may be {@code null}
+   * @param <C>             the controller type
+   * @param <V>             the view type extending {@link Node}
+   * @return a {@link FxControllerAndView} holding the controller and view
+   */
   private <C, V extends Node> FxControllerAndView<C, V> loadByView(Class<C> controllerClass, URL url, ResourceBundle resourceBundle) {
     return loadByViewUsingFxmlLoader(new FXMLLoader(), controllerClass, url, resourceBundle);
   }
 
+  /**
+   * Loads the controller and view using the provided {@link FXMLLoader}.
+   * Configures the loader with the bean factory, builder factory, optional resource bundle,
+   * and handles {@link FxmlController} and {@link FxmlRoot} annotations.
+   *
+   * @param loader          the {@link FXMLLoader} instance to use for loading
+   * @param controllerClass the controller class to load
+   * @param url             the URL of the FXML resource
+   * @param resourceBundle  the optional resource bundle for localisation, may be {@code null}
+   * @param <C>             the controller type
+   * @param <V>             the view type extending {@link Node}
+   * @return a {@link FxControllerAndView} holding the controller and view
+   */
   <C, V extends Node> FxControllerAndView<C, V> loadByViewUsingFxmlLoader(FXMLLoader loader, Class<C> controllerClass, URL url, ResourceBundle resourceBundle) {
     log.debug("Loading FXML from {}", url.getFile());
     try ( InputStream fxmlStream = url.openStream()) {

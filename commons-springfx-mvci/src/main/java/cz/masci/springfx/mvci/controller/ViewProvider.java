@@ -27,5 +27,10 @@ import javafx.scene.layout.Region;
  * @param <T> Type of the returned view
  */
 public interface ViewProvider<T extends Region> {
+  /**
+   * Returns the view managed by this controller.
+   *
+   * @return the view instance
+   */
   T getView();
 }

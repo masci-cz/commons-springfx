@@ -24,8 +24,18 @@ import cz.masci.springfx.demo.view.BookListViewBuilder;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
 
+/**
+ * Controller for book list view.
+ *
+ * @author Daniel Mašek
+ */
 public class BookListController extends SimpleController<Region, BookListViewBuilder> {
 
+  /**
+   * Creates a new instance of BookListController with the given view model.
+   *
+   * @param viewModel the view model to be used by this controller
+   */
   public BookListController(BookListModel viewModel) {
     super(new BookListViewBuilder(viewModel));
   }

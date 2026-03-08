@@ -32,10 +32,15 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Builder for the Harry Potter character list view, including a table and an add button.
+ */
 @RequiredArgsConstructor
 public class PotterListViewBuilder implements Builder<Region> {
 
+  /** The Potter list model providing data for the table. */
   private final PotterListModel viewModel;
+  /** Consumer invoked (with a post-GUI callback) when the add button is pressed. */
   private final Consumer<Runnable> onAddItem;
 
   @Override
@@ -48,6 +53,11 @@ public class PotterListViewBuilder implements Builder<Region> {
         .getNode();
   }
 
+  /**
+   * Builds and returns the configured MFX table view for the Potter list.
+   *
+   * @return the table view region
+   */
   private Region getMFXTableView() {
     var tableView = MFXTableViewBuilder.builder(viewModel)
         .column("Book", PotterDetailModel::getBook, 200.0)

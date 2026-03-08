@@ -25,9 +25,23 @@ import lombok.experimental.UtilityClass;
 import org.reactfx.value.Val;
 import org.reactfx.value.Var;
 
+/**
+ * Utility class providing helper methods for working with ReactFX {@link Val} and {@link Var} bindings.
+ */
 @UtilityClass
 public class ReactFxUtils {
 
+  /**
+   * Creates a bidirectional {@link Var} that selects a nested property from the source,
+   * or falls back to a constant value when the source is empty.
+   *
+   * @param src        the source property that may hold a value of type {@code T}
+   * @param property   function extracting the nested {@link Property} from a {@code T} value
+   * @param constValue the constant fallback value when the source is empty
+   * @param <T>        the type of the source value
+   * @param <U>        the type of the nested property value
+   * @return a {@link Var} reflecting the nested property or the constant fallback
+   */
   public static <T, U> Var<U> selectVarOrElseConst(Property<T> src, Function<T, Property<U>> property, U constValue) {
     Val<T> srcVal = Val.wrap(src);
     return srcVal.flatMap(property)

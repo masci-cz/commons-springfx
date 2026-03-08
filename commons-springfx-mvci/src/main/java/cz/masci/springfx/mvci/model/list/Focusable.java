@@ -23,5 +23,8 @@ package cz.masci.springfx.mvci.model.list;
  * Ability to focus element on a view. Mostly used to focus detail view in list-detail view pattern.
  */
 public interface Focusable {
+  /**
+   * Requests focus on the associated view or element.
+   */
   void focus();
 }

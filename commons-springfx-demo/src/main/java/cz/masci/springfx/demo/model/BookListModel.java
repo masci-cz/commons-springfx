@@ -21,5 +21,13 @@ package cz.masci.springfx.demo.model;
 
 import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
 
+/**
+ * List model for the book demo, holding {@link BookDetailModel} elements identified by {@code Long}.
+ */
 public class BookListModel extends BaseListModel<Long, BookDetailModel> {
+  /**
+   * Creates a new {@code BookListModel}.
+   */
+  public BookListModel() {
+  }
 }

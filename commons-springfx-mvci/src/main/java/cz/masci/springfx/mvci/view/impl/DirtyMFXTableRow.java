@@ -32,6 +32,13 @@ import org.reactfx.value.Val;
  */
 public class DirtyMFXTableRow<T extends DirtyProperty> extends MFXTableRow<T> implements DirtyStyleable<T> {
 
+  /**
+   * Creates a new {@code DirtyMFXTableRow} and initialises dirty style tracking.
+   *
+   * @param tableView          the MFX table view this row belongs to
+   * @param data               the row data item
+   * @param dirtyRowStyleClass the CSS style class to apply when the row's data is dirty
+   */
   public DirtyMFXTableRow(MFXTableView<T> tableView, T data, String dirtyRowStyleClass) {
     super(tableView, data);
     var itemProperty = Val.wrap(dataProperty());

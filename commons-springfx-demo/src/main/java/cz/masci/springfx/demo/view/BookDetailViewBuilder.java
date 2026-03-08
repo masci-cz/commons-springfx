@@ -33,8 +33,17 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
+/**
+ * Builder for the book detail view, binding text fields bidirectionally to the
+ * selected {@link BookDetailModel} in the provided view model.
+ */
 public class BookDetailViewBuilder extends DetailViewBuilder<BookDetailModel> implements Builder<Region> {
 
+  /**
+   * Creates a new {@code BookDetailViewBuilder} for the given list view model.
+   *
+   * @param viewModel the list model providing the selected book element
+   */
   public BookDetailViewBuilder(BookListModel viewModel) {
     super(viewModel);
   }

@@ -54,18 +54,37 @@ import org.apache.commons.lang3.StringUtils;
  *   </dl>
  */
 public class ButtonBuilder {
+  /** The command accepting a post-action runnable to be executed on the app thread. */
   private Consumer<Runnable> appThreadCommand;
+  /** The command to execute directly on the JavaFX thread. */
   private Runnable fxThreadCommand;
+  /** Expression bound to the button's disable property. */
   BooleanExpression disableExpression;
+  /** The text to display on the button. */
   private String text;
+  /** The CSS style class to add to the button. */
   private String styleClass;
 
+  /**
+   * Creates a new {@code ButtonBuilder} instance.
+   */
   protected ButtonBuilder() {}
 
+  /**
+   * Creates a new {@code ButtonBuilder} instance.
+   *
+   * @return a new {@code ButtonBuilder}
+   */
   public static ButtonBuilder builder() {
     return new ButtonBuilder();
   }
 
+  /**
+   * Sets the command to execute on the application thread, receiving a post-GUI runnable.
+   *
+   * @param appThreadCommand the consumer to invoke with the post-GUI callback
+   * @return this builder
+   */
   public ButtonBuilder command(Consumer<Runnable> appThreadCommand) {
     this.appThreadCommand = appThreadCommand;
     fxThreadCommand = null;
@@ -73,6 +92,12 @@ public class ButtonBuilder {
     return this;
   }
 
+  /**
+   * Sets the command to execute directly on the JavaFX thread before the button action completes.
+   *
+   * @param fxThreadCommand the runnable to execute on the JavaFX thread
+   * @return this builder
+   */
   public ButtonBuilder command(Runnable fxThreadCommand) {
     this.fxThreadCommand = fxThreadCommand;
     appThreadCommand = null;
@@ -80,24 +105,49 @@ public class ButtonBuilder {
     return this;
   }
 
+  /**
+   * Sets the boolean expression bound to the button's disable property.
+   *
+   * @param disableExpression the expression to bind; combined with internal disable property
+   * @return this builder
+   */
   public ButtonBuilder disableExpression(BooleanExpression disableExpression) {
     this.disableExpression = disableExpression;
 
     return this;
   }
 
+  /**
+   * Sets the text label on the button.
+   *
+   * @param text the text to display
+   * @return this builder
+   */
   public ButtonBuilder text(String text) {
     this.text = text;
 
     return this;
   }
 
+  /**
+   * Adds a CSS style class to the button.
+   *
+   * @param styleClass the style class to add
+   * @return this builder
+   */
   public ButtonBuilder styleClass(String styleClass) {
     this.styleClass = styleClass;
 
     return this;
   }
 
+  /**
+   * Builds a button of the type provided by the supplier, applying all configured properties.
+   *
+   * @param buttonSupplier supplier that creates the button instance
+   * @param <T>            the type of button to build
+   * @return the fully configured button
+   */
   public <T extends Button> T build(Supplier<T> buttonSupplier) {
     var button = buttonSupplier.get();
 

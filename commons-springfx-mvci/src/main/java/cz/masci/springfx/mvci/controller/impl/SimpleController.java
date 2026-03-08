@@ -47,8 +47,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SimpleController<T extends Region, U extends Builder<T>> implements ViewProvider<T> {
 
+  /** The view builder used to construct the view. */
   protected final U viewBuilder;
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public T getView() {
     return viewBuilder.build();

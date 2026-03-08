@@ -34,20 +34,39 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class providing factory methods for creating common validation {@link Constraint}s.
+ */
 @UtilityClass
 public class ConstraintUtils {
 
+  /** Bundle key for the "field is required" error message. */
   private static final String FIELD_IS_REQUIRED = "FIELD_IS_REQUIRED";
+  /** Bundle key for the "field value out of range" error message. */
   private static final String FIELD_IN_RANGE = "FIELD_IN_RANGE";
+  /** Bundle key for the "field value is not a number" error message. */
   private static final String FIELD_IS_NUMBER = "FIELD_IS_NUMBER";
 
+  /** The locale used to resolve constraint messages. */
   private static Locale locale = Locale.getDefault();
 
+  /**
+   * Retrieves a localized message from the constraint_messages bundle.
+   *
+   * @param type the bundle key identifying the message template
+   * @param args the arguments to format into the message
+   * @return the formatted localized message string
+   */
   private static String getMessage(String type, Object ...args) {
     ResourceBundle bundle = ResourceBundle.getBundle("constraint_messages", locale);
     return String.format(bundle.getString(type), args);
   }
 
+  /**
+   * Sets the locale used to resolve constraint messages.
+   *
+   * @param locale the locale to use
+   */
   public static void setLocale(Locale locale) {
     ConstraintUtils.locale = locale;
   }

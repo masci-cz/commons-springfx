@@ -17,8 +17,11 @@ import javafx.util.Callback;
  */
 public class StyleChangingRowFactory<T extends Modifiable> implements Callback<TableView<T>, TableRow<T>> {
 
+  /** The observable list used to track items that should be styled. */
   private final ObservableList<T> selectionList;
+  /** The CSS style class to apply to matching rows. */
   private final String styleClass;
+  /** Optional base row factory to delegate row creation to. */
   private final Callback<TableView<T>, TableRow<T>> baseFactory;
 
   /**

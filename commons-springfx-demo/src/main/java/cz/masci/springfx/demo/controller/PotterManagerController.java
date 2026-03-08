@@ -13,14 +13,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller for the Potter manager toolbar, providing buttons to save all, clear selection, and discard.
+ */
 @Slf4j
 public class PotterManagerController {
 
+  /** The shared Potter list view model. */
   private final PotterListModel viewModel;
+  /** Builder for the commands toolbar view. */
   private final CommandsViewBuilder viewBuilder;
 
+  /** Controller managing bulk operations on the Potter list. */
   private final OperableManagerController<Long, PotterDetailModel> operableManagerController;
 
+  /**
+   * Creates a new {@code PotterManagerController}.
+   *
+   * @param viewModel the Potter list model
+   */
   public PotterManagerController(PotterListModel viewModel) {
     this.viewModel = viewModel;
     this.operableManagerController = new OperableManagerController<>(viewModel, viewModel.getElements());
@@ -33,19 +44,34 @@ public class PotterManagerController {
     );
   }
 
+  /**
+   * Builds and returns the toolbar view.
+   *
+   * @return the toolbar region
+   */
   public Region getView() {
     return viewBuilder.build();
   }
 
-  // Run in FX thread
+  /**
+   * Clears the current selection in the list view.
+   */
   private void clearSelection() {
     viewModel.clearSelection();
   }
 
+  /**
+   * Discards all unsaved changes in the Potter list.
+   */
   private void discardDirtyItems() {
     operableManagerController.discard();
   }
 
+  /**
+   * Saves all dirty valid Potter characters in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after saving
+   */
   private void saveCharacters(Runnable postGuiStuff) {
     AtomicInteger savedCount = new AtomicInteger(0);
     BackgroundTaskBuilder

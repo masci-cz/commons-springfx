@@ -36,6 +36,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.Builder;
 import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class providing helper methods for building JavaFX UI components with validation support.
+ */
 @UtilityClass
 public class BuilderUtils {
 
@@ -71,6 +74,7 @@ public class BuilderUtils {
    * revalidateFlagListener.
    *
    * @param validatedNode Node with validator to be validated
+   * @param supportingText Label used as the validation supporting text
    * @param revalidateFlagListener Boolean property listener. Whenever value changes from <code>false</code> to <code>true</code> the node is revalidated.
    * @param inputConstraints Constraints to check
    * @param <T> Type of Node to validate extends {@link Node} and implements {@link Validated}
@@ -123,6 +127,14 @@ public class BuilderUtils {
     return result;
   }
 
+  /**
+   * Creates a {@link Builder} that combines a detail view and a command view vertically,
+   * with the detail view growing to fill available space.
+   *
+   * @param detailView  the main detail region
+   * @param commandView the region containing action buttons or commands
+   * @return a {@link Builder} producing a {@link javafx.scene.layout.VBox} with both views
+   */
   public static Builder<Region> createDetailWithCommandViewBuilder(Region detailView, Region commandView) {
     return () -> {
       VBox.setVgrow(detailView, Priority.ALWAYS);

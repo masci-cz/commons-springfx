@@ -38,13 +38,24 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller for the LOTR character detail view. Manages save, discard and delete operations
+ * on the currently selected {@link LOTRDetailModel}.
+ */
 @Slf4j
 public class LOTRDetailController implements ViewProvider<Region> {
 
+  /** Controller managing operable detail actions (save, discard, delete). */
   private final OperableDetailController<Long, LOTRDetailModel> operableDetailController;
 
+  /** Builder for the combined detail and command view. */
   private final Builder<Region> builder;
 
+  /**
+   * Creates a new {@code LOTRDetailController}.
+   *
+   * @param viewModel the list model providing the selected LOTR character and callbacks
+   */
   public LOTRDetailController(LOTRListModel viewModel) {
     operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
 
@@ -67,6 +78,11 @@ public class LOTRDetailController implements ViewProvider<Region> {
     return builder.build();
   }
 
+  /**
+   * Saves the currently selected LOTR character in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after saving
+   */
   private void saveItem(Runnable postGuiStuff) {
     operableDetailController.update((item, afterSave) ->
         BackgroundTaskBuilder
@@ -83,10 +99,18 @@ public class LOTRDetailController implements ViewProvider<Region> {
             .start());
   }
 
+  /**
+   * Discards unsaved changes on the currently selected LOTR character.
+   */
   private void discardDirtyItem() {
     operableDetailController.discard();
   }
 
+  /**
+   * Deletes the currently selected LOTR character in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after deletion
+   */
   private void deleteItem(Runnable postGuiStuff) {
     operableDetailController.remove((item, afterDelete) ->
         BackgroundTaskBuilder

@@ -23,11 +23,22 @@ import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
 import lombok.Setter;
 
+/**
+ * Generic list model for the demo application, extending {@link BaseListModel} with
+ * an optional clear-selection command.
+ *
+ * @param <I> the type of the element identifier
+ * @param <E> the type of the detail model elements
+ */
 @Setter
 public class AppListModel<I, E extends DetailModel<I>> extends BaseListModel<I, E> {
 
+  /** Optional command executed when the selection is cleared. */
   private Runnable onClearSelection;
 
+  /**
+   * Clears the current selection by invoking the clear-selection command and deselecting the element.
+   */
   public void clearSelection() {
     if (onClearSelection != null) {
       onClearSelection.run();

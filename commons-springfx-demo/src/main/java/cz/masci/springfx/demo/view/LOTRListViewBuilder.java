@@ -26,9 +26,13 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Builder for the LOTR character list table view.
+ */
 @RequiredArgsConstructor
 public class LOTRListViewBuilder implements Builder<Region> {
 
+  /** The LOTR list model providing data for the table. */
   private final LOTRListModel viewModel;
 
   @Override

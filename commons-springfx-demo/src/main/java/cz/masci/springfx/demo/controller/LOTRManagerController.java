@@ -17,15 +17,28 @@ import javafx.scene.control.Dialog;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Controller for the LOTR manager toolbar, providing buttons to add, save, discard, delete, reload and clear selection.
+ */
 @Slf4j
 public class LOTRManagerController {
 
+  /** The shared LOTR list view model. */
   private final LOTRListModel viewModel;
+  /** Interactor for LOTR character persistence operations. */
   private final LOTRInteractor interactor;
 
+  /** Controller managing bulk operations on the LOTR list. */
   private final OperableManagerController<Long, LOTRDetailModel> operableManagerController;
+  /** Builder for the commands toolbar view. */
   private final CommandsViewBuilder viewBuilder;
 
+  /**
+   * Creates a new {@code LOTRManagerController}.
+   *
+   * @param viewModel  the LOTR list model
+   * @param interactor the interactor providing LOTR character CRUD operations
+   */
   public LOTRManagerController(LOTRListModel viewModel, LOTRInteractor interactor) {
     this.viewModel = viewModel;
     this.interactor = interactor;
@@ -43,12 +56,21 @@ public class LOTRManagerController {
     );
   }
 
+  /**
+   * Loads all LOTR characters and returns the built toolbar view.
+   *
+   * @return the toolbar region
+   */
   public Region getView() {
     loadCharacters(() -> {});
     return viewBuilder.build();
   }
 
-  // Run in app thread
+  /**
+   * Opens a dialog to create a new LOTR character and saves it.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after the operation
+   */
   private void addCharacter(Runnable postGuiStuff) {
     var dialog = new LOTRCreateDialog();
     dialog.showAndWait()
@@ -61,15 +83,25 @@ public class LOTRManagerController {
         );
   }
 
-  // Run in FX thread
+  /**
+   * Clears the current selection in the list view.
+   */
   private void clearSelection() {
     viewModel.clearSelection();
   }
 
+  /**
+   * Discards all unsaved changes in the LOTR list.
+   */
   private void discardDirtyItems() {
     operableManagerController.discard();
   }
 
+  /**
+   * Loads all LOTR characters from the interactor in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after loading
+   */
   private void loadCharacters(Runnable postGuiStuff) {
     BackgroundTaskBuilder
         .task(interactor::loadCharacters)
@@ -78,6 +110,11 @@ public class LOTRManagerController {
         .start();
   }
 
+  /**
+   * Shows a confirmation dialog and deletes the selected LOTR character.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after deletion
+   */
   private void deleteCharacter(Runnable postGuiStuff) {
     var confirmDialog = new Dialog<ButtonType>();
     confirmDialog.setTitle("Delete LOTR character confirmation");
@@ -89,6 +126,11 @@ public class LOTRManagerController {
     postGuiStuff.run();
   }
 
+  /**
+   * Saves all dirty valid LOTR characters in a background task.
+   *
+   * @param postGuiStuff runnable executed on the JavaFX thread after saving
+   */
   private void saveCharacters(Runnable postGuiStuff) {
     AtomicInteger savedCount = new AtomicInteger(0);
     BackgroundTaskBuilder

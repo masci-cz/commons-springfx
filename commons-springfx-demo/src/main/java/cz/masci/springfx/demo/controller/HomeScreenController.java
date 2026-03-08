@@ -26,14 +26,29 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
+/**
+ * Spring component controller for the home screen, providing buttons to open
+ * each demo scene (LOTR, Potter, Books).
+ */
 @Component
 public class HomeScreenController implements ViewProvider<Region> {
 
+  /** Builder for the home screen tile view. */
   private final HomeScreenViewBuilder viewBuilder;
+  /** Controller for the LOTR list-detail scene. */
   private final LOTRListDetailController lotrListDetailController;
+  /** Controller for the Harry Potter list-detail scene. */
   private final PotterListDetailController potterListDetailController;
+  /** Controller for the Books list-detail scene. */
   private final BookListDetailController bookListDetailController;
 
+  /**
+   * Creates a new {@code HomeScreenController}.
+   *
+   * @param lotrListDetailController   controller for the LOTR scene
+   * @param potterListDetailController controller for the Potter scene
+   * @param bookListDetailController   controller for the Books scene
+   */
   public HomeScreenController(LOTRListDetailController lotrListDetailController, PotterListDetailController potterListDetailController, BookListDetailController bookListDetailController) {
     viewBuilder = new HomeScreenViewBuilder(this::openLOTRScene, this::openPotterScene, this::openBookScene);
     this.lotrListDetailController = lotrListDetailController;
@@ -46,6 +61,9 @@ public class HomeScreenController implements ViewProvider<Region> {
     return viewBuilder.build();
   }
 
+  /**
+   * Opens a new window showing the LOTR list-detail view.
+   */
   private void openLOTRScene() {
     Scene scene = new Scene(lotrListDetailController.getView(), 1000, 800);
     Stage stage = new Stage();
@@ -54,6 +72,9 @@ public class HomeScreenController implements ViewProvider<Region> {
     stage.show();
   }
 
+  /**
+   * Opens a new window showing the Harry Potter list-detail view.
+   */
   private void openPotterScene() {
     Scene scene = new Scene(potterListDetailController.getView(), 1000, 400);
     Stage stage = new Stage();
@@ -62,6 +83,9 @@ public class HomeScreenController implements ViewProvider<Region> {
     stage.show();
   }
 
+  /**
+   * Opens a new window showing the Books list-detail view.
+   */
   private void openBookScene() {
     Scene scene = new Scene(bookListDetailController.getView(), 1000, 400);
     Stage stage = new Stage();

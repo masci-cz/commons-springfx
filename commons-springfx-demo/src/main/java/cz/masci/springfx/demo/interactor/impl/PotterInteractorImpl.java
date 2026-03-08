@@ -27,12 +27,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Spring service implementation of {@link PotterInteractor} using {@link Faker} to generate demo data.
+ */
 @Service
 @RequiredArgsConstructor
 public class PotterInteractorImpl implements PotterInteractor {
 
+  /** Faker instance used to generate fake Harry Potter character data. */
   private final Faker faker;
 
+  /** Generator for sequential element identifiers. */
   private final AtomicLong idGenerator = new AtomicLong(1);
 
   @Override
@@ -40,6 +45,12 @@ public class PotterInteractorImpl implements PotterInteractor {
     return map(faker.harryPotter());
   }
 
+  /**
+   * Maps a {@link HarryPotter} faker instance to a {@link PotterDetailModel}.
+   *
+   * @param harryPotterItem the faker providing book, character, location and quote data
+   * @return a baselined {@link PotterDetailModel}
+   */
   private PotterDetailModel map(HarryPotter harryPotterItem) {
     var model = new PotterDetailModel();
     model.setId(idGenerator.getAndIncrement());
